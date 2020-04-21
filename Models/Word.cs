@@ -14,16 +14,18 @@ namespace Dictionary_MVC.Models
 
         [Required]
         public Language SourceLanguage { get; set; }
-        [ForeignKey("SourceLanguageID")]
-        public int SourceLanguageID { get; set; }
+
+        [ForeignKey("SourceLanguage")]
+        public String SourceLanguageID { get; set; }
 
         [Required]
         public String Value { get; set; }
 
-        public ICollection<Meaning> Meanings { get; set; }
+        [Required]
+        public String SpeechPartName { get; set; }
 
         [Required]
-        public WordProperties Properties { get; set; }
+        public ISet<WordProperty> Properties { get; set; }
 
         public int CompareTo([AllowNull] Word other)
         {
