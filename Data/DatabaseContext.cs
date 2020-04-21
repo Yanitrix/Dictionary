@@ -17,7 +17,7 @@ namespace Dictionary_MVC.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Dictionary>().HasKey(d => new { d.LanguageInID, d.LanguageOutID });
+            builder.Entity<Dictionary>().HasKey(d => new { d.LanguageInName, d.LanguageOutName });
 
 
             //other stuff
