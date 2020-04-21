@@ -15,6 +15,7 @@ namespace Dictionary_MVC.Models
 
         public ICollection<Word> Words { get; set; }
 
-        public AttributePattern AttributePattern { get; set; }
+        public ISet<SpeechPart> SpeechParts { get; set; }
+
     }
 }

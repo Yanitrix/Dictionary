@@ -10,12 +10,12 @@ namespace Dictionary_MVC.Models
     public class Dictionary
     {
         [ForeignKey("LanguageIn")]
-        public int LanguageInID { get; set; }
+        public String LanguageInName { get; set; }
         [Required]
         public Language LanguageIn { get; set; }
 
         [ForeignKey("LanguageOut")]
-        public int LanguageOutID { get; set; }
+        public String LanguageOutName { get; set; }
         [Required]
         public Language LanguageOut { get; set; }
 
