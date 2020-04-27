@@ -19,6 +19,7 @@ namespace Dictionary_MVC.Data
         {
             builder.Entity<Dictionary>().HasKey(d => new { d.LanguageInName, d.LanguageOutName });
 
+            builder.Entity<SpeechPart>().HasKey(s => new { s.LanguageName, s.Name });
 
             //other stuff
             builder.Entity<SpeechPartProperty>().Property(p => p.PossibleValues).

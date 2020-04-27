@@ -10,13 +10,13 @@ namespace Dictionary_MVC.Models
 {
     public class Word : IComparable<Word>
     {
-        public int ID { get; set; }
+        public int ID { get; set; }//TODO i think im gonna get rid of ID
 
         [Required]
         public Language SourceLanguage { get; set; }
 
         [ForeignKey("SourceLanguage")]
-        public String SourceLanguageID { get; set; }
+        public String SourceLanguageName { get; set; }
 
         [Required]
         public String Value { get; set; }
