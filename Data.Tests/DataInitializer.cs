@@ -5,20 +5,25 @@ using System.Text;
 
 namespace Data.Tests
 {
-    static class DataInitializer
+    public class DataInitializer
     {
-        static List<Dictionary> Dictionaries { get; set; } = new List<Dictionary>();
-        static List<Language> Languages { get; set; } = new List<Language>();
-        static List<SpeechPart> SpeechParts { get; set; } = new List<SpeechPart>();
+        public List<Dictionary> Dictionaries { get; set; } = new List<Dictionary>();
+        public List<Language> Languages { get; set; } = new List<Language>();
+        public List<SpeechPart> SpeechParts { get; set; } = new List<SpeechPart>();
 
-        static void initialize()
+        public DataInitializer()
+        {
+            initialize();
+        }
+
+        public void initialize()
         {
             initializeSpeechParts();
             initializeWords();
             initializeDictionaries();
         }
 
-        private static void initializeDictionaries()
+        private void initializeDictionaries()
         {
             var en_de = new Dictionary
             {
@@ -40,7 +45,7 @@ namespace Data.Tests
             Dictionaries.Add(de_en);
         }
 
-        private static void initializeWords()
+        private void initializeWords()
         {
             //2 nouns, 2 verbs
 
@@ -107,7 +112,7 @@ namespace Data.Tests
             
         }
 
-        private static void initializeSpeechParts()
+        private void initializeSpeechParts()
         {
             Language german = new Language { Name = "german", };
             Language english = new Language { Name = "english", };
