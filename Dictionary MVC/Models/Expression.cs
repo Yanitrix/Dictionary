@@ -5,17 +5,15 @@ using System.Threading.Tasks;
 
 namespace Dictionary_MVC.Models
 {
-    public class WordProperty
+    public class Expression
     {
         public int ID { get; set; }
-
-        public String Name { get; set; }
-
-        public String Value { get; set; }
+        public String Text { get; set; }
+        public String Translation { get; set; }
 
         public override string ToString()
         {
-            return $"Name: {Name} \t Value: {Value}\n";
+            return $"Text: {Text} \t Translation: {Translation}\n";
         }
     }
 }

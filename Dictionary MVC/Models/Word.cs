@@ -31,5 +31,18 @@ namespace Dictionary_MVC.Models
         {
             return this.Value.CompareTo(other.Value);
         }
+
+        public override string ToString()
+        {
+            var prop = "";
+            foreach (var i in Properties) prop += i.ToString();
+            return
+                $"Source language: {SourceLanguageName}\n" +
+                $"Value: {Value}\n" +
+                $"Speech part: {SpeechPartName}\n" +
+                $"Properties: \n\t{prop}\n";
+        }
+
+
     }
 }

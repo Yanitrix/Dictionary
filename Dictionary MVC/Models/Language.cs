@@ -13,7 +13,7 @@ namespace Dictionary_MVC.Models
         [Key]
         public String Name { get; set; }
 
-        public ICollection<Word> Words { get; set; }
+        public ICollection<Word> Words { get; set; } = new HashSet<Word>();
 
         public ISet<SpeechPart> SpeechParts { get; set; }
 

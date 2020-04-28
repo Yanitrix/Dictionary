@@ -17,5 +17,19 @@ namespace Dictionary_MVC.Models
         public Word Word { get; set; }
 
         public ISet<Meaning> Meanings { get; set; }
+
+        public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();
+
+        public override string ToString()
+        {
+            String mean = "", exp = "";
+            foreach (var i in Meanings) mean += i.ToString();
+            foreach (var i in Expressions) exp += i.ToString();
+
+            return $"Entry:\n" +
+                $"Word: \n\t{Word}\n" +
+                $"Meanings: \n\t{mean}\n" +
+                $"Expressions: {exp}\n";
+        }
     }
 }

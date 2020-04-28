@@ -12,8 +12,8 @@ namespace Dictionary_MVC.Models.annotations
         {
             var meaning = (Meaning)validationContext.ObjectInstance;
 
-            if (String.IsNullOrEmpty(meaning.Value) && String.IsNullOrEmpty(meaning.Example))
-                return new ValidationResult("Either example or meaning must be present");
+            if (String.IsNullOrEmpty(meaning.Value) && !meaning.Examples.Any())
+                return new ValidationResult("Either examples or meaning must be present");
             
             return ValidationResult.Success;
         }

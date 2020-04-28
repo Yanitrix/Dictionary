@@ -21,5 +21,16 @@ namespace Dictionary_MVC.Models
 
         public ISet<Entry> Entries { get; set; }
 
+        public override string ToString()
+        {
+            var entr = "";
+            foreach (var i in Entries) entr += i.ToString();
+
+            return "Dictionary \n" +
+                $"Language in: {LanguageInName}\n" +
+                $"Language out: {LanguageOutName}\n" +
+                $"Entries: \n\t{entr}\n";
+        }
+
     }
 }
