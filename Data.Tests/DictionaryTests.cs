@@ -81,9 +81,6 @@ namespace Data.Tests
             Assert.Equal("von etw. essen", example.Text);
             Assert.Equal("to eat from sth.", example.Translation);
 
-            String str = deToEn.ToString();
-            File.WriteAllText(@"C:\Users\domin\Desktop\output.txt", str);
-
             var expression = entry.Expressions.Single(x => x.Equals(x));
             Assert.Equal("gegessen sein", expression.Text);
             Assert.Equal("to be dead and buried", expression.Translation);
