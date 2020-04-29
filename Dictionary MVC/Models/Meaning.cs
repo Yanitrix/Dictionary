@@ -1,4 +1,4 @@
-﻿using Dictionary_MVC.Models.annotations;
+﻿using Dictionary_MVC.Metadata.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
