@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dictionary_MVC.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dictionary_MVC.Models.annotations
+namespace Dictionary_MVC.Metadata.Annotations
 {
     public class MeaningValidation : ValidationAttribute
     {

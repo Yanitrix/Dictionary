@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Dictionary_MVC.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,8 @@ namespace Dictionary_MVC.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Dictionary>().HasKey(d => new { d.LanguageInName, d.LanguageOutName });
 
             builder.Entity<SpeechPart>().HasKey(s => new { s.LanguageName, s.Name });
