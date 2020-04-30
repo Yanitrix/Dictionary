@@ -10,7 +10,7 @@ namespace Dictionary_MVC.Models
 {
     public class Word : IComparable<Word>
     {
-        public int ID { get; set; }//TODO i think im gonna get rid of ID
+        public int ID { get; set; }//TODO gonna check {SourceLanguageName, SpeechPartName, Value} on service layer, while adding to db 
 
         [Required]
         public Language SourceLanguage { get; set; }

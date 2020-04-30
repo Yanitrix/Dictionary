@@ -6,7 +6,7 @@ namespace Dictionary_MVC.Models
 {
     public class SpeechPart
     {
-        //public int ID { get; set; }
+        public int Index { get; set; }
 
         public String Name { get; set; }
 
