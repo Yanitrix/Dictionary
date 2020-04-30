@@ -13,6 +13,8 @@
     <Compile Remove="Data\Migrations\20200430124532_LanguageAndWords.Designer.cs" />
     <Compile Remove="Data\Migrations\20200430124859_LanguagesAndWords.cs" />
     <Compile Remove="Data\Migrations\20200430124859_LanguagesAndWords.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200430125628_LanguagesAndWords.cs" />
+    <Compile Remove="Data\Migrations\20200430125628_LanguagesAndWords.Designer.cs" />
   </ItemGroup>
 
 
