@@ -18,6 +18,9 @@ namespace Dictionary_MVC.Data
         public DbSet<SpeechPartProperty> SpeechPartProperties { get; set; }
         public DbSet<WordProperty> WordProperties { get; set; }
 
+        public DbSet<Word> Words { get; set; }
+        public DbSet<Language> Languages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -44,10 +47,17 @@ namespace Dictionary_MVC.Data
                 HasConversion(
                 list => JsonConvert.SerializeObject(list),
                 list => JsonConvert.DeserializeObject<List<String>>(list));
-            
+
             #endregion
 
+            #region languages and words
 
+            builder.Entity<Language>().ToTable("Language");
+            builder.Entity<Word>().ToTable("Word");
+
+            #endregion
+
+            
         }
     }
 }

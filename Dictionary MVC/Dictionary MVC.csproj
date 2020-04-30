@@ -9,6 +9,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200429120357_SpeechProperties.cs" />
     <Compile Remove="Data\Migrations\20200429120357_SpeechProperties.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200430124532_LanguageAndWords.cs" />
+    <Compile Remove="Data\Migrations\20200430124532_LanguageAndWords.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200430124859_LanguagesAndWords.cs" />
+    <Compile Remove="Data\Migrations\20200430124859_LanguagesAndWords.Designer.cs" />
   </ItemGroup>
 
 
