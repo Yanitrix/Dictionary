@@ -30,7 +30,7 @@ namespace Dictionary_MVC.Data
             builder.Entity<SpeechPart>().ToTable("SpeechPart");
             builder.Entity<SpeechPartProperty>().ToTable("SpeechPartProperty");
             builder.Entity<WordProperty>().ToTable("WordProperty");
-            
+
 
             builder.Entity<SpeechPart>().HasKey(s => new { s.LanguageName, s.Name });
             builder.Entity<SpeechPart>().Property(part => part.Index).ValueGeneratedOnAdd();
@@ -57,7 +57,25 @@ namespace Dictionary_MVC.Data
 
             #endregion
 
-            
+            #region dictionaries
+
+            var dict = builder.Entity<Dictionary>().ToTable("Dictionary");
+            var entry = builder.Entity<Entry>().ToTable("Entry");
+            builder.Entity<Expression>().ToTable("Expression");
+            builder.Entity<Meaning>().ToTable("Meaning");
+
+            dict.Property(d => d.Index).ValueGeneratedOnAdd();
+            dict.HasKey(d => new { d.LanguageInName, d.LanguageOutName });
+
+            entry
+                .HasOne(entry => entry.Dictionary)
+                .WithMany(dictionary => dictionary.Entries)
+                .HasForeignKey(entry => entry.DictionaryIndex)
+                .HasPrincipalKey(dictionary => dictionary.Index);
+
+            #endregion
+
+
         }
     }
 }
