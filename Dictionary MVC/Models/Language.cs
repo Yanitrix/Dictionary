@@ -15,7 +15,7 @@ namespace Dictionary_MVC.Models
 
         public ICollection<Word> Words { get; set; } = new HashSet<Word>();
 
-        public ISet<SpeechPart> SpeechParts { get; set; }
+        public ISet<SpeechPart> SpeechParts { get; set; } = new HashSet<SpeechPart>();
 
     }
 }

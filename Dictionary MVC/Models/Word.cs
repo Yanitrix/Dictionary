@@ -25,7 +25,7 @@ namespace Dictionary_MVC.Models
         public String SpeechPartName { get; set; }
 
         [Required]
-        public ISet<WordProperty> Properties { get; set; }
+        public ISet<WordProperty> Properties { get; set; } = new HashSet<WordProperty>();
 
         public int CompareTo([AllowNull] Word other)
         {

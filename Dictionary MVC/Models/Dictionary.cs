@@ -9,6 +9,8 @@ namespace Dictionary_MVC.Models
 {
     public class Dictionary
     {
+        public int Index { get; set; }
+
         [ForeignKey("LanguageIn")]
         public String LanguageInName { get; set; }
         [Required]
@@ -19,7 +21,7 @@ namespace Dictionary_MVC.Models
         [Required]
         public Language LanguageOut { get; set; }
 
-        public ISet<Entry> Entries { get; set; }
+        public ISet<Entry> Entries { get; set; } = new HashSet<Entry>();
 
         public override string ToString()
         {
