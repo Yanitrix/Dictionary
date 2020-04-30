@@ -13,10 +13,12 @@ namespace Dictionary_MVC.Models
         [Required]
         public Dictionary Dictionary { get; set; }
 
+        public int DictionaryIndex { get; set; }
+
         [Required]
         public Word Word { get; set; }
 
-        public ISet<Meaning> Meanings { get; set; }
+        public ISet<Meaning> Meanings { get; set; } = new HashSet<Meaning>();
 
         public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();
 
