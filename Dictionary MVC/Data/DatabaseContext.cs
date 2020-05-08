@@ -21,6 +21,11 @@ namespace Dictionary_MVC.Data
         public DbSet<Word> Words { get; set; }
         public DbSet<Language> Languages { get; set; }
 
+        public DbSet<Dictionary> Dictionaries { get; set; }
+        public DbSet<Entry> Entries { get; set; }
+        public DbSet<Expression> Expressions { get; set; }
+        public DbSet<Meaning> Meanings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
