@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Api.Dto;
+using AutoMapper;
 using Dictionary_MVC.Models;
 
 namespace Dictionary_MVC.Utils
@@ -7,7 +8,7 @@ namespace Dictionary_MVC.Utils
     {
         public MapperProfile() 
         {
-            //CreateMap<LanguageDto, Language>()
+            CreateMap<LanguageDto, Language>().ReverseMap();
         }
     }
 }

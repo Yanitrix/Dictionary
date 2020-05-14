@@ -12,6 +12,9 @@ using Dictionary_MVC.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Api.Service;
+using Dictionary_MVC.Models;
+using Dictionary_MVC.Utils;
 
 namespace Dictionary_MVC
 {
@@ -37,6 +40,9 @@ namespace Dictionary_MVC
                 .AddEntityFrameworkStores<DatabaseContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IService<Language>, LanguageService>();
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
