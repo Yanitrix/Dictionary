@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dictionary MVC", "Dictionar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{4C889EB7-4324-468A-9932-D73D87043E69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{39AEC920-C210-40E4-8D9C-0707D35806DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4C889EB7-4324-468A-9932-D73D87043E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C889EB7-4324-468A-9932-D73D87043E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C889EB7-4324-468A-9932-D73D87043E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AEC920-C210-40E4-8D9C-0707D35806DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AEC920-C210-40E4-8D9C-0707D35806DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AEC920-C210-40E4-8D9C-0707D35806DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AEC920-C210-40E4-8D9C-0707D35806DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
