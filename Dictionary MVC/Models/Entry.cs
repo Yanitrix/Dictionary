@@ -18,6 +18,9 @@ namespace Dictionary_MVC.Models
         [Required]
         public Word Word { get; set; }
 
+        [Required]
+        public int WordID { get; set; }
+
         public ISet<Meaning> Meanings { get; set; } = new HashSet<Meaning>();
 
         public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();

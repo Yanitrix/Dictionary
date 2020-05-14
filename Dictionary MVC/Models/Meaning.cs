@@ -15,6 +15,8 @@ namespace Dictionary_MVC.Models
 
         [Required]
         public Entry Entry { get; set; }
+        [Required]
+        public int EntryID { get; set; }
 
         [MeaningValidation]
         public String Value { get; set; } = String.Empty;
