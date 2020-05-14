@@ -16,16 +16,16 @@ namespace Api.Service
             this.context = context;
         }
 
+        public abstract bool IsValid(T entity);
+
         public abstract T Create(T entity);
-
-        public abstract T Delete(T entity);
-
-        public abstract IEnumerable<T> Get(Func<T, bool> condition);
 
         public abstract T GetOne(Func<T, bool> condition);
 
+        public abstract IEnumerable<T> Get(Func<T, bool> condition);
+
         public abstract T Update(T entity);
 
-        public abstract bool IsValid(T entity);
+        public abstract T Delete(T entity);
     }
 }
