@@ -11,6 +11,7 @@ namespace Dictionary_MVC.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
+        [RegularExpression("^[a-zA-Z]+$")]
         public String Name { get; set; }
 
         public ICollection<Word> Words { get; set; } = new HashSet<Word>();
