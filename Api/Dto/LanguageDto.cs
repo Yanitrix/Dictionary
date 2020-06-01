@@ -8,6 +8,7 @@ namespace Api.Dto
     public class LanguageDto
     {
         [Required]
+        [RegularExpression("^[a-zA-Z]+$")]
         public String Name { get; set; }
 
         [Required]
@@ -16,4 +17,5 @@ namespace Api.Dto
         [Required]
         public ICollection<SpeechPartDto> SpeechParts { get; set; }
     }
+
 }

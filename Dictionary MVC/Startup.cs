@@ -6,15 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Dictionary_MVC.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api.Service;
-using Dictionary_MVC.Models;
-using Dictionary_MVC.Utils;
+using Api.Mapper;
 
 namespace Dictionary_MVC
 {
@@ -41,8 +39,8 @@ namespace Dictionary_MVC
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddScoped<IService<Language>, LanguageService>();
-            services.AddAutoMapper();
+            services.AddScoped<ILanguageService, LanguageService>();
+            services.AddScoped<IMapper, Mapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

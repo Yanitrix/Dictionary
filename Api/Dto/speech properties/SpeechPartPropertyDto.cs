@@ -7,11 +7,6 @@ namespace Api.Dto
 {
     public class SpeechPartPropertyDto
     {
-        public int ID { get; set; }
-
-        [Required]
-        public int SpeechPartIndex { get; set; }
-
         [Required]
         public String Name { get; set; }
 

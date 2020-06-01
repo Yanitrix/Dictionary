@@ -6,8 +6,6 @@ namespace Api.Dto
 {
     public class SpeechPartDto
     {
-        public int Index { get; set; }
-
         [Required]
         public String Name { get; set; }
 

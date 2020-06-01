@@ -13,6 +13,7 @@ namespace Dictionary_MVC.Models
         [Required]
         public Dictionary Dictionary { get; set; }
 
+        [Required]
         public int DictionaryIndex { get; set; }
 
         [Required]
