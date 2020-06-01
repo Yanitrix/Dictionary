@@ -10,6 +10,12 @@ namespace Api.Service
 
         public bool IsValid(T entity);
 
+        public bool IsReadyToAdd(T entity);
+
+        public bool IsReadyToUpdate(T entity);
+
+        public IEnumerable<T> All();
+
         public T Create(T entity);
 
         public T Delete(T entity);
