@@ -66,7 +66,7 @@ namespace Dictionary_MVC.Data
 
             var dict = builder.Entity<Dictionary>().ToTable("Dictionary");
             var entry = builder.Entity<Entry>().ToTable("Entry");
-            builder.Entity<Expression>().ToTable("Expression");
+            var expression = builder.Entity<Expression>().ToTable("Expression");
             builder.Entity<Meaning>().ToTable("Meaning");
 
             dict.Property(d => d.Index).ValueGeneratedOnAdd();
@@ -76,6 +76,12 @@ namespace Dictionary_MVC.Data
                 .HasOne(entry => entry.Dictionary)
                 .WithMany(dictionary => dictionary.Entries)
                 .HasForeignKey(entry => entry.DictionaryIndex)
+                .HasPrincipalKey(dictionary => dictionary.Index);
+
+            expression
+                .HasOne(expression => expression.Dictionary)
+                .WithMany(dictionary => dictionary.FreeExpressions)
+                .HasForeignKey(expression => expression.DictionaryIndex)
                 .HasPrincipalKey(dictionary => dictionary.Index);
 
             #endregion
