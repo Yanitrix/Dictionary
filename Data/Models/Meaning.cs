@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dictionary_MVC.Models
 {
-    public class Meaning //TODO while adding on front check if any expression contains the word and suggest them to the user
+    public class Meaning //TODO while adding on front check if any expression contains the word and suggest them to the user. If so, then delete it from dictionary and assign to this meaning
     {
         public int ID { get; set; }
 

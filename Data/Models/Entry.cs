@@ -24,18 +24,14 @@ namespace Dictionary_MVC.Models
 
         public ISet<Meaning> Meanings { get; set; } = new HashSet<Meaning>();
 
-        public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();//TODO need to move it out before validating the rest
-
         public override string ToString()
         {
-            String mean = "", exp = "";
+            String mean = "";
             foreach (var i in Meanings) mean += i.ToString();
-            foreach (var i in Expressions) exp += i.ToString();
 
             return $"Entry:\n" +
                 $"Word: \n\t{Word}\n" +
-                $"Meanings: \n\t{mean}\n" +
-                $"Expressions: {exp}\n";
+                $"Meanings: \n\t{mean}\n";
         }
     }
 }

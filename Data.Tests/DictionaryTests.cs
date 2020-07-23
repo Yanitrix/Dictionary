@@ -53,17 +53,18 @@ namespace Data.Tests
                     Word = data.Languages[0].Words.Single(w => w.Value == "essen"),
                     Meanings = new HashSet<Meaning>
                     {
-                        new Meaning{Value = "eat"},
+                        new Meaning{Value = "eat", Examples = new HashSet<Expression>
+                            {
+                                new Expression{Text = "gegessen sein", Translation = "to be dead and buried"}
+                            } 
+                        }
+                        ,
                         new Meaning{Value = "dine", Examples = new HashSet<Expression>
                             {
                                 new Expression{Text = "von etw. essen", Translation = "to eat from sth."}
                             }
                         }
                     },
-                    Expressions =  new HashSet<Expression>
-                    {
-                        new Expression{Text = "gegessen sein", Translation = "to be dead and buried"}
-                    }
                 }
             };
 
@@ -76,12 +77,12 @@ namespace Data.Tests
 
             entry = deToEn.Entries.Single(e => e.Word.Value == "essen");
             meanings = new List<Meaning>(entry.Meanings);
-            
+
             var example = meanings[1].Examples.Single(x => x.Equals(x));
             Assert.Equal("von etw. essen", example.Text);
             Assert.Equal("to eat from sth.", example.Translation);
 
-            var expression = entry.Expressions.Single(x => x.Equals(x));
+            var expression = meanings[0].Examples.Single(x => x.Equals(x));
             Assert.Equal("gegessen sein", expression.Text);
             Assert.Equal("to be dead and buried", expression.Translation);
 
