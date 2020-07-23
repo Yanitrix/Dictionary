@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Api.Service
@@ -38,15 +39,14 @@ namespace Api.Service
             return entity;
         }
 
-        public virtual T GetOne(Func<T, bool> condition)
+        public virtual T GetOne(Expression<Func<T, bool>> condition)
         {
-            return context.Set<T>().SingleOrDefault(condition);
+            return repo.SingleOrDefault(condition);
         }
 
-        public virtual IEnumerable<T> Get(Func<T, bool> condition)
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> condition)
         {
-            return context.Set<T>().Where(condition).ToList();
-
+            return repo.Where(condition).ToList();
         }
 
         public virtual T Update(T entity)
