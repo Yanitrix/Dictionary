@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dictionary_MVC.Metadata.Annotations
 {
+    [Obsolete] //TODO remove
     public class MeaningValidation : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Api.Service
@@ -22,8 +23,8 @@ namespace Api.Service
 
         public T Update(T entity);
 
-        public T GetOne(Func<T, bool> condition);
+        public T GetOne(Expression<Func<T, bool>> condition);
 
-        public IEnumerable<T> Get(Func<T, bool> condition);
+        public IEnumerable<T> Get(Expression<Func<T, bool>> condition);
     }
 }
