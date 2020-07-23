@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dictionary_MVC.Models
 {
-    public class Meaning
+    public class Meaning //TODO while adding on front check if any expression contains the word and suggest them to the user
     {
         public int ID { get; set; }
 
@@ -18,10 +18,8 @@ namespace Dictionary_MVC.Models
         [Required]
         public int EntryID { get; set; }
 
-        [MeaningValidation]
         public String Value { get; set; } = String.Empty;
 
-        [MeaningValidation]
         public ISet<Expression> Examples { get; set; } = new HashSet<Expression>();
 
         public String Notes { get; set; }
