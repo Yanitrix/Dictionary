@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Api.Service
 {
-
+    //TODO check what happens if i try to add a language with some words and then act accordingly
     public class LanguageService : ServiceBase<Language>, ILanguageService
     {
         public LanguageService(DatabaseContext context) : base(context) { }

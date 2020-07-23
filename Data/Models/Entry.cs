@@ -24,7 +24,7 @@ namespace Dictionary_MVC.Models
 
         public ISet<Meaning> Meanings { get; set; } = new HashSet<Meaning>();
 
-        public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();
+        public ISet<Expression> Expressions { get; set; } = new HashSet<Expression>();//TODO need to move it out before validating the rest
 
         public override string ToString()
         {
