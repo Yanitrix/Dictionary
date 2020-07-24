@@ -10,10 +10,10 @@ namespace Dictionary_MVC.Models
         public int ID { get; set; }
 
         public Dictionary Dictionary { get; set; }
-        public int DictionaryIndex { get; set; }
+        public int? DictionaryIndex { get; set; }
 
         public Meaning Meaning { get; set; }
-        public int MeaningID { get; set; }
+        public int? MeaningID { get; set; }
 
         public String Text { get; set; }
         public String Translation { get; set; }
