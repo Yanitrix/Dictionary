@@ -15,6 +15,10 @@ namespace Api.Validation
 
             RuleFor(ex => ex.Text).NotEmpty().Matches(RegexConstants.ALPHA_REGEX);
             RuleFor(ex => ex.Translation).NotEmpty().Matches(RegexConstants.ALPHA_REGEX);
+
+            RuleFor(ex => ex.DictionaryIndex).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).When(ex => ex.MeaningID != null);
+            RuleFor(ex => ex.MeaningID).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).When(ex => ex.DictionaryIndex != null);
+
         }
     }
 }
