@@ -1,6 +1,7 @@
 ﻿using Api.Dto;
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,14 +11,14 @@ using System.Text;
 
 namespace Api.Service
 {
-    //TODO check what happens if i try to add a language with some words and then act accordingly
+    
     public class LanguageService : ServiceBase<Language>, ILanguageService
     {
-        public LanguageService(DatabaseContext context) : base(context) { }
+        public LanguageService(DatabaseContext context, AbstractValidator<Language> validator):base(context, validator) { }
 
         public Language GetByName(string name)
         {
-            return GetOne(x => x.Name == name);
+            return repo.Find(name);
         }
 
         public override bool IsReadyToAdd(Language entity)
@@ -34,12 +35,7 @@ namespace Api.Service
 
         public override bool IsReadyToUpdate(Language entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsValid(Language entity)
-        {
-            throw new NotImplementedException();
+            return false;
         }
 
     }
