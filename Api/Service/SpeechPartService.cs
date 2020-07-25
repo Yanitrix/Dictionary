@@ -11,15 +11,8 @@ namespace Api.Service
 {
     public class SpeechPartService : ServiceBase<SpeechPart>, ISpeechPartService
     {
-        private readonly AbstractValidator<SpeechPart> validator;
-
-        public SpeechPartService(DatabaseContext context) : base(context)
+        public SpeechPartService(DatabaseContext context, AbstractValidator<SpeechPart> validator) : base(context, validator)
         {
-        }
-
-        public SpeechPartService(DatabaseContext context, SpeechPartValidator validator) : this(context)
-        {
-            this.validator = validator;
         }
 
         public SpeechPart GetByIndex(int index)
@@ -29,18 +22,8 @@ namespace Api.Service
 
         public SpeechPart GetByNameAndLanguage(string languageName, string name)
         {
-            return repo.SingleOrDefault(x => String.Equals(x.LanguageName, languageName, StringComparison.OrdinalIgnoreCase) && x.Name == name);
-        }
-
-        public override bool IsValid(SpeechPart entity)
-        {
-            var result = validator.Validate(entity);
-            if (!result.IsValid)
-            {
-                foreach (var err in result.Errors) ValidationDictionary.AddError(err.PropertyName, err.ErrorMessage);
-                return false;
-            }
-            return result.IsValid;
+            //return repo.SingleOrDefault(x => String.Equals(x.LanguageName, languageName, StringComparison.OrdinalIgnoreCase) && x.Name == name);
+            return repo.Find(languageName, name);
         }
 
         public override bool IsReadyToAdd(SpeechPart entity)
