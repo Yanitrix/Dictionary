@@ -13,10 +13,6 @@ namespace Api.Validation
         public WordValidator()
         {
             RuleFor(w => w.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
-            //TODO
-            //RuleFor(w => w.SourceLanguageName).Matches("^[a-zA-Z]+$");    won't check it because service will check if the language actually exists in database
-            //RuleFor(w => w.SpeechPartName)                                //wont check it, same reason as above
-            //RuleForEach(w => w.Properties)                                ------------ '' ------------
 
             RuleFor(w => w.Value).NotEmpty().Matches(RegexConstants.ALPHA_REGEX);
 
