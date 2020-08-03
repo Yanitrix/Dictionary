@@ -2,17 +2,14 @@
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
 using FluentValidation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace Api.Service
 {
     public class DictionaryService : ServiceBase<Dictionary>, IDictionaryService
     {
-        public DictionaryService(DatabaseContext context, AbstractValidator<Dictionary> validator):base(context, validator) { }
+        public DictionaryService(DatabaseContext context, AbstractValidator<Dictionary> validator) : base(context, validator) { }
 
         public IEnumerable<Dictionary> GetAllByLanguage(string languageName)
         {
@@ -29,20 +26,37 @@ namespace Api.Service
             return repo.Find(languageIn, languageOut);
         }
 
-        public override bool IsReadyToAdd(Dictionary entity)//check if db already contains entity
+        //TODO check logic once again when im sober
+        public override bool IsReadyToAdd(Dictionary entity)
         {
+            if (!IsValid(entity)) return false;
+
+            var indb = repo.Any(d => d.LanguageInName == entity.LanguageInName && d.LanguageOutName == entity.LanguageOutName);
+            if (indb)
+            {
+                ValidationDictionary.AddError("Duplicate", $"A dictionary entity with LanguageIn: {entity.LanguageInName} " +
+                    $"and LanguageOut: {entity.LanguageOutName} already exsists");
+                return false;
+            }
+
             //check if languages are present in the database
             var languageRepo = context.Set<Language>();
             var languagesPresent = languageRepo.Any(lang => lang.Name == entity.LanguageInName) && languageRepo.Any(lang => lang.Name == entity.LanguageOutName);
-            if (!languagesPresent) return false;
+            if (!languagesPresent)
+            {
+                ValidationDictionary.AddError("Language not found", $"LanguageIn \"{entity.LanguageInName}\" or LanguageOut \"{entity.LanguageOutName}\" " +
+                    $"doesn't exist in the database. Please create them before posting a dictionary");
+                return false;
+            }
 
-            //
-
-            return false;
+            return true;
         }
 
         public override bool IsReadyToUpdate(Dictionary entity)
         {
+            //  since LanguageIn and LanguageOut cannot be updated, there's nothing to update in a dictionary. All One-to-Many relationships are 
+            //  updated on the child's side
+
             return false;
         }
 

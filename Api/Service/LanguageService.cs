@@ -23,6 +23,8 @@ namespace Api.Service
 
         public override bool IsReadyToAdd(Language entity)
         {
+            if (!IsValid(entity)) return false;
+
             var name = entity.Name;
             if (context.Languages.Any(x => x.Name == name))
             {
