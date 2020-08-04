@@ -34,7 +34,7 @@ namespace Dictionary_MVC
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddScoped<ILanguageService, LanguageService>();
+            //services.AddScoped<ILanguageService, LanguageService>();
             services.AddScoped<IMapper, Mapper>();
         }
 
