@@ -7,6 +7,10 @@ namespace Dictionary_MVC.Models
 {
     public class WordProperty
     {
+        public Word Word { get; set; }
+
+        public int WordID { get; set; }
+
         public int ID { get; set; }
 
         public String Name { get; set; }
