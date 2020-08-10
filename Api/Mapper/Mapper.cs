@@ -12,14 +12,19 @@ namespace Api.Mapper
         public Language Map(LanguageDto dto)
         {
             var result = ValueMap(dto);
-            foreach(var word in dto.Words)
+            foreach (var word in dto.Words)
             {
                 result.Words.Add(ValueMap(word));
             }
-            foreach(var sp in dto.SpeechParts)
+            
+            var list = new List<SpeechPart>();
+            
+            foreach (var sp in dto.SpeechParts)
             {
-                result.SpeechParts.Add(ShallowMap(sp));
+                list.Add(ShallowMap(sp));
             }
+
+            result.SpeechParts = list;
 
             return result;
         }
@@ -79,7 +84,7 @@ namespace Api.Mapper
                 SourceLanguageName = dto.SourceLanguageName,
                 SpeechPartName = dto.SpeechPartName,
                 Value = dto.Value,
-                
+
             };
         }
 

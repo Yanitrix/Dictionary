@@ -19,7 +19,7 @@ namespace Api.Validation
             RuleFor(m => m.Value).NotEmpty().Matches(RegexConstants.ALPHA_REGEX); //cannot be empty, if user wants to use only examples then they're encouraged to use dictionary-level Expression instead
             RuleFor(m => m.Notes).Matches(RegexConstants.ALPHA_REGEX).When(m => !String.IsNullOrWhiteSpace(m.Notes));
 
-            RuleForEach(m => m.Examples).SetValidator(new ExpressionValidator()).When(m => m.Examples.Count > 0);
+            RuleForEach(m => m.Examples).SetValidator(new ExpressionValidator()).When(m => m.Examples.Any());
         }
     }
 }
