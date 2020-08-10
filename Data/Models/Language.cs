@@ -14,9 +14,9 @@ namespace Dictionary_MVC.Models
         [RegularExpression("^[a-zA-Z]+$")]
         public String Name { get; set; }
 
-        public ICollection<Word> Words { get; set; } = new HashSet<Word>();
+        public ISet<Word> Words { get; set; } = new HashSet<Word>();
 
-        public ISet<SpeechPart> SpeechParts { get; set; } = new HashSet<SpeechPart>();
+        public IEnumerable<SpeechPart> SpeechParts { get; set; } = Enumerable.Empty<SpeechPart>();
 
     }
 }

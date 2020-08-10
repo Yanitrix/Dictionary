@@ -17,7 +17,7 @@ namespace Dictionary_MVC.Models
 
         public String Value { get; set; } = String.Empty;
 
-        public ISet<Expression> Examples { get; set; } = new HashSet<Expression>();
+        public IEnumerable<Expression> Examples { get; set; } = Enumerable.Empty<Expression>();
 
         public String Notes { get; set; }
 
