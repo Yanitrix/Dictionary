@@ -2,6 +2,7 @@
 using Api.Validation;
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Api.Service
     public class WordService : ServiceBase<Word>, IWordService 
     {
 
-        public WordService(DatabaseContext context, WordValidator validator) : base(context, validator) { }
+        public WordService(DatabaseContext context, AbstractValidator<Word> validator) : base(context, validator) { }
 
         public Word GetByID(int id)
         {

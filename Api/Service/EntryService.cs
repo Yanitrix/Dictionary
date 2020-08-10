@@ -2,6 +2,7 @@
 using Api.Validation;
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Api.Service
 {
     public class EntryService : ServiceBase<Entry>, IEntryService
     {
-        public EntryService(DatabaseContext context, EntryValidator validator):base(context, validator) { }
+        public EntryService(DatabaseContext context, AbstractValidator<Entry> validator):base(context, validator) { }
 
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue)
         {

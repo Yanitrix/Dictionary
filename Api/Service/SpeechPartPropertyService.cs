@@ -1,6 +1,7 @@
 ﻿using Api.Validation;
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Api.Service
     public class SpeechPartPropertyService : ServiceBase<SpeechPartProperty>, ISpeechPartPropertyService
     {
 
-        public SpeechPartPropertyService(DatabaseContext context, SpeechPartPropertyValidator validator):base(context, validator) { }
+        public SpeechPartPropertyService(DatabaseContext context, AbstractValidator<SpeechPartProperty> validator):base(context, validator) { }
 
         public SpeechPartProperty GetByID(int id)
         {
