@@ -44,7 +44,7 @@ namespace Api.Service
                 // whether the thing we get from the query is null, it's legit
                 .Properties;
 
-            if (presumableProperties.Count == 0) return false; //the collection can actually be empty //well, can it? TODO
+            if (!presumableProperties.Any()) return false; //the collection can actually be empty //well, can it? TODO
             
             if (!presumableProperties.Any(prop => prop.Name == entity.Name && prop.PossibleValues.Contains(entity.Value)))
             {
