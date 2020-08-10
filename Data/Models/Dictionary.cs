@@ -23,7 +23,7 @@ namespace Dictionary_MVC.Models
 
         public ISet<Entry> Entries { get; set; } = new HashSet<Entry>();
 
-        public ISet<Expression> FreeExpressions { get; set; } = new HashSet<Expression>();
+        public IEnumerable<Expression> FreeExpressions { get; set; } = Enumerable.Empty<Expression>();
 
         public override string ToString()
         {

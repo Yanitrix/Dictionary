@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Dictionary_MVC.Models
 {
@@ -14,6 +15,6 @@ namespace Dictionary_MVC.Models
         [ForeignKey("Language")]
         public String LanguageName { get; set; }
 
-        public ICollection<SpeechPartProperty> Properties { get; set; }
+        public IEnumerable<SpeechPartProperty> Properties { get; set; } = Enumerable.Empty<SpeechPartProperty>();
     }
 }
