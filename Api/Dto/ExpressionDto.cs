@@ -8,6 +8,11 @@ namespace Api.Dto
     public class ExpressionDto
     {
         public int ID { get; set; }
+
+        public int? DictionaryIndex { get; set; }
+
+        public int? MeaningID { get; set; }
+
         [Required]
         public String Text { get; set; }
         [Required]

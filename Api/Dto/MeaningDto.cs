@@ -14,8 +14,6 @@ namespace Api.Dto
 
         public String Value { get; set; }
 
-        public ISet<ExpressionDto> Examples { get; set; }
-
         public String Notes { get; set; }
 
     }

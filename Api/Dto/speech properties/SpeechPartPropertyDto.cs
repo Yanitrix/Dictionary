@@ -10,6 +10,8 @@ namespace Api.Dto
         [Required]
         public String Name { get; set; }
 
+        public int SpeechPartIndex { get; set; }
+
         [Required]
         public IList<String> PossibleValues { get; set; } = new List<String>();
 
