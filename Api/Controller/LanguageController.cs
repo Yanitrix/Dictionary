@@ -1,7 +1,7 @@
 ﻿using Api.Dto;
-using Api.Mapper;
 using Api.Service;
 using Api.Validation;
+using AutoMapper;
 using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,6 @@
 ﻿using Api.Dto;
-using Api.Mapper;
 using Api.Service;
+using AutoMapper;
 using Dictionary_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
