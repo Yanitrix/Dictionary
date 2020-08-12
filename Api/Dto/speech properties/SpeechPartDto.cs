@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Api.Dto
 {
@@ -13,6 +14,6 @@ namespace Api.Dto
         public String LanguageName { get; set; }
 
         [Required]
-        public ICollection<SpeechPartPropertyDto> Properties { get; set; }
+        public IEnumerable<SpeechPartPropertyDto> Properties { get; set; } = Enumerable.Empty<SpeechPartPropertyDto>();
     }
 }

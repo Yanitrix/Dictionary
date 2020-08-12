@@ -15,9 +15,5 @@ namespace Api.Dto
         [Required]
         public int WordID { get; set; }
 
-        [Required]
-        public ISet<MeaningDto> Meanings { get; set; }
-
-        public ISet<ExpressionDto> Expressions { get; set; } = new HashSet<ExpressionDto>();
     }
 }

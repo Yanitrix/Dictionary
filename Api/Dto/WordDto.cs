@@ -17,7 +17,5 @@ namespace Api.Dto
         [Required]
         public String SpeechPartName { get; set; }
 
-        [Required]
-        public ISet<WordPropertyDto> Properties { get; set; }
     }
 }

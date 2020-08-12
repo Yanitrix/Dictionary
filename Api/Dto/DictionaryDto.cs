@@ -7,6 +7,7 @@ namespace Api.Dto
 {
     public class DictionaryDto
     {
+
         public int Index { get; set; }
 
         [Required]
@@ -15,7 +16,5 @@ namespace Api.Dto
         [Required]
         public String LanguageOutName { get; set; }
 
-        [Required]
-        public ICollection<EntryDto> Entries { get; set; }
     }
 }
