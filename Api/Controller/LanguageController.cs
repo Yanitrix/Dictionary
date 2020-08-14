@@ -29,7 +29,7 @@ namespace Api.Controllers
 
         public IEnumerable<LanguageDto> Index()
         {
-            return service.All().Select(x => mapper.Map(x)).ToList();
+            return service.All().Select(mapper.Map<Language, LanguageDto>).ToList();
         }
 
         [HttpPost]
