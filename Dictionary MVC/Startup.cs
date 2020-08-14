@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Api.Service;
 using Api.Mapper;
+using AutoMapper;
 
 namespace Dictionary_MVC
 {
@@ -35,7 +36,8 @@ namespace Dictionary_MVC
             services.AddRazorPages();
 
             //services.AddScoped<ILanguageService, LanguageService>();
-            services.AddScoped<IMapper, Mapper>();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
