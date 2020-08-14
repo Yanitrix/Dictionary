@@ -12,7 +12,7 @@ namespace Api.Mapper
         public MapperProfile()
         {
             CreateMap<LanguageDto, Language>().ReverseMap();
-            CreateMap<WordDto, Word>().ReverseMap(); //.ForMember(w => w.ID, opt => opt.Ignore());
+            CreateMap<WordDto, Word>().ReverseMap();
 
             CreateMap<DictionaryDto, Dictionary>().ReverseMap();
             CreateMap<ExpressionDto, Expression>().ReverseMap();
