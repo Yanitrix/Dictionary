@@ -78,6 +78,10 @@ namespace Dictionary_MVC.Data
                 .HasForeignKey(entry => entry.DictionaryIndex)
                 .HasPrincipalKey(dictionary => dictionary.Index);
 
+            entry
+                .HasIndex(entry => entry.WordID)  //a word can be in only one entry, i'm not quite sure if it's the correct way to do it but i think it'll work
+                .IsUnique();
+
             expression
                 .HasOne(expression => expression.Dictionary)
                 .WithMany(dictionary => dictionary.FreeExpressions)
