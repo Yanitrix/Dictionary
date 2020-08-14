@@ -32,7 +32,7 @@ namespace Api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] SpeechPartDto dto)
         {
-            var entity = mapper.Map(dto);
+            var entity = mapper.Map<SpeechPartDto, SpeechPart>(dto);
 
             service.ValidationDictionary = new ValidationDictionary(ModelState);
 
@@ -49,7 +49,8 @@ namespace Api.Controllers
             var indb = service.GetByNameAndLanguage(language, name);
             if (indb == null) return NotFound();
 
-            var entity = mapper.Map(dto);
+            var entity = mapper.Map<SpeechPartDto,SpeechPart>(dto)
+                ;
             service.ValidationDictionary = new ValidationDictionary(ModelState);
             if (!service.IsReadyToUpdate(entity)) return BadRequest(ModelState);
 
