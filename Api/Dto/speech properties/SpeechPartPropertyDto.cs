@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 using System.Text;
 
 namespace Api.Dto
@@ -13,7 +14,7 @@ namespace Api.Dto
         public int SpeechPartIndex { get; set; }
 
         [Required]
-        public IList<String> PossibleValues { get; set; } = new List<String>();
+        public ISet<String> PossibleValues { get; set; } = new HashSet<String>();
 
     }
 }

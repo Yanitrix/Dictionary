@@ -1,5 +1,4 @@
-﻿using Api.Validation;
-using Dictionary_MVC.Data;
+﻿using Dictionary_MVC.Data;
 using Dictionary_MVC.Models;
 using FluentValidation;
 using System;
@@ -32,6 +31,16 @@ namespace Api.Service
                 return false;
             }
 
+            //check if there's another SpeechPartProperty with same PossibleValues and SpeechPart
+            var present = repo.Any(prop => prop.SpeechPartIndex == entity.SpeechPartIndex && 
+                prop.PossibleValues.OrderBy(x => x).SequenceEqual(entity.PossibleValues.OrderBy(x => x)));
+            if (present)
+            {
+                ValidationDictionary.AddError("Duplicate", "There's already a SpeechPartProperty " +
+                    "that has the same sequence of PossibleValues and belongs to the same SpeechPart");
+                return false;
+            }
+            
             return true;
         }
 
