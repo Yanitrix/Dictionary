@@ -127,7 +127,7 @@ namespace Data.Tests
             {
                 ID = 1,
                 Name = "voice",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "active", "passive", "reflexive"
                 },
@@ -138,7 +138,7 @@ namespace Data.Tests
             {
                 ID = 2,
                 Name = "conjugation",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "weak", "strong", "mixed"
                 },
@@ -149,7 +149,7 @@ namespace Data.Tests
             {
                 ID = 3,
                 Name = "declension",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "weak", "strong", "mixed"
                 },
@@ -160,7 +160,7 @@ namespace Data.Tests
             {
                 ID = 4,
                 Name = "gender",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "masculine", "feminine", "neuter", "plural only"
                 },
@@ -178,7 +178,7 @@ namespace Data.Tests
             {
                 ID = 5,
                 Name = "voice",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "active", "passive"
                 },
@@ -189,7 +189,7 @@ namespace Data.Tests
             {
                 ID = 6,
                 Name = "conjugation",
-                PossibleValues = new List<String>
+                PossibleValues = new HashSet<String>
                 {
                     "regular", "irregular"
                 },
@@ -214,7 +214,7 @@ namespace Data.Tests
             {
                 ID = 9,
                 Name = "plural",
-                PossibleValues = new List<String> { "regular", "irregular" },
+                PossibleValues = new HashSet<String> { "regular", "irregular" },
                 SpeechPart = noun_en
             };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -9,9 +10,12 @@ namespace Dictionary_MVC.Models
     {
         public int ID { get; set; }
 
+        [Required]
         public SpeechPart SpeechPart { get; set; }
+        [Required]
         public int SpeechPartIndex { get; set; }
 
+        [Required]
         public String Name { get; set; }
 
         [NotMapped]

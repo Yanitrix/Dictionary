@@ -51,7 +51,7 @@ namespace Dictionary_MVC.Data
             builder.Entity<SpeechPartProperty>().Property(p => p.PossibleValues).
                 HasConversion(
                 list => JsonConvert.SerializeObject(list),
-                list => JsonConvert.DeserializeObject<List<String>>(list));
+                list => JsonConvert.DeserializeObject<HashSet<String>>(list));
 
             #endregion
 
