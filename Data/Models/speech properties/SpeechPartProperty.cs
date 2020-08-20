@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Dictionary_MVC.Models
 {
@@ -16,14 +17,13 @@ namespace Dictionary_MVC.Models
         [NotMapped]
         public String DefaultValue
         {
-            get { return PossibleValues[0]; }
-            //set { PossibleValues[0] = value; }
+            get { return PossibleValues.ToArray()[0]; }
         }
 
         /// <summary>
         /// First value of the list is the default value for a Property.
         /// </summary>
-        public IList<String> PossibleValues { get; set; } = new List<String>();
+        public ISet<String> PossibleValues { get; set; } = new HashSet<String>();
 
     }
 }
