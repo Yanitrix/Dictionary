@@ -28,6 +28,15 @@ namespace Api.Service
         {
             if (!IsValid(entity)) return false;
 
+            //check if there's another Entry with the same WordID
+
+            if (repo.Any(e => e.WordID == entity.WordID))
+            {
+                ValidationDictionary.AddError("Word already in use", "There already is an Entry with given " +
+                    "WordID. One Entry can be only bound to one Word");
+                return false;
+            }
+
             //check if dictionary exists
             var dictionaryIndb = context.Set<Dictionary>().FirstOrDefault(d => d.Index == entity.DictionaryIndex);
             if (dictionaryIndb == null)
@@ -60,8 +69,6 @@ namespace Api.Service
 
         public override bool IsReadyToUpdate(Entry entity)
         {
-            if (!IsValid(entity)) return false;
-
             //no extra things to check
             return IsReadyToAdd(entity);
         }
