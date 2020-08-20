@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data;
 using Dictionary_MVC.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -47,11 +48,12 @@ namespace Dictionary_MVC.Data
                 .HasForeignKey(property => property.SpeechPartIndex)
                 .HasPrincipalKey(part => part.Index);
 
-            //storing List<String>
-            builder.Entity<SpeechPartProperty>().Property(p => p.PossibleValues).
-                HasConversion(
-                list => JsonConvert.SerializeObject(list),
-                list => JsonConvert.DeserializeObject<HashSet<String>>(list));
+            //storing Set<String>
+            var propertyBuilder = builder.Entity<SpeechPartProperty>().Property(p => p.PossibleValues);
+            propertyBuilder.HasConversion(StringSetValueComparerAndConverter.Converter);
+            propertyBuilder.Metadata.SetValueConverter(StringSetValueComparerAndConverter.Converter);
+            propertyBuilder.Metadata.SetValueComparer(StringSetValueComparerAndConverter.Comparer);
+                
 
             #endregion
 
