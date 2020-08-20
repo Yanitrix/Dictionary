@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,9 @@ namespace Dictionary_MVC.Models
         public Meaning Meaning { get; set; }
         public int? MeaningID { get; set; }
 
+        [Required]
         public String Text { get; set; }
+        [Required]
         public String Translation { get; set; }
 
         public override string ToString()

@@ -15,6 +15,8 @@ namespace Dictionary_MVC.Models
         [Required]
         public int EntryID { get; set; }
 
+        //cannot be empty, if user wants to use only examples then they're encouraged to use dictionary-level Expression instead
+        [Required]
         public String Value { get; set; } = String.Empty;
 
         public IEnumerable<Expression> Examples { get; set; } = Enumerable.Empty<Expression>();
