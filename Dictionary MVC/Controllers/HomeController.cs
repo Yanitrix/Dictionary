@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Dictionary_MVC.Models;
+using Data.Models;
 
 namespace Dictionary_MVC.Controllers
 {
