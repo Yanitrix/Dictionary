@@ -1,4 +1,4 @@
-﻿using Dictionary_MVC.Data;
+﻿using Data.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

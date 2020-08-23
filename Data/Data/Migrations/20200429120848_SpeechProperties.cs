@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Dictionary_MVC.Data.Migrations
+namespace Data.Database.Migrations
 {
     public partial class SpeechProperties : Migration
     {

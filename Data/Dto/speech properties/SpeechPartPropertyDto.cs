@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Policy;
 using System.Text;
 
-namespace Api.Dto
+namespace Data.Dto
 {
     public class SpeechPartPropertyDto
     {

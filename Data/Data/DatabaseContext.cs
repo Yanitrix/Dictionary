@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Data;
-using Dictionary_MVC.Models;
+using Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Dictionary_MVC.Data
+namespace Data.Database
 {
     public class DatabaseContext : IdentityDbContext
     {

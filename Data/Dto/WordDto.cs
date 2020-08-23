@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Dto
+namespace Data.Dto
 {
     public class WordDto
     {

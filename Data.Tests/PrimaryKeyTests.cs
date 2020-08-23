@@ -1,4 +1,4 @@
-﻿using Dictionary_MVC.Models;
+﻿using Data.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;

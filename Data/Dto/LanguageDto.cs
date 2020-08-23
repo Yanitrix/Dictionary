@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Api.Dto
+namespace Data.Dto
 {
     public class LanguageDto
     {
