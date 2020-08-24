@@ -17,6 +17,13 @@ namespace Api.Service
             return repo.Find(id);
         }
 
+        public override Meaning Delete(Meaning entity) //Examples must be included
+        {
+            context.Set<Expression>().RemoveRange(entity.Examples);
+            base.Delete(entity);
+            return entity;
+        }
+
         public override bool IsReadyToAdd(Meaning entity)
         {
             if (!IsValid(entity)) return false;
