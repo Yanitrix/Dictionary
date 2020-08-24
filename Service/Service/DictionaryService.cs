@@ -25,6 +25,13 @@ namespace Api.Service
             return repo.Find(languageIn, languageOut);
         }
 
+        public override Dictionary Delete(Dictionary entity) //FreeExpressions must be included
+        {
+            context.Set<Expression>().RemoveRange(entity.FreeExpressions);
+            base.Delete(entity);
+            return entity;
+        }
+
         //TODO check logic once again when im sober
         public override bool IsReadyToAdd(Dictionary entity)
         {
