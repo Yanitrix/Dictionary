@@ -1,12 +1,10 @@
-﻿using Api.Dto;
-using Api.Service;
+﻿using Data.Dto;
 using AutoMapper;
-using Dictionary_MVC.Models;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Api.Service;
 
 namespace Api.Controllers
 {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dictionary_MVC.Models
+namespace Data.Models
 {
     public class Expression
     {

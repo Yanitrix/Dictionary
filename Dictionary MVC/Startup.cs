@@ -2,12 +2,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Dictionary_MVC.Data;
+using Data.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Api.Service;
-using Api.Mapper;
 using AutoMapper;
 
 namespace Dictionary_MVC

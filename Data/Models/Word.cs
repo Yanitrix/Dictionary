@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dictionary_MVC.Models
+namespace Data.Models
 {
     public class Word : IComparable<Word>
     {

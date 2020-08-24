@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dictionary_MVC.Models
+namespace Data.Models
 {
     public class Dictionary
     {

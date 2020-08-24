@@ -1,15 +1,11 @@
-﻿using Api.Dto;
-using Api.Service;
-using Api.Validation;
+﻿using Data.Dto;
 using AutoMapper;
-using Dictionary_MVC.Data;
-using Dictionary_MVC.Models;
-using Microsoft.AspNetCore.Http;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Api.Service;
 
 namespace Api.Controllers
 {
