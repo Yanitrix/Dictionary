@@ -10,6 +10,8 @@ using AutoMapper;
 using FluentValidation;
 using Data.Models;
 using Api.Service.Validation;
+using Api.Service;
+using Data.Mapper;
 
 namespace Dictionary_MVC
 {
@@ -36,12 +38,30 @@ namespace Dictionary_MVC
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddScoped<ILanguageService, LanguageService>();
-            //services.AddSingleton<AbstractValidator<Word>, WordValidator>();
-            //services.AddSingleton<AbstractValidator<SpeechPart>, SpeechPartValidator>();
-            
+            services.AddSingleton<AbstractValidator<Language>, LanguageValidator>();
+            services.AddSingleton<AbstractValidator<Word>, WordValidator>();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddSingleton<AbstractValidator<SpeechPart>, SpeechPartValidator>();
+            services.AddSingleton<AbstractValidator<SpeechPartProperty>, SpeechPartPropertyValidator>();
+            services.AddSingleton<AbstractValidator<WordProperty>, WordPropertyValidator>();
+
+            services.AddSingleton<AbstractValidator<Dictionary>, DictionaryValidator>();
+            services.AddSingleton<AbstractValidator<Entry>, EntryValidator>();
+            services.AddSingleton<AbstractValidator<Meaning>, MeaningValidator>();
+            services.AddSingleton<AbstractValidator<Expression>, ExpressionValidator>();
+
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<IWordService, WordService>();
+            services.AddTransient<ISpeechPartService, SpeechPartService>();
+            services.AddTransient<ISpeechPartPropertyService, SpeechPartPropertyService>();
+            services.AddTransient<IWordPropertyService, WordPropertyService>();
+            services.AddTransient<IDictionaryService, DictionaryService>();
+            services.AddTransient<IEntryService, EntryService>();
+            services.AddTransient<IMeaningService, MeaningService>();
+            services.AddTransient<IExpressionService, ExpressionService>();
+
+
+            services.AddAutoMapper(typeof(MapperProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
