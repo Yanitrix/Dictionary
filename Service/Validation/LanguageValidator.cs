@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Service.Validation
+namespace Api.Service.Validation
 {
     public class LanguageValidator : AbstractValidator<Language>
     {
