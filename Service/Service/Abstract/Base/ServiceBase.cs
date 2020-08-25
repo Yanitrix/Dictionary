@@ -11,6 +11,25 @@ namespace Api.Service
 {
     public abstract class ServiceBase<T> : IService<T> where T : class
     {
+        private bool disposed;
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                context.Dispose();
+            }
+
+            disposed = true;
+        }
+
         protected readonly AbstractValidator<T> validator;
         protected readonly DatabaseContext context;
         protected readonly DbSet<T> repo;

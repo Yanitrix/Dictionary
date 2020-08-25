@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public interface IService<T>
+    public interface IService<T> : IDisposable
     {
         public IValidationDictionary ValidationDictionary { get; set; }
 

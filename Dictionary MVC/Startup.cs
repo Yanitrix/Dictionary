@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using FluentValidation;
+using Data.Models;
+using Api.Service.Validation;
 
 namespace Dictionary_MVC
 {
@@ -34,6 +37,9 @@ namespace Dictionary_MVC
             services.AddRazorPages();
 
             //services.AddScoped<ILanguageService, LanguageService>();
+            //services.AddSingleton<AbstractValidator<Word>, WordValidator>();
+            //services.AddSingleton<AbstractValidator<SpeechPart>, SpeechPartValidator>();
+            
 
             services.AddAutoMapper(typeof(Startup));
         }
