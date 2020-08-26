@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Api.Service
 {
@@ -16,6 +15,7 @@ namespace Api.Service
 
         public void AddError(string key, string errorMsg)
         {
+            modelState.AddModelError(key, errorMsg);
             Add(key, errorMsg);
         }
     }
