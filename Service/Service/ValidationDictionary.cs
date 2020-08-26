@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Service
 {
-    public class ValidationDictionary : IValidationDictionary
+    public class ValidationDictionary : Dictionary<String,String>, IValidationDictionary
     {
         private readonly ModelStateDictionary modelState;
 
@@ -13,7 +16,7 @@ namespace Api.Service
 
         public void AddError(string key, string errorMsg)
         {
-            modelState.AddModelError(key, errorMsg);
+            Add(key, errorMsg);
         }
     }
 }
