@@ -8,6 +8,8 @@ namespace Api.Service
     {
         private readonly ModelStateDictionary modelState;
 
+        public ValidationDictionary() { }
+
         public ValidationDictionary(ModelStateDictionary modelState)
         {
             this.modelState = modelState;
@@ -15,7 +17,7 @@ namespace Api.Service
 
         public void AddError(string key, string errorMsg)
         {
-            modelState.AddModelError(key, errorMsg);
+            modelState?.AddModelError(key, errorMsg);
             Add(key, errorMsg);
         }
     }
