@@ -8,6 +8,8 @@ namespace Api.Service
     {
         private readonly ModelStateDictionary modelState;
 
+        public ValidationDictionary() { }
+
         public ValidationDictionary(ModelStateDictionary modelState)
         {
             this.modelState = modelState;
