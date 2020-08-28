@@ -2,6 +2,7 @@
 using Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -16,8 +17,32 @@ namespace Service.Tests.Validators
             ID = 0,
             SourceLanguageName = "english",
             SpeechPartName = "noun",
-            Value = "dog"
+            Value = "dog",
+            Properties = new List<WordProperty>
+            {
+                new WordProperty //passes
+                {
+                    ID = 0,
+                    Name = "ff",
+                    Value = "ss",
+                    WordID = 12
+                }
+            }
         };
+
+        [Fact]
+        public void AllMAtch_ShouldBeValid()
+        {
+            Assert.True(validator.Validate(entity).IsValid);
+        }
+
+        [Fact]
+        public void PropertiesEmpty_ShouldNotBeValid()
+        {
+            entity.Properties = Enumerable.Empty<WordProperty>();
+
+            Assert.False(validator.Validate(entity).IsValid);
+        }
 
         [Theory]
         [InlineData(-1)]

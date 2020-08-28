@@ -16,7 +16,6 @@ namespace Api.Service.Validation
             RuleFor(e => e.DictionaryIndex).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
             RuleFor(e => e.WordID).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
             RuleFor(e => e.Meanings).Empty().WithMessage("The collection must be initially empty. New Meanings will be added when posting a Meaning object with a correct EntryID");
-            //RuleForEach(e => e.Meanings).SetValidator(new MeaningValidator()); //TODO as the message says, Entry is posted empty, then correct meanings are assigned according to EntryID while posting a meaning object
         }
     }
 }
