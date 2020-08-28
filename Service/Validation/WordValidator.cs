@@ -13,6 +13,9 @@ namespace Api.Service.Validation
         {
             RuleFor(w => w.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
 
+            RuleFor(w => w.SourceLanguageName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).Matches(RegexConstants.ONE_WORD_REGEX);
+            RuleFor(w => w.SpeechPartName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).Matches(RegexConstants.ONE_WORD_REGEX);
+
             RuleFor(w => w.Value).NotEmpty().Matches(RegexConstants.ALPHA_REGEX);
 
         }
