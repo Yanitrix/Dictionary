@@ -18,6 +18,10 @@ namespace Api.Service.Validation
 
             RuleFor(w => w.Value).NotEmpty().Matches(RegexConstants.ALPHA_REGEX);
 
+            RuleFor(w => w.Properties).NotEmpty().WithMessage("Collection of WordProperties cannot be empty");
+
+            RuleForEach(w => w.Properties).SetValidator(new WordPropertyValidator());
+
         }
     }
 }
