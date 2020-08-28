@@ -10,9 +10,6 @@ namespace Data.Dto
         public int ID { get; set; }
 
         [Required]
-        public int WordID { get; set; }
-
-        [Required]
         public String Name { get; set; }
 
         [Required]

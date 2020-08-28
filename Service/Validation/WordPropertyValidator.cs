@@ -13,7 +13,6 @@ namespace Api.Service.Validation
         {
             RuleFor(wp => wp.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
 
-            RuleFor(wp => wp.WordID).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
             RuleFor(wp => wp.Name).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
             RuleFor(wp => wp.Value).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
         }
