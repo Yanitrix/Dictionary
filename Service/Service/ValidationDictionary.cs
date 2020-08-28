@@ -17,7 +17,7 @@ namespace Api.Service
 
         public void AddError(string key, string errorMsg)
         {
-            modelState.AddModelError(key, errorMsg);
+            modelState?.AddModelError(key, errorMsg);
             Add(key, errorMsg);
         }
     }
