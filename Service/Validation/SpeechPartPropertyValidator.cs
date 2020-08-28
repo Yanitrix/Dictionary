@@ -9,7 +9,6 @@ namespace Api.Service.Validation
         public SpeechPartPropertyValidator()
         {
             RuleFor(part => part.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
-            RuleFor(part => part.SpeechPartIndex).Empty().WithMessage(MessageConstants.EMPTY_INDEX);
             
             RuleFor(part => part.Name).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
             RuleFor(part => part.PossibleValues).NotEmpty();

@@ -11,8 +11,6 @@ namespace Data.Dto
         [Required]
         public String Name { get; set; }
 
-        public int SpeechPartIndex { get; set; }
-
         [Required]
         public ISet<String> PossibleValues { get; set; } = new HashSet<String>();
 
