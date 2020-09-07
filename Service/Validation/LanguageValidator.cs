@@ -11,7 +11,7 @@ namespace Api.Service.Validation
     {
         public LanguageValidator()
         {
-            RuleFor(l => l.Name).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
+            RuleFor(l => l.Name).NotEmpty().NoDigitsNoSpaces();
         }
     }
 }

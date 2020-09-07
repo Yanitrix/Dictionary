@@ -9,10 +9,10 @@ namespace Api.Service.Validation
         public SpeechPartPropertyValidator()
         {
             RuleFor(part => part.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
-            
-            RuleFor(part => part.Name).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
+
+            RuleFor(part => part.Name).NotEmpty().NoDigitsNoSpaces();
             RuleFor(part => part.PossibleValues).NotEmpty();
-            RuleForEach(part => part.PossibleValues).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
+            RuleForEach(part => part.PossibleValues).NotEmpty().NoDigitsNoSpaces();
         }
     }
 }
