@@ -11,8 +11,8 @@ namespace Api.Service.Validation
         {
             RuleFor(sp => sp.Index).Empty().WithMessage(MessageConstants.EMPTY_INDEX);
 
-            RuleFor(sp => sp.LanguageName).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
-            RuleFor(sp => sp.Name).NotEmpty().Matches(RegexConstants.ONE_WORD_REGEX);
+            RuleFor(sp => sp.LanguageName).NotEmpty().NoDigitsNoSpaces();
+            RuleFor(sp => sp.Name).NotEmpty().NoDigitsNoSpaces();
             RuleFor(sp => sp.Properties).NotEmpty();
 
             RuleForEach(sp => sp.Properties).SetValidator(new SpeechPartPropertyValidator());
