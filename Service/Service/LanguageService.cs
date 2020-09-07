@@ -15,7 +15,7 @@ namespace Api.Service
     {
         public LanguageService(DatabaseContext context, AbstractValidator<Language> validator):base(context, validator) { }
 
-        public Language GetByName(string name)
+        public Language GetByName(String name)
         {
             return repo.Find(name);
         }
