@@ -67,6 +67,12 @@ namespace Api.Service
             return entity;
         }
 
+        public virtual void CreateRange(params T[] entities)
+        {
+            repo.AddRange(entities);
+            context.SaveChanges();
+        } 
+
         public virtual T GetOne(Expression<Func<T, bool>> condition)
         {
             return repo.SingleOrDefault(condition);
