@@ -25,7 +25,7 @@ namespace Data.Models
         public String SpeechPartName { get; set; }
 
         [Required]
-        public IEnumerable<WordProperty> Properties { get; set; } = Enumerable.Empty<WordProperty>();
+        public ICollection<WordProperty> Properties { get; set; } = new List<WordProperty>();
 
         public int CompareTo([AllowNull] Word other)
         {

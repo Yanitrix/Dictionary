@@ -16,7 +16,7 @@ namespace Data.Models
 
         public ISet<Word> Words { get; set; } = new HashSet<Word>();
 
-        public IEnumerable<SpeechPart> SpeechParts { get; set; } = Enumerable.Empty<SpeechPart>();
+        public ICollection<SpeechPart> SpeechParts { get; set; } = new List<SpeechPart>();
 
     }
 }
