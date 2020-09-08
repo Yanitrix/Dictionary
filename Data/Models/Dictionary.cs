@@ -23,7 +23,7 @@ namespace Data.Models
 
         public ISet<Entry> Entries { get; set; } = new HashSet<Entry>();
 
-        public IEnumerable<Expression> FreeExpressions { get; set; } = Enumerable.Empty<Expression>();
+        public ICollection<Expression> FreeExpressions { get; set; } = new List<Expression>();
 
         public override string ToString()
         {

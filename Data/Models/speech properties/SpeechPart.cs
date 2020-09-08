@@ -18,6 +18,6 @@ namespace Data.Models
         [ForeignKey("Language")]
         public String LanguageName { get; set; }
 
-        public IEnumerable<SpeechPartProperty> Properties { get; set; } = Enumerable.Empty<SpeechPartProperty>();
+        public ICollection<SpeechPartProperty> Properties { get; set; } = new List<SpeechPartProperty>();
     }
 }

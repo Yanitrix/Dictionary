@@ -19,7 +19,7 @@ namespace Data.Models
         [Required]
         public String Value { get; set; } = String.Empty;
 
-        public IEnumerable<Expression> Examples { get; set; } = Enumerable.Empty<Expression>();
+        public ICollection<Expression> Examples { get; set; } = new List<Expression>();
 
         public String Notes { get; set; }
 
