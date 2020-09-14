@@ -16,7 +16,6 @@ namespace Service.Tests.Validators
         {
             ID = 0,
             SourceLanguageName = "english",
-            SpeechPartName = "noun",
             Value = "dog",
             Properties = new List<WordProperty>
             {
@@ -24,7 +23,7 @@ namespace Service.Tests.Validators
                 {
                     ID = 0,
                     Name = "ff",
-                    Value = "ss",
+                    Values = new HashSet<String>{"ss"},
                     WordID = 12
                 }
             }
@@ -39,7 +38,7 @@ namespace Service.Tests.Validators
         [Fact]
         public void PropertiesEmpty_ShouldNotBeValid()
         {
-            entity.Properties = Enumerable.Empty<WordProperty>();
+            entity.Properties = new HashSet<WordProperty>();
 
             Assert.False(validator.Validate(entity).IsValid);
         }
