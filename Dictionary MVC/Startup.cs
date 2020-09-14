@@ -49,8 +49,6 @@ namespace Dictionary_MVC
 
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<IWordService, WordService>();
-            services.AddTransient<ISpeechPartService, SpeechPartService>();
-            services.AddTransient<ISpeechPartPropertyService, SpeechPartPropertyService>();
             services.AddTransient<IWordPropertyService, WordPropertyService>();
             services.AddTransient<IDictionaryService, DictionaryService>();
             services.AddTransient<IEntryService, EntryService>();
