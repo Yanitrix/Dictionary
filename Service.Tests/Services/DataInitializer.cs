@@ -9,7 +9,6 @@ namespace Service.Tests.Services
     public class DataInitializer
     {
         public Language German, English, Polish;
-        public SpeechPart[] GermanSpeechParts, EnglishSpeechParts, PolishSpeechParts;
         public Word[] GermanWords, EnglishWords, PolishWords;
 
         public DataInitializer()
@@ -29,234 +28,6 @@ namespace Service.Tests.Services
                 Name = "polish",
             };
 
-            #region german speech parts
-            GermanSpeechParts = new SpeechPart[]
-            {
-                new SpeechPart
-                {
-                    LanguageName = "german",
-                    Name = "adjective",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "regularity",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "regular",
-                                "irregular"
-                            }
-                        }
-                    }
-                },
-
-                new SpeechPart
-                {
-                    LanguageName = "german",
-                    Name = "noun",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "gender",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "masculine",
-                                "feminine",
-                                "neuter"
-                            }
-                        },
-
-                        new SpeechPartProperty
-                        {
-                            Name = "declension",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "strong",
-                                "weak",
-                                "mixed" //das Herz for example
-                            },
-
-                        }
-                    }
-                },
-
-                new SpeechPart
-                {
-                    LanguageName = "german",
-                    Name = "verb",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "conjugation",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "strong",
-                                "weak",
-                                "mixed"
-                            }
-                        },
-
-                        new SpeechPartProperty
-                        {
-                            Name = "transitivity",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "transitive",
-                                "intransitive"
-                            }
-                        }
-                    }
-                },
-            };
-
-            #endregion
-
-            #region english speech parts
-
-            EnglishSpeechParts = new SpeechPart[]
-            {
-                new SpeechPart
-                {
-                    LanguageName = "english",
-                    Name = "adjective"
-                },
-
-                new SpeechPart
-                {
-                    LanguageName = "english",
-                    Name = "noun",
-                    Properties =  new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "countability",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "countable",
-                                "uncountable"
-                            }
-                        }
-                    }
-                },
-
-                new SpeechPart
-                {
-                    LanguageName = "english",
-                    Name = "verb",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "conjugation",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "regular",
-                                "irregular"
-                            }
-                        },
-
-                        new SpeechPartProperty
-                        {
-                            Name = "transitivity",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "transitive",
-                                "intransitive"
-                            }
-                        }
-                    }
-                }
-            };
-
-            #endregion
-
-            #region polish speech parts
-
-            PolishSpeechParts = new SpeechPart[]
-            {
-                new SpeechPart
-                {
-                    LanguageName = "polish",
-                    Name = "verb",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "conjugation",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "first conjugation",
-                                "second conjugation",
-                                "third conjugation group -a",
-                                "third conjugation group -b",
-                                "fully irregular"
-                            }
-                        },
-
-                        new SpeechPartProperty
-                        {
-                            Name = "aspect",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "imperfective",
-                                "perfective"
-                            }
-                        }
-                    }
-                },
-
-                new SpeechPart
-                {
-                    Name = "participle",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "kind",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "active adjectival participle",
-                                "passive adjectival participle",
-                                "present adverbial participle",
-                                "perfect adverbial participle"
-                            }
-                        }
-                    }
-                },
-
-                new SpeechPart
-                {
-                    Name = "noun",
-                    Properties = new List<SpeechPartProperty>
-                    {
-                        new SpeechPartProperty
-                        {
-                            Name = "declension",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "masculine declension",
-                                "feminine declension",
-                                "neuter declension"
-                            }
-                        },
-
-                        new SpeechPartProperty
-                        {
-                            Name = "countablity",
-                            PossibleValues = new HashSet<String>
-                            {
-                                "plural only",
-                                "singular only",
-                                "both singular and plural"
-                            }
-                        }
-                    }
-                }
-            };
-
-            #endregion
 
             #region german words
 
@@ -265,19 +36,18 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "german",
-                    SpeechPartName = "noun",
                     Value = "Stock",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "gender",
-                            Value = "masculine"
+                            Values = new HashSet<String>{ "masculine" }
                         },
                         new WordProperty
                         {
                             Name = "declension",
-                            Value = "strong"
+                            Values = new HashSet<String>{"strong" }
                         }
                     }
                 },
@@ -285,19 +55,18 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "german",
-                    SpeechPartName = "verb",
                     Value = "schlafen",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Value = "strong"
+                            Values = new HashSet<String>{"strong" }
                         },
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Value = "intransitive"
+                            Values = new HashSet<String>{"intransitive" }
                         }
                     }
                 }
@@ -312,14 +81,13 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "english",
-                    SpeechPartName = "noun",
                     Value = "stick",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "countability",
-                            Value = "countable"
+                            Values = new HashSet<String>{"countable"}
                         }
 
                     }
@@ -328,20 +96,19 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "english",
-                    SpeechPartName = "verb",
                     Value = "sleep",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Value = "irregular"
+                            Values = new HashSet<String>{"irregular"}
                         },
 
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Value = "transitive"
+                            Values = new HashSet<String>{"transitive"}
                         }
                     }
                 },
@@ -349,20 +116,19 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "english",
-                    SpeechPartName = "verb",
                     Value = "sleep",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Value = "irregular"
+                            Values = new HashSet<String>{"irregular"}
                         },
 
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Value = "intransitive"
+                            Values = new HashSet<String>{"intransitive"}
                         }
                     }
                 }
@@ -377,20 +143,19 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "polish",
-                    SpeechPartName = "noun",
                     Value = "patyk",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "declension",
-                            Value = "masculine declension"
+                            Values = new HashSet<String>{"masculine declension"}
                         },
 
                         new WordProperty
                         {
                             Name = "countability",
-                            Value = "both singular and plural"
+                            Values = new HashSet<String>{"both singular and plural"}
                         }
                     }
                 },
@@ -398,19 +163,18 @@ namespace Service.Tests.Services
                 new Word
                 {
                     SourceLanguageName = "polish",
-                    SpeechPartName = "verb",
                     Value = "spać",
                     Properties = new List<WordProperty>
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Value ="first conjugation"
+                            Values = new HashSet<String>{"first conjugation"}
                         },
                         new WordProperty
                         {
                             Name = "aspect",
-                            Value = "imperfective"
+                            Values = new HashSet<String>{"imperfective"}
                         }
                     }
                 }
