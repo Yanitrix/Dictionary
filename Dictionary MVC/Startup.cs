@@ -40,9 +40,6 @@ namespace Dictionary_MVC
 
             services.AddSingleton<AbstractValidator<Language>, LanguageValidator>();
             services.AddSingleton<AbstractValidator<Word>, WordValidator>();
-
-            services.AddSingleton<AbstractValidator<SpeechPart>, SpeechPartValidator>();
-            services.AddSingleton<AbstractValidator<SpeechPartProperty>, SpeechPartPropertyValidator>();
             services.AddSingleton<AbstractValidator<WordProperty>, WordPropertyValidator>();
 
             services.AddSingleton<AbstractValidator<Dictionary>, DictionaryValidator>();

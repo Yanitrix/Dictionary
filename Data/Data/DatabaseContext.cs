@@ -15,12 +15,10 @@ namespace Data.Database
         {
         }
 
-        public DbSet<SpeechPart> SpeechParts { get; set; }
-        public DbSet<SpeechPartProperty> SpeechPartProperties { get; set; }
-        public DbSet<WordProperty> WordProperties { get; set; }
 
-        public DbSet<Word> Words { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<Word> Words { get; set; }
+        public DbSet<WordProperty> WordProperties { get; set; }
 
         public DbSet<Dictionary> Dictionaries { get; set; }
         public DbSet<Entry> Entries { get; set; }
@@ -31,33 +29,7 @@ namespace Data.Database
         {
             base.OnModelCreating(builder);
 
-            #region speech properties
-
-            var speechPart = builder.Entity<SpeechPart>().ToTable("SpeechPart");
-            var speechPartProperty = builder.Entity<SpeechPartProperty>().ToTable("SpeechPartProperty");
-            var wordProperty = builder.Entity<WordProperty>().ToTable("WordProperty");
-
-
-            speechPart.HasKey(s => new { s.LanguageName, s.Name });
-            speechPart.Property(part => part.Index).ValueGeneratedOnAdd();
-
-            speechPart
-                .HasMany(speechPart => speechPart.Properties)
-                .WithOne(property => property.SpeechPart)
-                .HasForeignKey(property => property.SpeechPartIndex)
-                .HasPrincipalKey(speechPart => speechPart.Index)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            //storing Set<String>
-            var propertyBuilder = builder.Entity<SpeechPartProperty>().Property(p => p.PossibleValues);
-            propertyBuilder.HasConversion(StringSetValueComparerAndConverter.Converter);
-            propertyBuilder.Metadata.SetValueConverter(StringSetValueComparerAndConverter.Converter);
-            propertyBuilder.Metadata.SetValueComparer(StringSetValueComparerAndConverter.Comparer);
-
-
-            #endregion
-
-            #region languages and words
+            #region languages and words and wordproperties
 
             var language = builder.Entity<Language>().ToTable("Language");
             var word = builder.Entity<Word>().ToTable("Word");
@@ -79,6 +51,14 @@ namespace Data.Database
                 .WithOne(property => property.Word)
                 .HasForeignKey(property => property.WordID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            var wordProperty = builder.Entity<WordProperty>().ToTable("WordProperty");
+
+            //storing Set<String>
+            var propertyBuilder = builder.Entity<WordProperty>().Property(wp => wp.Values);
+            propertyBuilder.HasConversion(StringSetValueComparerAndConverter.Converter);
+            propertyBuilder.Metadata.SetValueConverter(StringSetValueComparerAndConverter.Converter);
+            propertyBuilder.Metadata.SetValueComparer(StringSetValueComparerAndConverter.Comparer);
 
             #endregion
 

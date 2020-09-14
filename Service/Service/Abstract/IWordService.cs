@@ -11,8 +11,6 @@ namespace Api.Service
 
         public IEnumerable<Word> GetByValue(String value);
 
-        public IEnumerable<Word> GetByLanguageAndSpeechPartAndValue(String languageName, String speechPartName, String value);
-
-        public IEnumerable<Word> GetByLanguageAndSpeechPart(String languageName, String speechPartName);
+        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String Value);
     }
 }

@@ -20,11 +20,11 @@ namespace Data.Models
         public String Name { get; set; }
 
         [Required]
-        public String Value { get; set; }
+        public ISet<String> Values = new HashSet<String>();
 
         public override string ToString()
         {
-            return $"Name: {Name} \t Value: {Value}\n";
+            return $"Name: {Name} \t Value: {Values.Aggregate("", (left, right) => left + right)}\n";
         }
     }
 }
