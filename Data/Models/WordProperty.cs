@@ -20,7 +20,7 @@ namespace Data.Models
         public String Name { get; set; }
 
         [Required]
-        public IList<String> Values;
+        public ISet<String> Values = new HashSet<String>();
 
         public override string ToString()
         {
