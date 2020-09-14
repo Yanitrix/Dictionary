@@ -12,16 +12,13 @@ namespace Api.Service.Validation
         public WordValidator()
         {
             RuleFor(w => w.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
-            //one word regex
+
             RuleFor(w => w.SourceLanguageName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).NoDigitsNoSpaces();
-            RuleFor(w => w.SpeechPartName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).NoDigitsNoSpaces();
 
             RuleFor(w => w.Value).NotEmpty().NoDigits();
-
             RuleFor(w => w.Properties).NotEmpty().WithMessage("Collection of WordProperties cannot be empty");
 
             RuleForEach(w => w.Properties).SetValidator(new WordPropertyValidator());
-
         }
     }
 }

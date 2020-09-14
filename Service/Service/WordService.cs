@@ -18,14 +18,9 @@ namespace Api.Service
             return repo.Find(id);
         }
 
-        public IEnumerable<Word> GetByLanguageAndSpeechPart(string languageName, string speechPartName)
+        public IEnumerable<Word> GetByLanguageAndValue(string languageName, string value)
         {
-            return repo.Where(w => w.SourceLanguageName == languageName && w.SpeechPartName == speechPartName);
-        }
-
-        public IEnumerable<Word> GetByLanguageAndSpeechPartAndValue(string languageName, string speechPartName, string value)
-        {
-            return repo.Where(w => w.SourceLanguageName == languageName && w.SpeechPartName == speechPartName && w.Value == value);
+            return repo.Where(w => w.SourceLanguageName == languageName && w.Value == value);
         }
 
         public IEnumerable<Word> GetByValue(string value)
@@ -43,15 +38,6 @@ namespace Api.Service
             {
                 ValidationDictionary.AddError("Source language not found", "Language by the name " +
                     $"of \"{entity.SourceLanguageName}\" doesn't exist in the database");
-                return false;
-            }
-
-            //check if speech part exists in the db
-            var speechpartinDB = context.Set<SpeechPart>().Find(entity.SourceLanguageName, entity.SpeechPartName);
-            if (speechpartinDB == null)
-            {
-                ValidationDictionary.AddError("Speech part not found", "Speech part by the name of \"{entity.SpeechPartName}\" " +
-                    $"and with language \"{entity.SourceLanguageName}\" doesn't exist in the database");
                 return false;
             }
 
