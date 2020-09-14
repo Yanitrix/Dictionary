@@ -19,7 +19,6 @@ namespace Data.Mapper
             CreateMap<EntryDto, Entry>().ReverseMap();
             CreateMap<MeaningDto, Meaning>().ReverseMap();
 
-            CreateMap<SpeechPartDto, SpeechPart>().ReverseMap();
             CreateMap<WordPropertyDto, WordProperty>().ReverseMap();
         }
     }
