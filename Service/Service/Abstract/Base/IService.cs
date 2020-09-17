@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Api.Service
 {
@@ -25,6 +26,7 @@ namespace Api.Service
 
         public T GetOne(Expression<Func<T, bool>> condition);
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> condition);
+        public IEnumerable<R> Get<R>(Expression<Func<T, bool>> condition, Expression<Func<T, R>> mapper);
+
     }
 }

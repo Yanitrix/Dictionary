@@ -1,6 +1,7 @@
 ﻿using Data.Database;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,16 +72,16 @@ namespace Api.Service
         {
             repo.AddRange(entities);
             context.SaveChanges();
-        } 
+        }
 
         public virtual T GetOne(Expression<Func<T, bool>> condition)
         {
-            return repo.SingleOrDefault(condition);
+            return repo.FirstOrDefault(condition);
         }
 
-        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> condition)
+        public virtual IEnumerable<R> Get<R>(Expression<Func<T, bool>> condition, Expression<Func<T, R>> mapper)
         {
-            return repo.Where(condition).ToList();
+            return repo.Where(condition).Select(mapper).ToList();
         }
 
         public virtual T Update(T entity)
@@ -96,5 +97,61 @@ namespace Api.Service
             context.SaveChanges();
             return entity;
         }
+
+        protected T GetOne(Expression<Func<T, bool>> condition, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        {
+            IQueryable<T> query = repo;
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return query.FirstOrDefault(condition);
+        }
+
+        protected IEnumerable<R> Get<R>(Expression<Func<T, bool>> condition, Expression<Func<T, R>> mapper,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        {
+            IQueryable<T> query = repo;
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            query = query.Where(condition);
+
+            if(orderBy != null)
+            {
+                return orderBy(query).Select(mapper);
+            }
+
+            return query.Select(mapper).ToList();
+        }
+
+        protected IEnumerable<T> All(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        {
+            IQueryable<T> query = repo;
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query.ToList();
+        }
+
     }
 }
