@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public interface IEntryService : IService<Entry>
+    public interface IEntryRepository : IRepository<Entry>
     {
         public Entry GetByID(int id);
 

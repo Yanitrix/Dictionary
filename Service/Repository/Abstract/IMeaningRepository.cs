@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public interface IMeaningService
+    public interface IMeaningRepository : IRepository<Meaning>
     {
         public Meaning GetByID(int id);
     }

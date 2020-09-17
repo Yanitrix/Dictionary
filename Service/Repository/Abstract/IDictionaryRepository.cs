@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public interface IDictionaryService : IService<Dictionary>
+    public interface IDictionaryRepository : IRepository<Dictionary>
     {
         IEnumerable<Dictionary> GetAllByLanguage(String languageName);
 

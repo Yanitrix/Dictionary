@@ -6,16 +6,8 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Api.Service
 {
-    public interface IService<T> : IDisposable
+    public interface IRepository<T> : IDisposable
     {
-        public IValidationDictionary ValidationDictionary { get; set; }
-
-        public bool IsValid(T entity);
-
-        public bool IsReadyToAdd(T entity);
-
-        public bool IsReadyToUpdate(T entity);
-
         public IEnumerable<T> All();
 
         public T Create(T entity);
