@@ -9,12 +9,11 @@ namespace Service.Tests.Services
 {
     public class WordServiceTests : DbContextTestBase
     {
-        private WordService service;
+        private WordRepository service;
 
         public WordServiceTests()
         {
-            service = new WordService(this.context, new WordValidator());
-            service.ValidationDictionary = new ValidationDictionary();
+            service = new WordRepository(this.context);
 
             putData();
         }

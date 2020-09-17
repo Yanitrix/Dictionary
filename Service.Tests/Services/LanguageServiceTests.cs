@@ -11,12 +11,11 @@ namespace Service.Tests.Services
 {
     public class LanguageServiceTests : DbContextTestBase
     {
-        private LanguageService service;
+        private LanguageRepository service;
 
         public LanguageServiceTests()
         {
-            service = new LanguageService(context, new LanguageValidator());
-            service.ValidationDictionary = new ValidationDictionary();
+            service = new LanguageRepository(context);
             putData();
         }
 
@@ -65,26 +64,5 @@ namespace Service.Tests.Services
             Assert.Equal(name, found.Name);
         }
 
-        [Theory]
-        [InlineData("japanese")]
-        [InlineData("german")]
-        public void IsReadyToAdd_AlreadyExists_ShouldBeFalse(String name)
-        {
-            var entity = new Language { Name = name };
-            var result = service.IsReadyToAdd(entity);
-
-            Assert.False(result);
-        }
-
-        [Theory]
-        [InlineData("russian")]
-        [InlineData("urdu")]
-        public void IsReadyToAdd_DoesNotExist_ShouldBeTrue(String name)
-        {
-            var entity = new Language { Name = name };
-            var result = service.IsReadyToAdd(entity);
-
-            Assert.True(result);
-        }
     }
 }
