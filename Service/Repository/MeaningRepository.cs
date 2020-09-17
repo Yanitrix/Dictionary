@@ -10,7 +10,7 @@ namespace Api.Service
     public class MeaningRepository : RepositoryBase<Meaning>, IMeaningRepository
     {
 
-        public MeaningRepository(DatabaseContext context, AbstractValidator<Meaning> validator):base(context, validator) { }
+        public MeaningRepository(DatabaseContext context):base(context) { }
         
         public Meaning GetByID(int id)
         {
@@ -24,27 +24,5 @@ namespace Api.Service
             return entity;
         }
 
-        public override bool IsReadyToAdd(Meaning entity)
-        {
-            if (!IsValid(entity)) return false;
-
-            //check if entry exists
-
-            var entryIndb = context.Set<Entry>().Find(entity.EntryID);
-
-            if (entryIndb == null)
-            {
-                ValidationDictionary.AddError("Entry not found", $"Entry with given" +
-                    $" ID: \"{entity.EntryID}\" does not exist in the database");
-                return false;
-            }
-
-            return true;
-        }
-
-        public override bool IsReadyToUpdate(Meaning entity)
-        {
-            return IsReadyToAdd(entity);
-        }
     }
 }

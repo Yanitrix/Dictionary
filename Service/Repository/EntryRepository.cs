@@ -10,7 +10,7 @@ namespace Api.Service
 {
     public class EntryRepository : RepositoryBase<Entry>, IEntryRepository
     {
-        public EntryRepository(DatabaseContext context, AbstractValidator<Entry> validator):base(context, validator) { }
+        public EntryRepository(DatabaseContext context):base(context) { }
 
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue)
         {
@@ -22,53 +22,5 @@ namespace Api.Service
             return repo.Find(id);
         }
 
-        public override bool IsReadyToAdd(Entry entity)
-        {
-            if (!IsValid(entity)) return false;
-
-            //check if there's another Entry with the same WordID
-
-            if (repo.Any(e => e.WordID == entity.WordID))
-            {
-                ValidationDictionary.AddError("Word already in use", "There already is an Entry with given " +
-                    "WordID. One Entry can be only bound to one Word");
-                return false;
-            }
-
-            //check if dictionary exists
-            var dictionaryIndb = context.Set<Dictionary>().FirstOrDefault(d => d.Index == entity.DictionaryIndex);
-            if (dictionaryIndb == null)
-            {
-                ValidationDictionary.AddError("Dictionary not found", "Dictionary with " +
-                    $"index \"{entity.DictionaryIndex}\" doesn't exist in the database");
-                return false;
-            }
-
-            //check if word exists
-            var wordIndb = context.Set<Word>().Find(entity.WordID);
-            if (wordIndb == null)
-            {
-                ValidationDictionary.AddError("Word not found", "Word with " +
-                    $"ID \"{entity.WordID}\" doesn't exist in the database");
-                return false;
-            }
-
-            //check if word's language and dictionary's language is the same
-            if (dictionaryIndb.LanguageInName != wordIndb.SourceLanguageName)
-            {
-                ValidationDictionary.AddError("The source language of the word and the input language of the dictionary are't equal.",
-                    $"Word's language is {wordIndb.SourceLanguageName} whereas input language of the dictionary is {dictionaryIndb.LanguageInName}. " +
-                    $"This entry should be added to a dictionary with appropriate input language");
-                return false;
-            }
-
-            return true;
-        }
-
-        public override bool IsReadyToUpdate(Entry entity)
-        {
-            //no extra things to check
-            return IsReadyToAdd(entity);
-        }
     }
 }

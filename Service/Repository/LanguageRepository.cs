@@ -13,30 +13,11 @@ namespace Api.Service
     
     public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository
     {
-        public LanguageRepository(DatabaseContext context, AbstractValidator<Language> validator):base(context, validator) { }
+        public LanguageRepository(DatabaseContext context):base(context) { }
 
         public Language GetByName(String name)
         {
             return repo.Find(name);
-        }
-
-        public override bool IsReadyToAdd(Language entity)
-        {
-            if (!IsValid(entity)) return false;
-
-            var name = entity.Name;
-            if (context.Languages.Any(x => x.Name == name))
-            {
-                ValidationDictionary.AddError(nameof(entity.Name), $"Language with name {name} already exists in the database");
-                return false;
-            }
-
-            return true;
-        }
-
-        public override bool IsReadyToUpdate(Language entity)
-        {
-            return false;
         }
 
     }
