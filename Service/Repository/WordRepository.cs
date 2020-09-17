@@ -8,10 +8,10 @@ using System.Text;
 
 namespace Api.Service
 {
-    public class WordService : ServiceBase<Word>, IWordService 
+    public class WordRepository : RepositoryBase<Word>, IWordRepository 
     {
 
-        public WordService(DatabaseContext context, AbstractValidator<Word> validator) : base(context, validator) { }
+        public WordRepository(DatabaseContext context, AbstractValidator<Word> validator) : base(context, validator) { }
 
         public Word GetByID(int id)
         {

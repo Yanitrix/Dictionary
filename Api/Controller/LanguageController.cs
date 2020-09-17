@@ -14,10 +14,10 @@ namespace Api.Controllers
     public class LanguageController : Controller
 
     {
-        private readonly ILanguageService service;
+        private readonly ILanguageRepository service;
         private readonly IMapper mapper;
 
-        public LanguageController(ILanguageService service, IMapper mapper)
+        public LanguageController(ILanguageRepository service, IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;

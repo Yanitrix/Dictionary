@@ -8,10 +8,10 @@ using System.Text;
 
 namespace Api.Service
 {
-    public class ExpressionService : ServiceBase<Expression>, IExpressionService
+    public class ExpressionRepository : RepositoryBase<Expression>, IExpressionRepository
     {
 
-        public ExpressionService(DatabaseContext context, AbstractValidator<Expression> validator):base(context, validator) { }
+        public ExpressionRepository(DatabaseContext context, AbstractValidator<Expression> validator):base(context, validator) { }
 
         public IEnumerable<Expression> GetByTextSubstring(string text)
         {

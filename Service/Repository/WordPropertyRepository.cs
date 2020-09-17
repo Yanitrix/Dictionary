@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Service
 {
-    public class WordPropertyService : ServiceBase<WordProperty>, IWordPropertyService
+    public class WordPropertyRepository : RepositoryBase<WordProperty>, IWordPropertyRepository
     {
-        public WordPropertyService(DatabaseContext context, AbstractValidator<WordProperty> validator):base(context, validator) { }
+        public WordPropertyRepository(DatabaseContext context, AbstractValidator<WordProperty> validator):base(context, validator) { }
 
         public WordProperty GetByID(int id)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public interface IWordPropertyService : IService<WordProperty>
+    public interface IWordPropertyRepository : IRepository<WordProperty>
     {
         public WordProperty GetByID(int id);
     }

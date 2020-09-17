@@ -11,9 +11,9 @@ using System.Text;
 namespace Api.Service
 {
     
-    public class LanguageService : ServiceBase<Language>, ILanguageService
+    public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository
     {
-        public LanguageService(DatabaseContext context, AbstractValidator<Language> validator):base(context, validator) { }
+        public LanguageRepository(DatabaseContext context, AbstractValidator<Language> validator):base(context, validator) { }
 
         public Language GetByName(String name)
         {

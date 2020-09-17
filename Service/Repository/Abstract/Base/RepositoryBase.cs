@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Api.Service
 {
-    public abstract class ServiceBase<T> : IService<T> where T : class
+    public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
         private bool disposed;
 
@@ -37,7 +37,7 @@ namespace Api.Service
 
         public IValidationDictionary ValidationDictionary { get; set; }
 
-        public ServiceBase(DatabaseContext context, AbstractValidator<T> validator)
+        public RepositoryBase(DatabaseContext context, AbstractValidator<T> validator)
         {
             this.context = context;
             this.validator = validator;

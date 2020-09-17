@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Api.Service
 {
-    public class EntryService : ServiceBase<Entry>, IEntryService
+    public class EntryRepository : RepositoryBase<Entry>, IEntryRepository
     {
-        public EntryService(DatabaseContext context, AbstractValidator<Entry> validator):base(context, validator) { }
+        public EntryRepository(DatabaseContext context, AbstractValidator<Entry> validator):base(context, validator) { }
 
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue)
         {

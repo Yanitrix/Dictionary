@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Api.Service
 {
-    public interface IService<T> : IDisposable
+    public interface IRepository<T> : IDisposable
     {
         public IValidationDictionary ValidationDictionary { get; set; }
 

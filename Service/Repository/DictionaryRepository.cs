@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Api.Service
 {
-    public class DictionaryService : ServiceBase<Dictionary>, IDictionaryService
+    public class DictionaryRepository : RepositoryBase<Dictionary>, IDictionaryRepository
     {
-        public DictionaryService(DatabaseContext context, AbstractValidator<Dictionary> validator) : base(context, validator) { }
+        public DictionaryRepository(DatabaseContext context, AbstractValidator<Dictionary> validator) : base(context, validator) { }
 
         public IEnumerable<Dictionary> GetAllByLanguage(string languageName)
         {

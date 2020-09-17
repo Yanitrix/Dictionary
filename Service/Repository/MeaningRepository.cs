@@ -7,10 +7,10 @@ using System.Text;
 
 namespace Api.Service
 {
-    public class MeaningService : ServiceBase<Meaning>, IMeaningService
+    public class MeaningRepository : RepositoryBase<Meaning>, IMeaningRepository
     {
 
-        public MeaningService(DatabaseContext context, AbstractValidator<Meaning> validator):base(context, validator) { }
+        public MeaningRepository(DatabaseContext context, AbstractValidator<Meaning> validator):base(context, validator) { }
         
         public Meaning GetByID(int id)
         {
