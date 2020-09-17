@@ -31,30 +31,14 @@ namespace Api.Service
             disposed = true;
         }
 
-        protected readonly AbstractValidator<T> validator;
         protected readonly DatabaseContext context;
         protected readonly DbSet<T> repo;
 
-        public IValidationDictionary ValidationDictionary { get; set; }
-
-        public RepositoryBase(DatabaseContext context, AbstractValidator<T> validator)
+        public RepositoryBase(DatabaseContext context)
         {
             this.context = context;
-            this.validator = validator;
             repo = context.Set<T>();
         }
-
-        public virtual bool IsValid(T entity)
-        {
-            var result = validator.Validate(entity);
-            foreach (var err in result.Errors) ValidationDictionary.AddError(err.PropertyName, err.ErrorMessage);
-
-            return result.IsValid;
-        }
-
-        public abstract bool IsReadyToAdd(T entity);
-
-        public abstract bool IsReadyToUpdate(T entity);
 
         public IEnumerable<T> All()
         {
