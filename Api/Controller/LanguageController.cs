@@ -31,17 +31,7 @@ namespace Api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] String name)
         {
-            service.ValidationDictionary = new ValidationDictionary(ModelState);
-
-            Language entity = new Language
-            {
-                Name = name,
-            };
-
-            if (!service.IsReadyToAdd(entity)) return BadRequest(ModelState);
-            
-            service.Create(entity);
-            return Created($"api/language/{name}", entity);
+            return null;
         }
 
         [HttpGet("{name}")]
