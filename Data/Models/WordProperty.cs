@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Data.Models
 {
     public class WordProperty
     {
-        public int ID { get; set; }
         [Required]
+        public int ID { get; set; }
 
+        [Required]
         public Word Word { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace Data.Models
         public String Name { get; set; }
 
         [Required]
-        public ISet<String> Values { get; set; } = new HashSet<String>();
+        public HashSet<String> Values { get; set; } = new HashSet<String>();
 
         public override string ToString()
         {
