@@ -12,6 +12,8 @@ namespace Api.Service
 
         public T Create(T entity);
 
+        public void CreateRange(params T[] entities);
+
         public T Delete(T entity);
 
         public T Update(T entity);
@@ -20,5 +22,6 @@ namespace Api.Service
 
         public IEnumerable<R> Get<R>(Expression<Func<T, bool>> condition, Expression<Func<T, R>> mapper);
 
+        public void Detach(T entity);
     }
 }

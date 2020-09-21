@@ -99,6 +99,7 @@ namespace Api.Service
         {
             context.Entry(entity).State = EntityState.Detached;
         }
+
         public virtual T Create(T entity)
         {
             repo.Add(entity);
