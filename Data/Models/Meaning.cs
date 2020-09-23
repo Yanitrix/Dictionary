@@ -21,7 +21,7 @@ namespace Data.Models
 
         public ICollection<Expression> Examples { get; set; } = new List<Expression>();
 
-        public String Notes { get; set; }
+        public String Notes { get; set; } = String.Empty;
 
         public override string ToString()
         {
