@@ -36,13 +36,15 @@ namespace Api.Service
 
         public IEnumerable<Word> GetByLanguageAndValue(string languageName, string value)
         {
-            return Get(w => w.SourceLanguageName == languageName && w.Value == value, x => x,
+            return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
+                x => x,
                 null, includeQuery);
         }
 
         public IEnumerable<Word> GetByValue(string value)
         {
-            return Get(w => w.Value == value, x => x,
+            return Get(w => EF.Functions.Like(w.Value, $"%{value}%"),
+                x => x,
                 words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
         }
     }

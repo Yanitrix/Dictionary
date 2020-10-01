@@ -44,10 +44,15 @@ namespace Api.Service
             return Get(m => m.Notes.Contains(notes), x => x, null, includeExamplesAndEntry);
         }
 
-        public override Meaning Delete(Meaning entity) //Examples must be included
+        public override Meaning Delete(Meaning entity)
         {
-            context.Set<Expression>().RemoveRange(entity.Examples);
-            base.Delete(entity);
+            var children = context.Expressions.Where(e => e.MeaningID == entity.ID);
+            context.Expressions.RemoveRange(children);
+            //context.Entry(entity).State = EntityState.Unchanged;
+            //context.Entry(entity).Collection(m => m.Examples).Load();
+            //context.Set<Expression>().RemoveRange(entity.Examples);
+            repo.Remove(entity);
+            context.SaveChanges();
             return entity;
         }
     }
