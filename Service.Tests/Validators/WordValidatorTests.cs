@@ -24,7 +24,6 @@ namespace Service.Tests.Validators
                     ID = 0,
                     Name = "ff",
                     Values = new HashSet<String>{"ss"},
-                    WordID = 12
                 }
             }
         };

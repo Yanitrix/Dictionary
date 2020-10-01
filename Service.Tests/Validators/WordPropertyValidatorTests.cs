@@ -14,7 +14,6 @@ namespace Service.Tests.Validators
         public WordProperty entity = new WordProperty
         {
             ID = 0,
-            WordID = 25,
             Name = "gender",
             Values = new HashSet<String> { "feminine" },
         };
