@@ -48,8 +48,7 @@ namespace Data.Database
 
             word
                 .HasMany(word => word.Properties)
-                .WithOne(property => property.Word)
-                .HasForeignKey(property => property.WordID)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
             var wordProperty = builder.Entity<WordProperty>().ToTable("WordProperty");
