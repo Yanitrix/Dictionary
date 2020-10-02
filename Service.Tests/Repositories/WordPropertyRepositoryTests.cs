@@ -24,11 +24,6 @@ namespace Service.Tests.Repositories
             {
                 Name = "hstus",
                 Values = new HashSet<String> { "pan1", "pan2" },
-                Word = new Word
-                {
-                    SourceLanguageName = "hstus",
-                    Value = "pan"
-                }
             };
 
             repository.Create(wp);
