@@ -1,9 +1,8 @@
-﻿using Api.Service;
-using Data.Models;
+﻿using Data.Models;
 using FluentValidation;
-using Service.Service.Abstract;
+using Service.Repository;
 
-namespace Service.Service
+namespace Service
 {
     public class ExpressionService : ServiceBase<Expression>
     {

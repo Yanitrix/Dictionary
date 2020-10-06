@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Api.Service
+namespace Service
 {
     public interface IValidationDictionary : IDictionary<String, String>
     {

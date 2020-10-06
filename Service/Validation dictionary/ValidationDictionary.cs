@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Api.Service
+namespace Service
 {
     public class ValidationDictionary : Dictionary<String, String>, IValidationDictionary
     {

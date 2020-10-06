@@ -1,12 +1,9 @@
-﻿using Api.Service;
+﻿using Service.Repository;
 using Data.Models;
 using FluentValidation;
-using Service.Service.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Service.Service
+namespace Service
 {
     public class WordService : ServiceBase<Word>
     {

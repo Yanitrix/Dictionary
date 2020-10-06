@@ -1,10 +1,6 @@
-﻿using Api.Service;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FluentValidation;
 
-namespace Service.Service.Abstract
+namespace Service
 {
     public abstract class ServiceBase<T> : IService<T>
     {
