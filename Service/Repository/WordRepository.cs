@@ -1,6 +1,5 @@
 ﻿using Data.Database;
 using Data.Models;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Api.Service
+namespace Service.Repository
 {
     //Every query returning a Word or IEnumerable<Word> should include its properties.
     public class WordRepository : RepositoryBase<Word>, IWordRepository 

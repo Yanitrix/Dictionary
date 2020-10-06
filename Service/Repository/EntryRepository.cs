@@ -1,14 +1,12 @@
 ﻿using Data.Database;
 using Data.Models;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Api.Service
+namespace Service.Repository
 {
     public class EntryRepository : RepositoryBase<Entry>, IEntryRepository
     {

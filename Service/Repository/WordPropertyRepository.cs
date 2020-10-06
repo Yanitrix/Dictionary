@@ -1,14 +1,7 @@
 ﻿using Data.Database;
 using Data.Models;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore.Internal;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 
-namespace Api.Service
+namespace Service.Repository
 {
     public class WordPropertyRepository : RepositoryBase<WordProperty>, IWordPropertyRepository
     {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Api.Service
+namespace Service.Repository
 {
     public class DictionaryRepository : RepositoryBase<Dictionary>, IDictionaryRepository
     {
