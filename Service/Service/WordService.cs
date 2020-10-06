@@ -11,11 +11,11 @@ namespace Service
         private readonly ILanguageRepository langRepo;
 
 
-        public WordService(IWordRepository repo, ILanguageRepository langRepo, AbstractValidator<Word> validator)
+        public WordService(UnitOfWork uow, AbstractValidator<Word> validator)
             :base(validator)
         {
-            this.repo = repo;
-            this.langRepo = langRepo;
+            this.repo = uow.Words;
+            this.langRepo = uow.Languages;
         }
 
         public override IValidationDictionary TryAdd(Word entity)

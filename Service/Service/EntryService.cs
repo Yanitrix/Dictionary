@@ -11,12 +11,12 @@ namespace Service
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
 
-        public EntryService(IWordRepository wordRepo, IDictionaryRepository dictRepo, IEntryRepository repo, AbstractValidator<Entry> _v)
+        public EntryService(UnitOfWork uow, AbstractValidator<Entry> _v)
             : base(_v)
         {
-            this.wordRepo = wordRepo;
-            this.dictRepo = dictRepo;
-            this.repo = repo;
+            this.wordRepo = uow.Words;
+            this.dictRepo = uow.Dictionaries;
+            this.repo = uow.Entries;
         }
 
         public override IValidationDictionary TryAdd(Entry entity)

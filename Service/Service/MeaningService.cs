@@ -9,11 +9,11 @@ namespace Service
         private readonly IMeaningRepository repo;
         private readonly IEntryRepository entryRepo;
 
-        public MeaningService(IMeaningRepository repo, IEntryRepository entryRepo, AbstractValidator<Meaning> _v)
+        public MeaningService(UnitOfWork uow, AbstractValidator<Meaning> _v)
             :base(_v)
         {
-            this.repo = repo;
-            this.entryRepo = entryRepo;
+            this.repo = uow.Meanings;
+            this.entryRepo = uow.Entries;
         }
 
         public override IValidationDictionary TryAdd(Meaning entity)
