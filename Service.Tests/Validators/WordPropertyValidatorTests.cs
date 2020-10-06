@@ -1,8 +1,7 @@
-﻿using Api.Service.Validation;
+﻿using Service.Validation;
 using Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Service.Tests.Validators
