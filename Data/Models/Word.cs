@@ -22,7 +22,7 @@ namespace Data.Models
         public String Value { get; set; }
 
         [Required]
-        public ICollection<WordProperty> Properties { get; set; } = new List<WordProperty>();
+        public ISet<WordProperty> Properties { get; set; } = new HashSet<WordProperty>();
 
         public int CompareTo([AllowNull] Word other)
         {

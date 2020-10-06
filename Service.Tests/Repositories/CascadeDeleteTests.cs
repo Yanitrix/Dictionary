@@ -547,7 +547,7 @@ namespace Service.Tests.Repositories
             {
                 SourceLanguageName = "sd",
                 Value = "stick",
-                Properties = new List<WordProperty>
+                Properties = new HashSet<WordProperty>
                 {
                     new WordProperty
                     {
@@ -655,7 +655,7 @@ namespace Service.Tests.Repositories
                         {
                             Value = "train",
                             SourceLanguageName = "english",
-                            Properties = new List<WordProperty>
+                            Properties = new HashSet<WordProperty>
                             {
                                 new WordProperty
                                 {

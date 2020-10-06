@@ -17,7 +17,7 @@ namespace Service.Tests.Validators
             ID = 0,
             SourceLanguageName = "english",
             Value = "dog",
-            Properties = new List<WordProperty>
+            Properties = new HashSet<WordProperty>
             {
                 new WordProperty //passes
                 {
