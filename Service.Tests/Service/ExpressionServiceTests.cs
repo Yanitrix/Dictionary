@@ -7,16 +7,19 @@ using Xunit;
 
 namespace Service.Tests.Service
 {
-    public class ExpressionServiceTests
+    public class ExpressionServiceTests : UowTestBase
     {
         IService<Expression> service;
-        Mock<IExpressionRepository> repo = new Mock<IExpressionRepository>();
-        Mock<IDictionaryRepository> dictRepo = new Mock<IDictionaryRepository>();
-        Mock<IMeaningRepository> meaningRepo = new Mock<IMeaningRepository>();
+        Mock<IExpressionRepository> _repo = new Mock<IExpressionRepository>();
+        Mock<IDictionaryRepository> _dictRepo = new Mock<IDictionaryRepository>();
+        Mock<IMeaningRepository> _meaningRepo = new Mock<IMeaningRepository>();
 
         public ExpressionServiceTests()
         {
-            service = new ExpressionService(repo.Object, dictRepo.Object, meaningRepo.Object, VMoq.Instance<Expression>());
+            expRepo = _repo;
+            dictRepo = _dictRepo;
+            meaningRepo = _meaningRepo;
+            service = new ExpressionService(this.uow.Object, VMoq.Instance<Expression>());
         }
 
         [Fact]
@@ -29,12 +32,12 @@ namespace Service.Tests.Service
 
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Once);
+            _repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Once);
             Assert.Empty(result);
 
         }
@@ -49,12 +52,12 @@ namespace Service.Tests.Service
 
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Meaning not found", result.First().Key);
 
@@ -70,12 +73,12 @@ namespace Service.Tests.Service
 
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Dictionary not found", result.First().Key);
         }
@@ -90,12 +93,12 @@ namespace Service.Tests.Service
 
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Expression>()), Times.Never);
             Assert.Equal(2, result.Count);
             Assert.Equal("Meaning not found", result.First().Key);
             Assert.Equal("Dictionary not found", result.Take(2).Last().Key);
@@ -110,13 +113,13 @@ namespace Service.Tests.Service
                 MeaningID = 34,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
-            repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(true);
 
             var result = service.TryUpdate(entity);
 
-            repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Once);
+            _repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Once);
             Assert.Empty(result);
 
         }
@@ -130,13 +133,13 @@ namespace Service.Tests.Service
                 MeaningID = 34,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
-            repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(false);
 
             var result = service.TryUpdate(entity);
 
-            repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Never);
+            _repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Entity does not exist", result.First().Key);
         }
@@ -150,13 +153,13 @@ namespace Service.Tests.Service
                 MeaningID = null,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
-            repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Expression, bool>>>())).Returns(true);
 
             var result = service.TryUpdate(entity);
 
-            repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Never);
+            _repo.Verify(_ => _.Update(It.IsAny<Expression>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Dictionary not found", result.First().Key);
         }

@@ -9,11 +9,11 @@ namespace Service
         private readonly ILanguageRepository langRepo;
         private readonly IDictionaryRepository repo;
 
-        public DictionaryService(ILanguageRepository langRepo, IDictionaryRepository repo, AbstractValidator<Dictionary> validator)
+        public DictionaryService(UnitOfWork uow, AbstractValidator<Dictionary> validator)
             :base(validator)
         {
-            this.langRepo = langRepo;
-            this.repo = repo;
+            this.langRepo = uow.Languages;
+            this.repo = uow.Dictionaries;
         }
 
         public override IValidationDictionary TryAdd(Dictionary entity)

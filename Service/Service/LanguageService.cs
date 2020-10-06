@@ -8,9 +8,9 @@ namespace Service
     {
         private readonly ILanguageRepository repo;
 
-        public LanguageService(AbstractValidator<Language> validator, ILanguageRepository repo):base(validator)
+        public LanguageService(UnitOfWork uow, AbstractValidator<Language> _v) :base(_v)
         {
-            this.repo = repo;
+            this.repo = uow.Languages;
         }
 
         public override IValidationDictionary TryAdd(Language entity)

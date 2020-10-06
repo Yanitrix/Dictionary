@@ -6,16 +6,19 @@ using Xunit;
 
 namespace Service.Tests.Service
 {
-    public class EntryServiceTests
+    public class EntryServiceTests : UowTestBase
     {
         IService<Entry> service;
-        Mock<IWordRepository> wordRepo = new Mock<IWordRepository>();
-        Mock<IEntryRepository> repo = new Mock<IEntryRepository>();
-        Mock<IDictionaryRepository> dictRepo = new Mock<IDictionaryRepository>();
+        Mock<IWordRepository> _wordRepo = new Mock<IWordRepository>();
+        Mock<IEntryRepository> _repo = new Mock<IEntryRepository>();
+        Mock<IDictionaryRepository> _dictRepo = new Mock<IDictionaryRepository>();
 
         public EntryServiceTests()
         {
-            service = new EntryService(wordRepo.Object, dictRepo.Object, repo.Object, VMoq.Instance<Entry>());
+            wordRepo = _wordRepo;
+            entryRepo = _repo;
+            dictRepo = _dictRepo;
+            service = new EntryService(this.uow.Object, VMoq.Instance<Entry>());
         }
 
         [Fact]
@@ -42,15 +45,15 @@ namespace Service.Tests.Service
                 Word = word
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Once);
+            _repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Once);
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
@@ -77,15 +80,15 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Language does not match", result.First().Key);
         }
@@ -112,15 +115,15 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(true);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Key);
         }
@@ -140,14 +143,14 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == 34))).Returns(false);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == 34))).Returns(false);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.IsAny<int>())).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Dictionary not found", result.First().Key);
         }
@@ -169,15 +172,15 @@ namespace Service.Tests.Service
                 WordID = 12,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == 12))).Returns(false);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == 12))).Returns((Word)null);
-            repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == 12))).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == 12))).Returns(false);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == 12))).Returns((Word)null);
+            _repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == 12))).Returns(false);
 
             var result = service.TryAdd(entity);
 
-            repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Create(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Word not found", result.First().Key);
         }
@@ -205,18 +208,18 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(false);
-            repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(false);
+            _repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
 
             var result = service.TryUpdate(entity);
 
             Assert.Empty(result);
             Assert.True(result.IsValid);
-            repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Once);
+            _repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Once);
         }
 
         [Fact]
@@ -242,16 +245,16 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(true);
-            repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == dict.Index))).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.GetByIndex(It.Is<int>(i => i == dict.Index))).Returns(dict);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(true);
+            _repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
 
             var result = service.TryUpdate(entity);
 
-            repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.False(result.IsValid);
             Assert.Equal("Entity does not exist", result.First().Key);
@@ -273,15 +276,15 @@ namespace Service.Tests.Service
                 WordID = word.ID,
             };
 
-            dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
-            wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
-            repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(false);
-            repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == word.ID))).Returns(true);
+            _wordRepo.Setup(_ => _.GetByID(It.Is<int>(i => i == word.ID))).Returns(word);
+            _repo.Setup(_ => _.ExistsByWord(It.Is<int>(i => i == word.ID))).Returns(false);
+            _repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
 
             var result = service.TryUpdate(entity);
 
-            repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Never);
+            _repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.False(result.IsValid);
             Assert.Equal("Dictionary with given Index does not exist in the database. Please create it before posting an Entry", result.First().Value);

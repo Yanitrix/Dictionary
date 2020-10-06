@@ -9,16 +9,16 @@ using Xunit;
 
 namespace Service.Tests.Service
 {
-    public class LanguageServiceTests
+    public class LanguageServiceTests : UowTestBase
     {
         IService<Language> service;
         Mock<ILanguageRepository> langRepoMock = new Mock<ILanguageRepository>();
-        AbstractValidator<Language> validatorMock = new ValidatorMoq<Language>();
 
 
         public LanguageServiceTests()
         {
-            service = new LanguageService(validatorMock, langRepoMock.Object);
+            langRepo = langRepoMock;
+            service = new LanguageService(this.uow.Object, VMoq.Instance<Language>());
         }
 
         [Fact]

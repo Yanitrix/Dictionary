@@ -8,23 +8,25 @@ using Xunit;
 
 namespace Service.Tests.Service
 {
-    public class DictionaryServiceTests
+    public class DictionaryServiceTests : UowTestBase
     {
-        Mock<ILanguageRepository> langRepo = new Mock<ILanguageRepository>();
-        Mock<IDictionaryRepository> dictRepo = new Mock<IDictionaryRepository>();
+        Mock<ILanguageRepository> _langRepo = new Mock<ILanguageRepository>();
+        Mock<IDictionaryRepository> _dictRepo = new Mock<IDictionaryRepository>();
 
         IService<Dictionary> service;
 
         public DictionaryServiceTests()
         {
-            service = new DictionaryService(langRepo.Object, dictRepo.Object, VMoq.Instance<Dictionary>());
+            langRepo = _langRepo;
+            dictRepo = _dictRepo;
+            service = new DictionaryService(this.uow.Object, VMoq.Instance<Dictionary>());
         }
 
         [Fact]
         public void TryUpdate_Impossible_AlwaysReturnsError()
         {
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
-            dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
+            _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
 
             var entity = new Dictionary();
             var result = service.TryUpdate(entity);
@@ -36,13 +38,13 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_LanguagesExistAndNotDuplicate_ShouldAddProperly()
         {
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
-            dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
+            _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
 
             var entity = new Dictionary();
             var result = service.TryAdd(entity);
 
-            dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Once);
+            _dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Once);
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
@@ -50,14 +52,14 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_AlreadyExists_ShouldReturnError()
         {
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
-            dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(true); //dictionary is a duplicate
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //any language exists
+            _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(true); //dictionary is a duplicate
 
             var entity = new Dictionary();
 
             var result = service.TryAdd(entity);
 
-            dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Never);
+            _dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Key);
         }
@@ -65,8 +67,8 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_BothLanguagesDontExist_ShouldReturnError()
         {
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //languages dont exist
-            dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate 
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //languages dont exist
+            _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate 
 
             var entity = new Dictionary
             {
@@ -84,9 +86,9 @@ namespace Service.Tests.Service
         public void TryAdd_OneLanguageDoesNotExist_ShouldReturnError()
         {
             const String name = "testName";
-            langRepo.Setup(_ => _.ExistsByName(It.Is<String>(l => l == name))).Returns(false); // "testName" does not exist
-            langRepo.Setup(_ => _.ExistsByName(It.Is<String>(l => l != name))).Returns(true); // any other language exists
-            dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //any dictionary does not exist
+            _langRepo.Setup(_ => _.ExistsByName(It.Is<String>(l => l == name))).Returns(false); // "testName" does not exist
+            _langRepo.Setup(_ => _.ExistsByName(It.Is<String>(l => l != name))).Returns(true); // any other language exists
+            _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //any dictionary does not exist
 
             var entity = new Dictionary
             {

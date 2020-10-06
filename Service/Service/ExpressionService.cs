@@ -10,12 +10,11 @@ namespace Service
         private readonly IDictionaryRepository dictRepo;
         private readonly IMeaningRepository meaningRepo;
 
-        public ExpressionService(IExpressionRepository repo, IDictionaryRepository dictRepo,
-            IMeaningRepository meaningRepo, AbstractValidator<Expression> v):base(v)
+        public ExpressionService(UnitOfWork uow, AbstractValidator<Expression> v):base(v)
         {
-            this.repo = repo;
-            this.dictRepo = dictRepo;
-            this.meaningRepo = meaningRepo;
+            this.repo = uow.Expressions;
+            this.dictRepo = uow.Dictionaries;
+            this.meaningRepo = uow.Meanings;
         }
 
         //TODO test validating Expression with both meaning and dictionary
