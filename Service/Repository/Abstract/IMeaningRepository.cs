@@ -14,5 +14,7 @@ namespace Api.Service
         public IEnumerable<Meaning> GetByValueSubstring(String value);
 
         public IEnumerable<Meaning> GetByNotesSubstring(String notes);
+
+        public bool ExistsByID(int id);
     }
 }

@@ -55,5 +55,10 @@ namespace Api.Service
             context.SaveChanges();
             return entity;
         }
+
+        public bool ExistsByID(int id)
+        {
+            return Exists(m => m.ID == id);
+        }
     }
 }
