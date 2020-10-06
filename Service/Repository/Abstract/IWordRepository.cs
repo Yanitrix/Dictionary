@@ -9,8 +9,10 @@ namespace Api.Service
     {
         public Word GetByID(int id);
 
-        public IEnumerable<Word> GetByValue(String value);
+        public IEnumerable<Word> GetByValue(String value, bool ignoreCase);
 
         public IEnumerable<Word> GetByLanguageAndValue(String languageName, String Value);
+
+        public bool ExistsByID(int id);
     }
 }
