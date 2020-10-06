@@ -34,5 +34,16 @@ namespace Api.Service
         {
             return GetOne(condition, null, includeQuery);
         }
+
+        public override Language Create(Language entity)
+        {
+            entity.Name = entity.Name.ToLower();
+            return base.Create(entity);
+        }
+
+        public bool ExistsByName(string name)
+        {
+            return Exists(l => EF.Functions.Like(l.Name, $"%{name}%"));
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                            Value = "stick",
-                           Properties = new List<WordProperty>
+                           Properties = new HashSet<WordProperty>
                            {
                                new WordProperty
                                {
@@ -56,7 +56,7 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                             Value = "ox",
-                            Properties = new List<WordProperty>
+                            Properties = new HashSet<WordProperty>
                            {
                                new WordProperty
                                {
@@ -77,7 +77,7 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                            Value = "any japanese word",
-                           Properties = new List<WordProperty>
+                           Properties = new HashSet<WordProperty>
                            {
                                new WordProperty
                                {
@@ -90,7 +90,7 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                             Value = "another japanese word",
-                            Properties = new List<WordProperty>
+                            Properties = new HashSet<WordProperty>
                            {
                                new WordProperty
                                {

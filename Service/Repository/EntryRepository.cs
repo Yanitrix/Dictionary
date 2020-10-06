@@ -29,5 +29,14 @@ namespace Api.Service
             return GetOne(e => e.ID == id, null, includeQuery);
         }
 
+        public bool ExistsByID(int id)
+        {
+            return Exists(e => e.ID == id);
+        }
+
+        public bool ExistsByWord(int wordID)
+        {
+            return Exists(e => e.WordID == wordID);
+        }
     }
 }

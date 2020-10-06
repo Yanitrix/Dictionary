@@ -17,6 +17,7 @@ namespace Api.Service.Validation
 
             RuleFor(d => d.LanguageInName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
             RuleFor(d => d.LanguageOutName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
+            RuleFor(d => d.LanguageInName).NotEqual(d => d.LanguageOutName, StringComparer.OrdinalIgnoreCase).WithMessage("LanguageIn and LanguageOut cannot be same");
         }
     }
 }

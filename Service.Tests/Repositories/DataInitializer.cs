@@ -37,7 +37,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "german",
                     Value = "Stock",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -56,7 +56,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "german",
                     Value = "schlafen",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -82,7 +82,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "stick",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -97,7 +97,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "sleep",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -117,7 +117,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "sleep",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -144,7 +144,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "polish",
                     Value = "patyk",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {
@@ -164,7 +164,7 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "polish",
                     Value = "spać",
-                    Properties = new List<WordProperty>
+                    Properties = new HashSet<WordProperty>
                     {
                         new WordProperty
                         {

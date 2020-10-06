@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Service.Service
 {
-    public interface IService<T> 
+    public interface IService<T>
     {
-        public ValidationDictionary TryAdd(T entity);
+        public IValidationDictionary TryAdd(T entity);
         
-        public ValidationDictionary TryUpdate(T entity);
+        public IValidationDictionary TryUpdate(T entity);
 
-        public bool IsValid(T entity);
+        public IValidationDictionary IsValid(T entity);
     }
 }

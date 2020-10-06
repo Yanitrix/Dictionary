@@ -38,5 +38,15 @@ namespace Api.Service
             return entity;
         }
 
+        public bool ExistsByIndex(int index)
+        {
+            return Exists(d => d.Index == index);
+        }
+
+        public bool ExistsByLanguages(string languageIn, string languageOut)
+        {
+            return Exists(d => EF.Functions.Like(d.LanguageInName, $"%{languageIn}%")
+            || EF.Functions.Like(d.LanguageOutName, $"%{languageOut}%"));
+        }
     }
 }

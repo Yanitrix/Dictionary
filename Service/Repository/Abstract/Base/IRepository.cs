@@ -23,5 +23,7 @@ namespace Api.Service
         public IEnumerable<R> Get<R>(Expression<Func<T, bool>> condition, Expression<Func<T, R>> mapper);
 
         public void Detach(T entity);
+
+        public bool Exists(Expression<Func<T, bool>> condition);
     }
 }

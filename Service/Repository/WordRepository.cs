@@ -33,7 +33,12 @@ namespace Api.Service
             //so we cannot use Find because it is not possible to include children.
             return GetOne(w => w.ID == id, null, includeQuery);
         }
-
+        /// <summary>
+        /// ignores case by default
+        /// </summary>
+        /// <param name="languageName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public IEnumerable<Word> GetByLanguageAndValue(string languageName, string value)
         {
             return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
@@ -41,11 +46,28 @@ namespace Api.Service
                 null, includeQuery);
         }
 
-        public IEnumerable<Word> GetByValue(string value)
+        /// <summary>
+        /// Inogres case by default
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="ignoreCase"></param>
+        /// <returns></returns>
+        public IEnumerable<Word> GetByValue(string value, bool ignoreCase = true)
         {
-            return Get(w => EF.Functions.Like(w.Value, $"%{value}%"),
-                x => x,
+            if (ignoreCase)
+            {
+                return Get(w => EF.Functions.Like(w.Value, $"%{value}%"),
+                    x => x,
+                    words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
+            }
+
+            return Get(w => w.Value == value, x => x,
                 words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
+        }
+
+        public bool ExistsByID(int id)
+        {
+            return Exists(w => w.ID == id);
         }
     }
 }

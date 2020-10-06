@@ -10,5 +10,6 @@ namespace Api.Service
     {
         Language GetByName(String name);
 
+        bool ExistsByName(String name);
     }
 }
