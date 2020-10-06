@@ -86,7 +86,6 @@ namespace Data.Database
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            //TODO put pressure on testing if these dictionaries get deleted in a proper way. https://github.com/Yanitrix/Dictionary-MVC/issues/80
             dictionary
                 .HasOne(dictionary => dictionary.LanguageIn)
                 .WithMany()
