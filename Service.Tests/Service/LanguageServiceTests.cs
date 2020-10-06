@@ -1,14 +1,10 @@
-﻿using Api.Service;
+﻿using Service.Repository;
 using Data.Models;
 using FluentValidation;
-using FluentValidation.Results;
 using Moq;
-using Service.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using Xunit;
 
 namespace Service.Tests.Service

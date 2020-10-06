@@ -1,8 +1,6 @@
-﻿using Data.Database;
-using Data.Models;
+﻿using Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Service.Tests.Repositories
 {
