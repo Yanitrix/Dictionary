@@ -12,5 +12,10 @@ namespace Api.Service
         Dictionary GetByLanguageInAndOut(String languageIn, String languageOut);
 
         Dictionary GetByIndex(int index);
+
+        bool ExistsByIndex(int index);
+
+        bool ExistsByLanguages(String languageIn, String languageOut);
+
     }
 }
