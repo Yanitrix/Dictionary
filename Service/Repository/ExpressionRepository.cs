@@ -4,9 +4,8 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Api.Service
+namespace Service.Repository
 {
     public class ExpressionRepository : RepositoryBase<Expression>, IExpressionRepository
     {

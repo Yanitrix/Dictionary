@@ -1,11 +1,7 @@
-﻿using Api.Service;
-using Data.Models;
+﻿using Data.Models;
 using Moq;
-using Service.Service;
-using System;
-using System.Collections.Generic;
+using Service.Repository;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Service.Tests.Service

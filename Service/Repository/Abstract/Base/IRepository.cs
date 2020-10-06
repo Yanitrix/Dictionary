@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
 
-namespace Api.Service
+namespace Service.Repository
 {
     public interface IRepository<T> : IDisposable
     {

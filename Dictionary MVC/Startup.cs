@@ -9,9 +9,9 @@ using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using FluentValidation;
 using Data.Models;
-using Api.Service.Validation;
-using Api.Service;
 using Data.Mapper;
+using Service.Validation;
+using Service.Repository;
 
 namespace Dictionary_MVC
 {

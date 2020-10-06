@@ -1,9 +1,5 @@
-﻿using Api.Service;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Service.Service
+﻿
+namespace Service
 {
     public interface IService<T>
     {

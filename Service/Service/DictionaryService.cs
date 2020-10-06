@@ -1,13 +1,8 @@
-﻿using Api.Service;
-using Data.Models;
+﻿using Data.Models;
 using FluentValidation;
-using Service.Service.Abstract;
-using System;
-using System.Text;
+using Service.Repository;
 
-
-//TODO ogarnąć namespaces
-namespace Service.Service
+namespace Service
 {
     public class DictionaryService : ServiceBase<Dictionary>
     {

@@ -1,10 +1,9 @@
-﻿using Api.Service;
-using Data.Models;
+﻿using Data.Models;
 using FluentValidation;
-using Service.Service.Abstract;
+using Service.Repository;
 using System;
 
-namespace Service.Service
+namespace Service
 {
     public class EntryService : ServiceBase<Entry>
     {

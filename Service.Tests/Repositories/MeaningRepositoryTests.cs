@@ -1,11 +1,10 @@
-﻿using Api.Service;
-using Data.Models;
+﻿using Data.Models;
 using Data.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
+using Service.Repository;
 
 namespace Service.Tests.Repositories
 {
