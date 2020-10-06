@@ -45,7 +45,7 @@ namespace Service.Tests.Validators
         [InlineData(" ")]
         [InlineData("\n")]
         [InlineData("\t\t")]
-        [InlineData("\\")] //regex not matched
+        [InlineData("\n\n")] //regex not matched
         public void NameEmpty_ShouldBeInvalid(String name)
         {
             entity.Name = name;

@@ -68,7 +68,6 @@ namespace Service.Tests.Validators
         //in two method below the regex correctness isn't checked because that's done in LanguageValidatorTests.
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         [InlineData(" ")]
         [InlineData("\t")]
         [InlineData("\r")]
@@ -98,7 +97,6 @@ namespace Service.Tests.Validators
         //in two method below the regex correctness isn't checked because that's done in SpeechPartValidatorTests.
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         [InlineData(" ")]
         [InlineData("\t")]
         [InlineData("\r")]
