@@ -130,7 +130,7 @@ namespace Api.Service
 
         public virtual T Update(T entity)
         {
-            repo.Update(entity);
+            context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
             return entity;
         }
@@ -140,6 +140,11 @@ namespace Api.Service
             repo.Remove(entity);
             context.SaveChanges();
             return entity;
+        }
+
+        public bool Exists(Expression<Func<T, bool>> condition)
+        {
+            return repo.Any(condition);
         }
     }
 }
