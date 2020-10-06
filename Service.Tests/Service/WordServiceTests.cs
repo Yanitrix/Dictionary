@@ -8,28 +8,30 @@ using Xunit;
 
 namespace Service.Tests.Service
 {
-    public class WordServiceTests
+    public class WordServiceTests : UowTestBase
     {
         IService<Word> service;
-        Mock<IWordRepository> wordRepo = new Mock<IWordRepository>();
-        Mock<ILanguageRepository> langRepo = new Mock<ILanguageRepository>();
+        Mock<IWordRepository> _wordRepo = new Mock<IWordRepository>();
+        Mock<ILanguageRepository> _langRepo = new Mock<ILanguageRepository>();
 
         public WordServiceTests()
         {
-            service = new WordService(wordRepo.Object, langRepo.Object, VMoq.Instance<Word>());
+            wordRepo = _wordRepo;
+            langRepo = _langRepo;
+            service = new WordService(this.uow.Object, VMoq.Instance<Word>());
         }
 
         [Fact]
         public void TryAdd_LanguageExists_PropertiesGood_ShouldAdd()
         {
-            wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
+            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
 
             var entity = new Word();
 
             var result = service.TryAdd(entity);
 
-            wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Once);
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Once);
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
@@ -76,12 +78,12 @@ namespace Service.Tests.Service
             };
 
             //they ^  differ only in case and trailing spaces
-            wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
+            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
 
             var result = service.TryAdd(entity);
 
-            wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Key);
         }
@@ -89,13 +91,13 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_PropertiesGood_LanguageDoesNotExist_ShouldReturnError()
         {
-            wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
+            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
 
             var entity = new Word();
             var result = service.TryAdd(entity);
 
-            wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Language not found", result.First().Key);
         }
@@ -103,14 +105,14 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_NorLanguageNorPropertiesAreGood_ShouldReturnError()
         {
-            wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
+            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
             //actually it doesn't matter since when language is not found the method will be returned
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
 
             var entity = new Word();
             var result = service.TryAdd(entity);
 
-            wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Language not found", result.First().Key);
         }
@@ -124,11 +126,11 @@ namespace Service.Tests.Service
                 SourceLanguageName = "english"
             };
 
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
 
             var result = service.TryUpdate(entity);
 
-            wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
+            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
             Assert.Equal("Entity does not exist", result.First().Key);
         }
@@ -142,13 +144,13 @@ namespace Service.Tests.Service
                 SourceLanguageName = "english"
             };
 
-            wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
-            wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
-            langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true);
+            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
+            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true);
 
             var result = service.TryUpdate(entity);
 
-            wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
