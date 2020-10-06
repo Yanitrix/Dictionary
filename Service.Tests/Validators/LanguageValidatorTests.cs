@@ -11,8 +11,7 @@ namespace Service.Tests.Validators
 
         [Theory]
         [InlineData("polski język migowy")]
-        [InlineData("ssh'as")]
-        [InlineData("87snasd")]
+        [InlineData("67snasd")]
         [InlineData("Русский язык")]
         public void IncorrectRegex_ShouldNotBeValid(String name)
         {
@@ -29,6 +28,7 @@ namespace Service.Tests.Validators
         [Theory]
         [InlineData("polish")]
         [InlineData("urdu")]
+        [InlineData("ssh'as")]
         [InlineData("chiński")]
         [InlineData("Русский")]
         [InlineData("hashdąśjashd")]
