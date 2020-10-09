@@ -49,7 +49,6 @@ namespace Dictionary_MVC
 
             services.AddTransient<ILanguageRepository, LanguageRepository>();
             services.AddTransient<IWordRepository, WordRepository>();
-            services.AddTransient<IWordPropertyRepository, WordPropertyRepository>();
             services.AddTransient<IDictionaryRepository, DictionaryRepository>();
             services.AddTransient<IEntryRepository, EntryRepository>();
             services.AddTransient<IMeaningRepository, MeaningRepository>();

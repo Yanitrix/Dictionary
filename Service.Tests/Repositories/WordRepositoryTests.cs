@@ -106,41 +106,6 @@ namespace Service.Tests.Repositories
             Assert.False(repository.All().Any());
         }
 
-        [Fact]
-        public void DeleteWordWithProperties_NorWordNorPropertiesShouldExist()
-        {
-            IWordPropertyRepository wpRepo = new WordPropertyRepository(this.context);
-
-            var entity = new Word
-            {
-                SourceLanguageName = "hs",
-                Value = "jjjs",
-                Properties = new HashSet<WordProperty>
-                {
-                    new WordProperty
-                    {
-                        Name = "gender",
-                        Values = new HashSet<String>{"masculine", "feminine"}
-                    },
-
-                    new WordProperty
-                    {
-                        Name = "conjugation",
-                        Values = new HashSet<String>{"first", "second"}
-                    }
-                }
-            };
-
-            repository.Create(entity);
-
-            Assert.Single(repository.All());
-            Assert.Equal(2, wpRepo.All().Count());
-
-            repository.Delete(entity);
-
-            Assert.False(repository.All().Any());
-            Assert.False(wpRepo.All().Any());
-        }
 
         [Theory]
         [InlineData(4)]
