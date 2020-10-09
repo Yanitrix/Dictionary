@@ -12,7 +12,6 @@ namespace Service.Tests.Repositories
     {
         ILanguageRepository langRepo;
         IWordRepository wordRepo;
-        IWordPropertyRepository wordPropertyRepo;
         IDictionaryRepository dictRepo;
         IEntryRepository entryRepo;
         IMeaningRepository meaningRepo;
@@ -23,7 +22,6 @@ namespace Service.Tests.Repositories
         {
             langRepo = new LanguageRepository(this.context);
             wordRepo = new WordRepository(this.context);
-            wordPropertyRepo = new WordPropertyRepository(this.context);
             dictRepo = new DictionaryRepository(this.context);
             entryRepo = new EntryRepository(this.context);
             meaningRepo = new MeaningRepository(this.context);
@@ -40,10 +38,9 @@ namespace Service.Tests.Repositories
         entry with meanings, //done
         dictionary with entries, //done
         language with words //done
-        word with wordproperties, //done
 
-        word with entries,
-        language with dictionaries
+        word with entries, //done
+        language with dictionaries //done
         */
         [Fact]
         public void DeleteDictionaryWithExpressions()
@@ -536,63 +533,6 @@ namespace Service.Tests.Repositories
 
             Assert.Empty(langRepo.All());
             Assert.Equal(2, wordRepo.All().Count());
-        }
-
-        [Fact]
-        public void DleteWordWithProperties()
-        {
-            var word1 = new Word
-            {
-                SourceLanguageName = "sd",
-                Value = "stick",
-                Properties = new HashSet<WordProperty>
-                {
-                    new WordProperty
-                    {
-                        Name = "name1",
-                        Values = new HashSet<String>{"value1", "value2"}
-                    },
-
-                    new WordProperty
-                    {
-                        Name = "name2",
-                        Values = new HashSet<String>{"value1"}
-                    },
-
-                    new WordProperty
-                    {
-                        Name = "name3",
-                        Values = new HashSet<String>{"value1", "value2", "value3"}
-                    },
-                }
-            };
-
-            WordProperty[] free =
-            {
-                new WordProperty
-                {
-                    Name = "name0",
-                    Values = new HashSet<String>{"value0"}
-                },
-
-                new WordProperty
-                {
-                     Name = "name1",
-                     Values = new HashSet<String>{"value1", "value2"}
-                },
-            };
-
-            wordRepo.Create(word1);
-            wordPropertyRepo.CreateRange(free);
-
-            Assert.Single(wordRepo.All());
-            Assert.Equal(5, wordPropertyRepo.All().Count());
-
-            wordRepo.Delete(word1);
-
-            Assert.Empty(wordRepo.All());
-            Assert.Equal(2, wordPropertyRepo.All().Count());
-
         }
 
         [Fact]
