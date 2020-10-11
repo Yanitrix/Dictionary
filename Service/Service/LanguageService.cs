@@ -1,6 +1,8 @@
 ﻿using Service.Repository;
 using Data.Models;
 using FluentValidation;
+using Msg = Commons.ValidationErrorMessages;
+
 
 namespace Service
 {
@@ -19,7 +21,7 @@ namespace Service
 
             if (repo.ExistsByName(entity.Name))
             {
-                validationDictionary.AddError("Duplicate", $"Language with name: \"{entity.Name}\" already exists in the database. The case is ignored");
+                validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_LANGUAGE_DESC);
             }
 
             if (validationDictionary.IsValid)
@@ -34,8 +36,7 @@ namespace Service
         {
             validationDictionary = new ValidationDictionary();
 
-            validationDictionary.AddError("Entity cannot be updated",
-                "Name property cannot be changed. If you want to add words to a language, post words with proper language name");
+            validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_LANGUAGE_DESC);
 
             return validationDictionary;
         }
