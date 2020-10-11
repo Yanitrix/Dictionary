@@ -2,6 +2,7 @@
 using FluentValidation;
 using Service.Repository;
 using System;
+using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
@@ -38,7 +39,7 @@ namespace Service
             //check if exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError("Entity does not exist", "Entry with given primary key does not exist in the database. There is nothing to update");
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Entry>());
                 return validationDictionary;
             }
 
@@ -55,22 +56,21 @@ namespace Service
             //check if word exists
             if (!wordRepo.ExistsByID(entity.WordID))
             {
-                validationDictionary.AddError("Word not found", "Word with given primary key does not exist in the database. Please create it before posting an Entry");
+                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word, int>(w => w.ID, entity.WordID));
                 return;
             }
 
             //one entry per word
             if (repo.ExistsByWord(entity.WordID))
             {
-                validationDictionary.AddError("Duplicate", "An Entry for given Word already exists. " +
-                    "If you want to add another Meaning, post it on its respective endpoint");
+                validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_ENTRY_DESC);
                 return;
             }
             
             //check if dictionary exists
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError("Dictionary not found", "Dictionary with given Index does not exist in the database. Please create it before posting an Entry");
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary, int>(d => d.Index, entity.DictionaryIndex));
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace Service
             var dict = dictRepo.GetByIndex(entity.DictionaryIndex);
             if (!String.Equals(word.SourceLanguageName, dict.LanguageInName, StringComparison.OrdinalIgnoreCase))
             {
-                validationDictionary.AddError("Language does not match", "SourceLanguage of the Word is different than LanguageIn of the dictionary");
+                validationDictionary.AddError(Msg.LANGUAGES_NOT_MATCH, Msg.LANGUAGES_NOT_MATCH_DESC);
             }
 
         }

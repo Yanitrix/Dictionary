@@ -1,6 +1,8 @@
 ﻿using Data.Models;
 using FluentValidation;
 using Service.Repository;
+using Msg = Commons.ValidationErrorMessages;
+
 
 namespace Service
 {
@@ -35,7 +37,7 @@ namespace Service
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
-                validationDictionary.AddError("Entity does not exist", "Expression with given primary key does not exist. There's nothing to update");
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Expression>());
                 return validationDictionary;
             }
 
@@ -51,14 +53,13 @@ namespace Service
             //check if meaning exists
             if (entity.MeaningID != null && !meaningRepo.ExistsByID(entity.MeaningID.Value))
             {
-                validationDictionary.AddError("Meaning not found",
-                    $"Meaning with ID: {entity.MeaningID} does not exist in the database. Create it before posting an Expression.");
+                validationDictionary.AddError(Msg.NOTFOUND<Meaning>(), Msg.NOTFOUND_DESC<Expression, Meaning, int?>(m => m.ID, entity.MeaningID));
             }
             //check if dictionary exists
             if (entity.DictionaryIndex != null && !dictRepo.ExistsByIndex(entity.DictionaryIndex.Value))
             {
-                validationDictionary.AddError("Dictionary not found",
-                    $"Dctionary with Index: {entity.DictionaryIndex} does not exist in the database. Create it before Posting an Expression.");
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Expression, Dictionary, int?>(d => d.Index, entity.DictionaryIndex));
+                    
             }
         }
     }

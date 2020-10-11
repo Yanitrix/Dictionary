@@ -287,7 +287,7 @@ namespace Service.Tests.Service
             _repo.Verify(_ => _.Update(It.IsAny<Entry>()), Times.Never);
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal("Dictionary with given Index does not exist in the database. Please create it before posting an Entry", result.First().Value);
+            Assert.Equal($"Dictionary with given Index: {entity.DictionaryIndex} was not found in the database. Create it before posting a(n) Entry", result.First().Value);
         }
     }
 }

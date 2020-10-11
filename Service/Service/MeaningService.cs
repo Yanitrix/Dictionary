@@ -1,6 +1,7 @@
 ﻿using Service.Repository;
 using Data.Models;
 using FluentValidation;
+using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
@@ -34,7 +35,7 @@ namespace Service
 
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError("Entity does not exist", "Meaning with given primary key does not exist in the database. There is nothing to update");
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Meaning>());
                 return validationDictionary;
             }
 
@@ -51,7 +52,7 @@ namespace Service
             //only checking if entry exists
             if (!entryRepo.ExistsByID(entity.EntryID))
             {
-                validationDictionary.AddError("Entry not found", "Entry with given primary key does not exist in the database");
+                validationDictionary.AddError(Msg.NOTFOUND<Entry>(), Msg.NOTFOUND_DESC<Meaning, Entry, int>(e => e.ID, entity.EntryID));
             }
         }
     }

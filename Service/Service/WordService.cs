@@ -2,6 +2,7 @@
 using Data.Models;
 using FluentValidation;
 using System;
+using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
@@ -37,8 +38,7 @@ namespace Service
             //check if entity already exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError("Entity does not exist", "No Word matching entity's primary key was found in the database. " +
-                    "There is nothing that can be updated");
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Word>());
                 return validationDictionary;
             }
 
@@ -56,8 +56,7 @@ namespace Service
             //check if language exists
             if (!langRepo.ExistsByName(entity.SourceLanguageName))
             {
-                validationDictionary.AddError("Language not found",
-                    $"Language by the name of: \"{entity.SourceLanguage}\" does not exist in the database. Create it before adding a word");
+                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language, String>(l => l.Name, entity.SourceLanguageName));
                 return;
             }
 
@@ -68,8 +67,7 @@ namespace Service
             {
                 if (entity.Properties.SetEquals(i.Properties) && String.Equals(entity.Value, i.Value, StringComparison.OrdinalIgnoreCase))
                 {
-                    validationDictionary.AddError("Duplicate",
-                        "There's already at least one Word in the database with same Value, same SourceLanguageName and same set of WordProperties");
+                    validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_WORD_DESC);
                 }
             }
         }

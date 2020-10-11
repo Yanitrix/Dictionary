@@ -1,6 +1,8 @@
 ﻿using Data.Models;
 using FluentValidation;
 using Service.Repository;
+using Msg = Commons.ValidationErrorMessages;
+
 
 namespace Service
 {
@@ -23,14 +25,13 @@ namespace Service
             //check if dict already exists
             if (repo.ExistsByLanguages(entity.LanguageInName, entity.LanguageOutName))
             {
-                validationDictionary.AddError("Duplicate", "A Dictionary of same Languages already exist in the database");
+                validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_DICTIONARY_DESC);
                 return validationDictionary;
             }
             //check if langueges exist
             if (!langRepo.ExistsByName(entity.LanguageInName) || !langRepo.ExistsByName(entity.LanguageOutName))
             {
-                validationDictionary.AddError("Language not found", $"Language: \"{entity.LanguageInName}\" or \"{entity.LanguageOutName}\"" +
-                    " does not exist in the database. Create them before posting a dictionary");
+                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.LANGS_NOTFOUND_DESC(entity.LanguageInName, entity.LanguageOutName));
                 return validationDictionary;
             }
 
@@ -43,9 +44,9 @@ namespace Service
         public override IValidationDictionary TryUpdate(Dictionary entity)
         {
             validationDictionary = new ValidationDictionary();
-            
-            validationDictionary.AddError("Entity cannot be updated",
-                "LanguageIn and LanguageOut properties of a Dictionary cannot be updated. If you want to add Entries or FreeExpressions to a Dictionary, post them on their respective endpoints");
+
+            validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_DICTIONARY_DESC);
+
             return validationDictionary;
         }
     }
