@@ -9,8 +9,7 @@ using System.Linq.Expressions;
 
 namespace Service.Repository
 {
-    //Every query returning a Word or IEnumerable<Word> should include its properties.
-    public class WordRepository : RepositoryBase<Word>, IWordRepository 
+    public class WordRepository : RepositoryBase<Word>, IWordRepository
     {
         private readonly Func<IQueryable<Word>, IIncludableQueryable<Word, object>> includeQuery = (words => words.Include(w => w.Properties));
         private readonly Func<IQueryable<Word>, IOrderedQueryable<Word>> byLanguageThenByValue = (words => words.OrderBy(w => w.SourceLanguageName).ThenBy(w => w.Value));
@@ -32,12 +31,8 @@ namespace Service.Repository
             //so we cannot use Find because it is not possible to include children.
             return GetOne(w => w.ID == id, null, includeQuery);
         }
-        /// <summary>
-        /// ignores case by default
-        /// </summary>
-        /// <param name="languageName"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+
+        //ignores case
         public IEnumerable<Word> GetByLanguageAndValue(string languageName, string value)
         {
             return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
@@ -45,12 +40,6 @@ namespace Service.Repository
                 null, includeQuery);
         }
 
-        /// <summary>
-        /// Inogres case by default
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="ignoreCase"></param>
-        /// <returns></returns>
         public IEnumerable<Word> GetByValue(string value, bool ignoreCase = true)
         {
             if (ignoreCase)
