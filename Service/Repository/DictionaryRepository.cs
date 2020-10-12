@@ -13,7 +13,7 @@ namespace Service.Repository
 
         public IEnumerable<Dictionary> GetAllByLanguage(string languageName)
         {
-            return repo.Where(d => d.LanguageInName == languageName || d.LanguageOutName == languageName);
+            return repo.Where(d => d.LanguageInName == languageName || d.LanguageOutName == languageName).ToList();
         }
 
         public Dictionary GetByIndex(int index)
