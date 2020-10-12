@@ -48,5 +48,15 @@ namespace Service.Repository
             return Exists(d => EF.Functions.Like(d.LanguageInName, $"%{languageIn}%")
             || EF.Functions.Like(d.LanguageOutName, $"%{languageOut}%"));
         }
+
+        public IEnumerable<Dictionary> GetAllByLanguageIn(string langIn)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Dictionary> GetAllByLanguageOut(string langIn)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

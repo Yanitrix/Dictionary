@@ -12,6 +12,11 @@ namespace Service.Repository
 
         public ExpressionRepository(DatabaseContext context):base(context) { }
 
+        public Expression GetByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Expression> GetByTextSubstring(string text)
         {
             //EF had some problems checking with whitespace, and it throws an exception when string is null so we just check and return empty.
@@ -24,6 +29,8 @@ namespace Service.Repository
             if (translation == null || String.IsNullOrWhiteSpace(translation)) return Enumerable.Empty<Expression>();
             return repo.Where(ex => ex.Translation.Contains(translation));
         }
+
+
 
     }
 }
