@@ -16,5 +16,8 @@ namespace Service.Repository
 
         bool ExistsByLanguages(String languageIn, String languageOut);
 
+        IEnumerable<Dictionary> GetAllByLanguageIn(string langIn);
+        
+        IEnumerable<Dictionary> GetAllByLanguageOut(string langIn);
     }
 }

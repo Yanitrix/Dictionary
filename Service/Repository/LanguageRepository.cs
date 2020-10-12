@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Collections.Generic;
+using Data.Dto;
 
 namespace Service.Repository
 {
@@ -40,6 +42,11 @@ namespace Service.Repository
         public bool ExistsByName(string name)
         {
             return Exists(l => EF.Functions.Like(l.Name, $"%{name}%"));
+        }
+
+        public IEnumerable<LanguageWordCount> AllWithWordCount()
+        {
+            throw new NotImplementedException();
         }
     }
 }
