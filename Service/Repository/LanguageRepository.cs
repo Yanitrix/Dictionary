@@ -46,7 +46,7 @@ namespace Service.Repository
 
         public IEnumerable<LanguageWordCount> AllWithWordCount()
         {
-            throw new NotImplementedException();
+            return repo.Select(lang => new LanguageWordCount { LanguageName = lang.Name, WordCount = lang.Words.Count }).OrderBy(count => count.LanguageName).ToList();
         }
     }
 }

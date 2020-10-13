@@ -9,10 +9,10 @@ namespace Service.Repository
     {
         IEnumerable<LanguageWordCount> AllWithWordCount();
 
-        public Language GetByNameWithWords(String name);
+        Language GetByNameWithWords(String name);
 
         Language GetByName(String name);
 
-        bool ExistsByName(String name);
+        ExistsByName(String name);
     }
 }

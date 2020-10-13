@@ -24,6 +24,7 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
+        //TODO should test it with bulk data
         public IEnumerable<LanguageWordCount> Index()
         {
             return repo.AllWithWordCount();
