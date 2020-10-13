@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Dto;
 using Data.Models;
+using Data.Util;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
@@ -42,6 +43,7 @@ namespace Api.Controllers
         public IActionResult Post([FromBody] WordDto dto)
         {
             var entity = ToWord(dto);
+            Utils.RemoveRedundantWhitespaces(entity.Properties);
 
             var result = service.TryAdd(entity);
             if (!result.IsValid)
@@ -53,10 +55,11 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] WordDto dto)
         {
-            var word = ToWord(dto);
-            word.ID = id;
+            var entity = ToWord(dto);
+            entity.ID = id;
+            Utils.RemoveRedundantWhitespaces(entity.Properties);
 
-            var result = service.TryUpdate(word);
+            var result = service.TryUpdate(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok("Resource updated succesfully");
