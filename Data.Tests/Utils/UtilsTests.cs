@@ -19,13 +19,13 @@ namespace Data.Tests
                 new WordProperty
                 {
                     Name = "  name  ",
-                    Values = new HashSet<String>{"  value1", " some  other    value 2"}
+                    Values = new StringSet{"  value1", " some  other    value 2"}
                 },
 
                 new WordProperty
                 {
                     Name = " another  name",
-                    Values = new HashSet<String>{"    value3", "value  4"}
+                    Values = new StringSet{"    value3", "value  4"}
                 }
             };
 
