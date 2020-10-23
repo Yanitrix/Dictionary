@@ -14,7 +14,7 @@ namespace Service.Tests.Validators
         {
             ID = 0,
             Name = "gender",
-            Values = new HashSet<String> { "feminine" },
+            Values = new StringSet{ "feminine" },
         };
 
         [Fact]

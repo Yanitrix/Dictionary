@@ -31,18 +31,18 @@ namespace Service.Tests.Repositories
             {
                 SourceLanguageName = "russian",
                 Value = "index",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
                     new WordProperty
                     {
                         Name = "gender",
-                        Values = new HashSet<String>{"masculine"}
+                        Values = new StringSet{"masculine"}
                     },
 
                     new WordProperty
                     {
                         Name = "plural form",
-                        Values = new HashSet<String>{"indexes", "indices"}
+                        Values = new StringSet{"indexes", "indices"}
                     }
                 }
             };
@@ -65,12 +65,12 @@ namespace Service.Tests.Repositories
             {
                 SourceLanguageName = "hs",
                 Value = "hs",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
                     new WordProperty
                     {
                         Name = "speech part",
-                        Values = new HashSet<String>{"noun"}
+                        Values = new StringSet{"noun"}
                     }
                 }
             };
@@ -307,12 +307,12 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "stick",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         }
                     }
                 },
@@ -321,18 +321,18 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "sticky",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         },
 
                         new WordProperty
                         {
                             Name = "gender",
-                            Values = new HashSet<string>{"masculine"}
+                            Values = new StringSet{"masculine"}
                         }
                     }
                 },
@@ -341,12 +341,12 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "not so sticky",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         }
                     }
                 },
@@ -378,12 +378,12 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "stick",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         }
                     }
                 },
@@ -392,18 +392,18 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "sticky",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         },
 
                         new WordProperty
                         {
                             Name = "gender",
-                            Values = new HashSet<string>{"masculine"}
+                            Values = new StringSet{"masculine"}
                         }
                     }
                 },
@@ -412,12 +412,12 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "arabic",
                     Value = "not so sticky",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new HashSet<String>{"noun", "verb" }
+                            Values = new StringSet{"noun", "verb" }
                         }
                     }
                 },

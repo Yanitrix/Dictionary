@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Data.Models
 {
@@ -22,7 +20,7 @@ namespace Data.Models
         public String Value { get; set; }
 
         [Required]
-        public ISet<WordProperty> Properties { get; set; } = new HashSet<WordProperty>();
+        public WordPropertySet Properties { get; set; } = new WordPropertySet();
 
         public int CompareTo([AllowNull] Word other)
         {

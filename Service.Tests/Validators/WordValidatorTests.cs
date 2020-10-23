@@ -15,13 +15,13 @@ namespace Service.Tests.Validators
             ID = 0,
             SourceLanguageName = "english",
             Value = "dog",
-            Properties = new HashSet<WordProperty>
+            Properties = new WordPropertySet
             {
                 new WordProperty //passes
                 {
                     ID = 0,
                     Name = "ff",
-                    Values = new HashSet<String>{"ss"},
+                    Values = new StringSet{"ss"},
                 }
             }
         };
@@ -35,7 +35,7 @@ namespace Service.Tests.Validators
         [Fact]
         public void PropertiesEmpty_ShouldNotBeValid()
         {
-            entity.Properties = new HashSet<WordProperty>();
+            entity.Properties = new WordPropertySet();
 
             Assert.False(validator.Validate(entity).IsValid);
         }
