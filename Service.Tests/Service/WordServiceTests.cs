@@ -77,7 +77,6 @@ namespace Service.Tests.Service
                 }
             };
 
-            //they ^  differ only in case and trailing spaces
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
 
