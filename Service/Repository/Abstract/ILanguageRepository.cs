@@ -13,6 +13,6 @@ namespace Service.Repository
 
         Language GetByName(String name);
 
-        ExistsByName(String name);
+        bool ExistsByName(String name);
     }
 }

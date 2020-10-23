@@ -81,12 +81,12 @@ namespace Service.Tests.Repositories
                         {
                             Value = "train",
                             SourceLanguageName = "english",
-                            Properties = new HashSet<WordProperty>
+                            Properties = new WordPropertySet
                             {
                                 new WordProperty
                                 {
                                     Name = "speech part",
-                                    Values = new HashSet<String>{"noun"}
+                                    Values = new StringSet{"noun"}
                                 }
                             }
 
@@ -148,12 +148,12 @@ namespace Service.Tests.Repositories
                         {
                             SourceLanguageName = "german",
                             Value = "Stock",
-                            Properties = new HashSet<WordProperty>
+                            Properties = new WordPropertySet
                             {
                                 new WordProperty
                                 {
                                     Name = "gender",
-                                    Values = new HashSet<String>{"masculine"}
+                                    Values = new StringSet{"masculine"}
                                 }
                             }
                         },

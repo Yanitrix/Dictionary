@@ -593,12 +593,12 @@ namespace Service.Tests.Repositories
                         {
                             Value = "train",
                             SourceLanguageName = "english",
-                            Properties = new HashSet<WordProperty>
+                            Properties = new WordPropertySet
                             {
                                 new WordProperty
                                 {
                                     Name = "speech part",
-                                    Values = new HashSet<String>{"noun"}
+                                    Values = new StringSet{"noun"}
                                 }
                             }
 

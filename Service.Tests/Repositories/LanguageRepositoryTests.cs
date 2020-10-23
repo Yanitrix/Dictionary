@@ -41,12 +41,12 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                            Value = "stick",
-                           Properties = new HashSet<WordProperty>
+                           Properties = new WordPropertySet
                            {
                                new WordProperty
                                {
                                    Name = "plural form",
-                                   Values = new HashSet<String>{"sticks"}
+                                   Values = new StringSet{"sticks"}
                                }
                            }
                         },
@@ -54,12 +54,12 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                             Value = "ox",
-                            Properties = new HashSet<WordProperty>
+                            Properties = new WordPropertySet
                            {
                                new WordProperty
                                {
                                    Name = "plural form",
-                                   Values = new HashSet<String>{"oxen"}
+                                   Values = new StringSet{"oxen"}
                                }
                            }
 
@@ -75,12 +75,12 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                            Value = "any japanese word",
-                           Properties = new HashSet<WordProperty>
+                           Properties = new WordPropertySet
                            {
                                new WordProperty
                                {
                                    Name = "plural form",
-                                   Values = new HashSet<String>{"any japanese words"}
+                                   Values = new StringSet{"any japanese words"}
                                }
                            }
                         },
@@ -88,12 +88,12 @@ namespace Service.Tests.Repositories
                         new Word
                         {
                             Value = "another japanese word",
-                            Properties = new HashSet<WordProperty>
+                            Properties = new WordPropertySet
                            {
                                new WordProperty
                                {
                                    Name = "plural form",
-                                   Values = new HashSet<String>{"other japanese words"}
+                                   Values = new StringSet{"other japanese words"}
                                }
                            }
 

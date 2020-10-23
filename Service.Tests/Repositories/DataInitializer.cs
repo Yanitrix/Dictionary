@@ -35,17 +35,17 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "german",
                     Value = "Stock",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "gender",
-                            Values = new HashSet<String>{ "masculine" }
+                            Values = new StringSet{ "masculine" }
                         },
                         new WordProperty
                         {
                             Name = "declension",
-                            Values = new HashSet<String>{"strong" }
+                            Values = new StringSet{"strong" }
                         }
                     }
                 },
@@ -54,17 +54,17 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "german",
                     Value = "schlafen",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Values = new HashSet<String>{"strong" }
+                            Values = new StringSet{"strong" }
                         },
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Values = new HashSet<String>{"intransitive" }
+                            Values = new StringSet{"intransitive" }
                         }
                     }
                 }
@@ -80,12 +80,12 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "stick",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "countability",
-                            Values = new HashSet<String>{"countable"}
+                            Values = new StringSet{"countable"}
                         }
 
                     }
@@ -95,18 +95,18 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "sleep",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Values = new HashSet<String>{"irregular"}
+                            Values = new StringSet{"irregular"}
                         },
 
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Values = new HashSet<String>{"transitive"}
+                            Values = new StringSet{"transitive"}
                         }
                     }
                 },
@@ -115,18 +115,18 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "english",
                     Value = "sleep",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Values = new HashSet<String>{"irregular"}
+                            Values = new StringSet{"irregular"}
                         },
 
                         new WordProperty
                         {
                             Name = "transitivity",
-                            Values = new HashSet<String>{"intransitive"}
+                            Values = new StringSet{"intransitive"}
                         }
                     }
                 }
@@ -142,18 +142,18 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "polish",
                     Value = "patyk",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "declension",
-                            Values = new HashSet<String>{"masculine declension"}
+                            Values = new StringSet{"masculine declension"}
                         },
 
                         new WordProperty
                         {
                             Name = "countability",
-                            Values = new HashSet<String>{"both singular and plural"}
+                            Values = new StringSet{"both singular and plural"}
                         }
                     }
                 },
@@ -162,17 +162,17 @@ namespace Service.Tests.Repositories
                 {
                     SourceLanguageName = "polish",
                     Value = "spać",
-                    Properties = new HashSet<WordProperty>
+                    Properties = new WordPropertySet
                     {
                         new WordProperty
                         {
                             Name = "conjugation",
-                            Values = new HashSet<String>{"first conjugation"}
+                            Values = new StringSet{"first conjugation"}
                         },
                         new WordProperty
                         {
                             Name = "aspect",
-                            Values = new HashSet<String>{"imperfective"}
+                            Values = new StringSet{"imperfective"}
                         }
                     }
                 }

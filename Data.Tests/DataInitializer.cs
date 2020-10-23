@@ -54,10 +54,10 @@ namespace Data.Tests
                 SourceLanguage = Languages[0],
                 SourceLanguageName = Languages[0].Name,
                 Value = "hund",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
-                    new WordProperty{Name = "declension", Values = new HashSet<String>{"strong" }, ID = 1},
-                    new WordProperty{Name = "gender", Values = new HashSet<String>{"masculine" }, ID = 2}
+                    new WordProperty{Name = "declension", Values = new StringSet{"strong" }, ID = 1},
+                    new WordProperty{Name = "gender", Values = new StringSet{"masculine" }, ID = 2}
                 }
             };
 
@@ -67,10 +67,10 @@ namespace Data.Tests
                 SourceLanguage = Languages[0],
                 SourceLanguageName = Languages[0].Name,
                 Value = "essen",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
-                    new WordProperty { Name = "voice", Values = new HashSet<String>{ "active" }, ID = 3 },
-                    new WordProperty { Name = "conjugation", Values = new HashSet<String>{"strong" }, ID = 4 }
+                    new WordProperty { Name = "voice", Values = new StringSet{ "active" }, ID = 3 },
+                    new WordProperty { Name = "conjugation", Values = new StringSet{"strong" }, ID = 4 }
                 }
             };
 
@@ -80,10 +80,10 @@ namespace Data.Tests
                 SourceLanguage = Languages[1],
                 SourceLanguageName = Languages[1].Name,
                 Value = "dog",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
-                    new WordProperty { Name = "plural", Values = new HashSet<String>{ "regular" }, ID = 5 },
-                    new WordProperty { Name = "synonym", Values = new HashSet<String>{ "humna's best friend" }, ID = 6 }
+                    new WordProperty { Name = "plural", Values = new StringSet{ "regular" }, ID = 5 },
+                    new WordProperty { Name = "synonym", Values = new StringSet{ "humna's best friend" }, ID = 6 }
                 }
             };
 
@@ -93,10 +93,10 @@ namespace Data.Tests
                 SourceLanguage = Languages[1],
                 SourceLanguageName = Languages[1].Name,
                 Value = "eat",
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
-                    new WordProperty { Name = "conjugation", Values = new HashSet<String> {"regular" }, ID = 7 },
-                    new WordProperty { Name = "voice", Values = new HashSet<String>{ "active" }, ID = 8 }
+                    new WordProperty { Name = "conjugation", Values = new StringSet{"regular" }, ID = 7 },
+                    new WordProperty { Name = "voice", Values = new StringSet{ "active" }, ID = 8 }
                 }
             };
 

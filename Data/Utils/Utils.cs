@@ -15,7 +15,7 @@ namespace Data.Util
             foreach(var i in wp)
             {
                 i.Name = regex.Replace(i.Name, " ").Trim();
-                var @new = new HashSet<String>();
+                var @new = new StringSet();
                 foreach(var j in i.Values)
                 {
                     @new.Add(regex.Replace(j, " ").Trim());

@@ -61,8 +61,7 @@ namespace Service
             }
 
             //check if there's a word with same set of WordProperties
-            //TODO implement equals check on WordProperty and its HashSet<String> of values
-            var similar = repo.GetByLanguageAndValue(entity.SourceLanguageName, entity.Value);
+            var similar = repo.GetByLanguageAndValue(entity.SourceLanguageName, entity.Value, false);
             foreach (var i in similar)
             {
                 if (entity.Properties.SetEquals(i.Properties) && String.Equals(entity.Value, i.Value, StringComparison.OrdinalIgnoreCase))

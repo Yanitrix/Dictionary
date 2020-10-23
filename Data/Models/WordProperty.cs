@@ -14,7 +14,7 @@ namespace Data.Models
         public String Name { get; set; }
 
         [Required]
-        public HashSet<String> Values { get; set; } = new HashSet<String>();
+        public StringSet Values { get; set; } = new StringSet();
 
         public override string ToString()
         {

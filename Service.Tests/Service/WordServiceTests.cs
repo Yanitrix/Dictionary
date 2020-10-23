@@ -42,43 +42,42 @@ namespace Service.Tests.Service
             var toReturn = new Word
             {
                 Value = "value", //lowercase
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
                     new WordProperty
                     {
                         Name = "name1 ",
-                        Values = new HashSet<String>{"value1", "value2"}
+                        Values = new StringSet("value2", "value1")
                     },
 
                     new WordProperty
                     {
                         Name = "name2",
-                        Values = new HashSet<String>{"value3", "value4"}
+                        Values = new StringSet("VAlue3", "value4")
                     },
                 }
             };
 
-            var entity = new Word()
+            var entity = new Word
             {
                 Value = "Value", //uppercase
-                Properties = new HashSet<WordProperty>
+                Properties = new WordPropertySet
                 {
                     new WordProperty
                     {
                         Name = "name1",
-                        Values = new HashSet<String>{"value1", "value2"}
+                        Values = new StringSet("value1", "value2")
                     },
 
                     new WordProperty
                     {
-                        Name = "name2",
-                        Values = new HashSet<String>{"value3", "value4"}
+                        Name = "NAme2",
+                        Values = new StringSet("value3", "valuE4")
                     },
                 }
             };
 
-            //they ^  differ only in case and trailing spaces
-            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
+            _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
 
             var result = service.TryAdd(entity);
