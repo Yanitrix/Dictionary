@@ -33,14 +33,19 @@ namespace Service.Repository
         }
 
         //ignores case
-        public IEnumerable<Word> GetByLanguageAndValue(string languageName, string value)
+        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String value, bool ignoreCase = true)
         {
-            return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
-                x => x,
-                null, includeQuery);
+            if (ignoreCase)
+            {
+                return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
+                    x => x,
+                    null, includeQuery);
+            }
+
+            return Get(w => w.Value == value && w.SourceLanguageName == languageName, x => x, null, includeQuery);
         }
 
-        public IEnumerable<Word> GetByValue(string value, bool ignoreCase = true)
+        public IEnumerable<Word> GetByValue(String value, bool ignoreCase = true)
         {
             if (ignoreCase)
             {

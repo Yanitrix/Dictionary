@@ -21,7 +21,7 @@ namespace Service.Repository
         /// Ignores case by default
         /// </summary>
         /// <returns>Matching collection</returns>
-        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String Value);
+        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String Value, bool ignoreCase = true);
 
         public bool ExistsByID(int id);
     }
