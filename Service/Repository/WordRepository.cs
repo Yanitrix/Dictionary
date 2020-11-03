@@ -37,7 +37,7 @@ namespace Service.Repository
         {
             if (ignoreCase)
             {
-                return Get(w => EF.Functions.Like(w.SourceLanguageName, $"%{languageName}%") && EF.Functions.Like(w.Value, $"%{value}%"),
+                return Get(w => EF.Functions.Like(w.SourceLanguageName, languageName) && EF.Functions.Like(w.Value, value),
                     x => x,
                     null, includeQuery);
             }
@@ -49,7 +49,7 @@ namespace Service.Repository
         {
             if (ignoreCase)
             {
-                return Get(w => EF.Functions.Like(w.Value, $"%{value}%"),
+                return Get(w => EF.Functions.Like(w.Value, value),
                     x => x,
                     words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
             }
