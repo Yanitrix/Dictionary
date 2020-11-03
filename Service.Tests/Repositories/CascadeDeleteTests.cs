@@ -42,13 +42,23 @@ namespace Service.Tests.Repositories
         word with entries, //done
         language with dictionaries //done
         */
+
+        private Word dummyWord
+        {
+            get => new Word
+            {
+                SourceLanguageName = "in",
+                Value = "value"
+            };
+        }
+
         [Fact]
         public void DeleteDictionaryWithExpressions()
         {
             var dict = new Dictionary
             {
-                LanguageInName = "sds",
-                LanguageOutName = "sdasda",
+                LanguageIn = new Language { Name = "in" },
+                LanguageOut = new Language { Name = "out" },
                 FreeExpressions = new List<Expression>
                 {
                     new Expression
@@ -80,7 +90,6 @@ namespace Service.Tests.Repositories
 
             var exp = new Expression
             {
-                DictionaryIndex = 12,
                 Text = "sdasda",
                 Translation = "sdasd"
             };
@@ -104,6 +113,17 @@ namespace Service.Tests.Repositories
         {
             var meaning = new Meaning
             {
+                Entry = new Entry
+                {
+                    Dictionary = new Dictionary
+                    {
+                        LanguageIn = new Language { Name = "in" },
+                        LanguageOut = new Language { Name = "out" },
+                    },
+
+                    Word = dummyWord,
+                },
+
                 Examples = new List<Expression>
                 {
                     new Expression
@@ -130,14 +150,12 @@ namespace Service.Tests.Repositories
             {
                 new Expression
                 {
-                    MeaningID = 12,
                     Text = "a",
                     Translation = "b"
                 },
 
                 new Expression
                 {
-                    MeaningID = 12,
                     Text = "a",
                     Translation = "b"
                 }
@@ -163,57 +181,77 @@ namespace Service.Tests.Repositories
             {
                 new Expression
                 {
-                    Text = "ss",
-                    Translation = "sdsds"
+                    Text = "text",
+                    Translation = "translation"
                 },
 
                 new Expression
                 {
-                    Text = "ss",
-                    Translation = "sdsds"
+                    Text = "text",
+                    Translation = "translation"
                 },
 
                 new Expression
                 {
-                    Text = "ss",
-                    Translation = "sdsds"
+                    Text = "text",
+                    Translation = "translation"
                 },
 
                 new Expression
                 {
-                    Text = "ss",
-                    Translation = "sdsds"
+                    Text = "text",
+                    Translation = "translation"
                 },
+
             };
 
             var dict = new Dictionary
             {
-                LanguageInName = "sds",
-                LanguageOutName = "sdasda",
+                LanguageIn = new Language { Name = "in" },
+                LanguageOut = new Language { Name = "out" },
                 FreeExpressions = new HashSet<Expression>
                 {
                     new Expression
                     {
-                        Text = "dd",
-                        Translation = "asdasd"
+                        Text = "text2",
+                        Translation = "translation2"
                     },
 
                     new Expression
                     {
-                        Text = "dfsdf",
-                        Translation = "sadsdsds"
+                        Text = "text2",
+                        Translation = "translation2"
                     },
                 }
             };
 
             var meaning = new Meaning
             {
+                //different dictionary as this above
+
+                Entry = new Entry
+                {
+                    Dictionary = new Dictionary
+                    {
+                        LanguageIn = new Language { Name = "rein" },
+                        LanguageOut = new Language { Name = "raus" },
+                    },
+
+                    Word = new Word
+                    {
+                        SourceLanguageName = "rein",
+                        Value = "value"
+                    },
+
+                },
+
+
                 Examples = new HashSet<Expression>
                 {
                     new Expression
                     {
-                        Text = "sadasdas",
-                        Translation = "hahsdhasd"
+                        Text = "text3",
+                        Translation = "translation3"
                     }
                 }
             };
@@ -266,12 +304,11 @@ namespace Service.Tests.Repositories
                 },
             };
 
-            expressionRepo.CreateRange(expressions);
 
             var dict = new Dictionary
             {
-                LanguageInName = "in",
-                LanguageOutName = "out",
+                LanguageIn = new Language { Name = "in" },
+                LanguageOut = new Language { Name = "out" },
                 FreeExpressions = new HashSet<Expression>
                 {
                     expressions[0],
@@ -282,7 +319,8 @@ namespace Service.Tests.Repositories
                 {
                     new Entry
                     {
-                        WordID = 1,
+                        Word = dummyWord,
+
                         Meanings = new HashSet<Meaning>
                         {
                             new Meaning
@@ -299,6 +337,7 @@ namespace Service.Tests.Repositories
 
             };
 
+            expressionRepo.CreateRange(expressions);
             dictRepo.Create(dict);
 
             Assert.Single(dictRepo.All());
@@ -315,10 +354,32 @@ namespace Service.Tests.Repositories
         [Fact]
         public void DeleteEntryWithMeanings()
         {
+            var dict = new Dictionary
+            {
+                LanguageIn = new Language { Name = "in" },
+                LanguageOut = new Language { Name = "out" },
+            };
+
+            Meaning[] meanings =
+            {
+
+                new Meaning
+                {
+                    Value = "free1"
+                },
+
+                new Meaning
+                {
+                    Value = "free2"
+                }
+            };
+
             Entry[] entries =
             {
                 new Entry
                 {
+                    Word = dummyWord,
+
                     Meanings = new HashSet<Meaning>
                     {
                         new Meaning
@@ -335,6 +396,8 @@ namespace Service.Tests.Repositories
 
                 new Entry
                 {
+                    Word = dummyWord,
+
                     Meanings = new HashSet<Meaning>
                     {
                         new Meaning
@@ -352,34 +415,31 @@ namespace Service.Tests.Repositories
                         },
 
                     }
-                }
-            };
-
-            Meaning[] meanings =
-            {
-                new Meaning
-                {
-                    Value = "free1"
                 },
 
-                new Meaning
+                new Entry
                 {
-                    Value = "free2"
+                    Word = dummyWord,
+
+                    Meanings = meanings.ToHashSet(),
                 }
             };
 
-            entryRepo.CreateRange(entries);
-            meaningRepo.CreateRange(meanings);
+            dict.Entries = entries.ToHashSet();
 
-            Assert.Equal(2, entryRepo.All().Count());
+            dictRepo.Create(dict);
+            //entryRepo.CreateRange(entries);
+            //meaningRepo.CreateRange(meanings);
+
+            Assert.Equal(3, entryRepo.All().Count());
             Assert.Equal(7, meaningRepo.All().Count());
 
             entryRepo.Delete(entries[0]);
 
-            Assert.Single(entryRepo.All());
+            Assert.Equal(2, entryRepo.All().Count());
             Assert.Equal(5, meaningRepo.All().Count());
 
-            var indexed = new List<Meaning>(meaningRepo.All());
+            //var indexed = new List<Meaning>(meaningRepo.All());
 
             //Assert.Equal("entry2.meaning1", indexed[0].Value);
             //Assert.Equal("entry2.meaning2", indexed[1].Value);
@@ -393,18 +453,18 @@ namespace Service.Tests.Repositories
         {
             var dict = new Dictionary
             {
-                LanguageInName = "in",
-                LanguageOutName = "out",
+                LanguageIn = new Language { Name = "in" },
+                LanguageOut = new Language { Name = "out" },
                 Entries = new HashSet<Entry>
                 {
                     new Entry
                     {
-                        WordID = 1,
+                        Word = dummyWord,
                     },
 
                     new Entry
                     {
-                        WordID = 2
+                        Word = dummyWord,
                     }
                 }
             };
@@ -417,22 +477,22 @@ namespace Service.Tests.Repositories
                 {
                     new Entry
                     {
-                        WordID = 3,
+                        Word = dummyWord,
                     },
 
                     new Entry
                     {
-                        WordID = 4
+                        Word = dummyWord,
                     },
 
                     new Entry
                     {
-                        WordID = 5
+                        Word = dummyWord,
                     },
 
                     new Entry
                     {
-                        WordID = 6
+                        Word = dummyWord,
                     }
 }
             };
@@ -441,7 +501,8 @@ namespace Service.Tests.Repositories
             {
                 new Entry
                 {
-                    WordID = 12
+                    Dictionary = dict1,
+                    Word = dummyWord,
                 }
 
             };
@@ -456,7 +517,7 @@ namespace Service.Tests.Repositories
             dictRepo.Delete(dict1);
 
             Assert.Single(dictRepo.All());
-            Assert.Equal(3, entryRepo.All().Count());
+            Assert.Equal(2, entryRepo.All().Count());
         }
 
         [Fact]
@@ -506,13 +567,13 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
-                    SourceLanguageName = "russian",
+                    SourceLanguage = new Language { Name = "russian" },
                     Value = " skdjaksjdasd"
                 },
 
                 new Word
                 {
-                    SourceLanguageName = "english",
+                    SourceLanguage = new Language { Name = "english" },
                     Value = "sadsdas"
                 }
             };
@@ -521,17 +582,18 @@ namespace Service.Tests.Repositories
             langRepo.Create(lang2);
             wordRepo.CreateRange(words);
 
-            Assert.Equal(2, langRepo.All().Count());
+            Assert.Equal(4, langRepo.All().Count());
             Assert.Equal(7, wordRepo.All().Count());
 
             langRepo.Delete(lang1);
 
-            Assert.Single(langRepo.All());
+            Assert.Equal(3, langRepo.All().Count());
             Assert.Equal(4, wordRepo.All().Count());
 
             langRepo.Delete(lang2);
 
-            Assert.Empty(langRepo.All());
+            Assert.NotEmpty(langRepo.All());
+            Assert.Equal(2, langRepo.All().Count());
             Assert.Equal(2, wordRepo.All().Count());
         }
 
@@ -540,8 +602,8 @@ namespace Service.Tests.Repositories
         {
             var dict = new Dictionary
             {
-                LanguageInName = "english",
-                LanguageOutName = "german",
+                LanguageIn = new Language { Name = "english"},
+                LanguageOut = new Language { Name = "german"},
                 Entries = new HashSet<Entry>
                 {
                     new Entry
@@ -656,7 +718,7 @@ namespace Service.Tests.Repositories
             Assert.Single(dictRepo.All());
             Assert.Single(wordRepo.All());
             Assert.Single(entryRepo.All());
-            
+
         }
 
         [Fact]
