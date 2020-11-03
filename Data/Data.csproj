@@ -11,6 +11,8 @@
     <Compile Remove="Data\Migrations\20200823130441_CascadeDeletingChildEntities.Designer.cs" />
     <Compile Remove="Data\Migrations\20200823142503_CascadeDeletingChildEntities.cs" />
     <Compile Remove="Data\Migrations\20200823142503_CascadeDeletingChildEntities.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201031160731_CustomCollections.cs" />
+    <Compile Remove="Data\Migrations\20201031160731_CustomCollections.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

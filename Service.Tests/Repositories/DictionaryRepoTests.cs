@@ -16,18 +16,36 @@ namespace Service.Tests.Repositories
             repo = new DictionaryRepository(this.context);
         }
 
+        private void reloadRepo()
+        {
+            this.changeContext();
+            repo = new DictionaryRepository(this.context);
+        }
+
         void putData()
         {
             Dictionary[] entities =
             {
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "english"
+                    },
+                    LanguageOut = new Language
+                    {
+                        Name = "polish"
+                    },
                     LanguageInName = "english",
                     LanguageOutName = "polish"
                 },
 
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "german"
+                    },
                     LanguageInName = "german",
                     LanguageOutName = "english"
                 },
@@ -40,18 +58,38 @@ namespace Service.Tests.Repositories
 
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "japanese"
+                    },
+                    LanguageOut = new Language
+                    {
+                        Name = "zimbabwean"
+                    },
                     LanguageInName = "japanese",
                     LanguageOutName = "zimbabwean"
                 },
 
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "russian"
+                    },
                     LanguageInName = "russian",
                     LanguageOutName = "japanese"
                 },
 
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "nor deutsch nor russian"
+                    },
+                    LanguageOut = new Language
+                    {
+                        Name = "yes it is"
+                    },
                     LanguageInName = "nor deutsch nor russian",
                     LanguageOutName = "yes it is"
                 }
@@ -68,12 +106,24 @@ namespace Service.Tests.Repositories
             {
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "english"
+                    },
+                    LanguageOut = new Language
+                    {
+                        Name = "polish"
+                    },
                     LanguageInName = "english",
                     LanguageOutName = "polish"
                 },
 
                 new Dictionary
                 {
+                    LanguageIn = new Language
+                    {
+                        Name = "german"
+                    },
                     LanguageInName = "german",
                     LanguageOutName = "english"
                 }
@@ -81,8 +131,7 @@ namespace Service.Tests.Repositories
 
             repo.CreateRange(entities);
             var idx = entities[1].Index;
-            repo.Detach(entities[0]);
-            repo.Detach(entities[1]);
+            reloadRepo();
 
             var found = repo.GetByIndex(idx);
 

@@ -12,24 +12,37 @@ namespace Service.Tests.Repositories
     {
         IDictionaryRepository dictionaryRepo;
         IEntryRepository repo;
-        IMeaningRepository meaningRepo;
 
         public EntryRepositoryTests()
         {
             dictionaryRepo = new DictionaryRepository(this.context);
             repo = new EntryRepository(this.context);
-            meaningRepo = new MeaningRepository(this.context);
         }
 
+        private void reloadRepos()
+        {
+            this.changeContext();
+            dictionaryRepo = new DictionaryRepository(this.context);
+            repo = new EntryRepository(this.context);
+        }
+
+        //TODO split method into two
         private Dictionary[] createDictWithEverythingNeeded()
         {
             //first has 2 entries
             #region english-german dictionary
             var dict = new Dictionary
             {
+                LanguageIn = new Language
+                {
+                    Name = "english"
+                },
+                LanguageOut = new Language
+                {
+                    Name = "german"
+                },
                 LanguageInName = "english",
                 LanguageOutName = "german",
-                Index = 1,
                 Entries = new HashSet<Entry>
                 {
                     new Entry
@@ -138,6 +151,14 @@ namespace Service.Tests.Repositories
 
             var dict1 = new Dictionary
             {
+                LanguageIn = new Language
+                {
+                    Name = "german"
+                },
+                LanguageOut = new Language
+                {
+                    Name = "english"
+                },
                 LanguageInName = "german",
                 LanguageOutName = "english",
                 Entries = new HashSet<Entry>
@@ -205,7 +226,6 @@ namespace Service.Tests.Repositories
                             }
                         },
                     },
-                    new Entry()
                 }
             };
 
@@ -222,7 +242,8 @@ namespace Service.Tests.Repositories
             var dict = createDictWithEverythingNeeded()[0];
 
             dictionaryRepo.Create(dict);
-            dictionaryRepo.Detach(dict);
+            reloadRepos();
+
             var id = dict.Entries.First().ID;
 
             var found = repo.GetByID(id);
@@ -245,7 +266,7 @@ namespace Service.Tests.Repositories
             var dict = createDictWithEverythingNeeded()[1];
 
             dictionaryRepo.Create(dict);
-            dictionaryRepo.Detach(dict);
+            reloadRepos();
 
             var dictIdx = dict.Index;
             var word = "stock";
@@ -276,7 +297,7 @@ namespace Service.Tests.Repositories
             var dict = createDictWithEverythingNeeded()[1];
 
             dictionaryRepo.Create(dict);
-            dictionaryRepo.Detach(dict);
+            reloadRepos();
 
             var dictIdx = dict.Index;
 

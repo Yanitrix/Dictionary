@@ -16,12 +16,6 @@ namespace Service.Tests.Repositories
         {
             repository = new WordRepository(this.context);
 
-            putData();
-        }
-
-        private void putData()
-        {
-
         }
 
         [Fact]
@@ -29,6 +23,10 @@ namespace Service.Tests.Repositories
         {
             Word word = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "russian"
+                },
                 SourceLanguageName = "russian",
                 Value = "index",
                 Properties = new WordPropertySet
@@ -63,6 +61,10 @@ namespace Service.Tests.Repositories
         {
             var entity = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "hs"
+                },
                 SourceLanguageName = "hs",
                 Value = "hs",
                 Properties = new WordPropertySet
@@ -81,6 +83,7 @@ namespace Service.Tests.Repositories
             repository.Create(entity);
             var entityInDb = repository.All().First();
             entityInDb.SourceLanguageName = "russian";
+            entityInDb.SourceLanguage = new Language { Name = newLanguageName };
             entityInDb.Value = "a normal word";
 
             repository.Update(entityInDb);
@@ -96,6 +99,10 @@ namespace Service.Tests.Repositories
         {
             var entity = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "hs"
+                },
                 SourceLanguageName = "hs",
                 Value = "stick"
             };
@@ -113,6 +120,10 @@ namespace Service.Tests.Repositories
         {
             var entity = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "hs"
+                },
                 SourceLanguageName = "hs",
                 Value = "stick"
             };
@@ -129,12 +140,20 @@ namespace Service.Tests.Repositories
         {
             var entity1 = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "sk"
+                },
                 SourceLanguageName = "sk",
                 Value = "pot"
             };
 
             var entity2 = new Word
             {
+                SourceLanguage = new Language
+                {
+                    Name = "ów"
+                },
                 SourceLanguageName = "ów",
                 Value = "hot"
             };
@@ -163,6 +182,10 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "arabic"
+                    },
                     SourceLanguageName = "arabic",
                     Value = "stick"
                 },
@@ -175,6 +198,10 @@ namespace Service.Tests.Repositories
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "not so arabic"
+                    },
                     SourceLanguageName = "not so arabic",
                     Value = "stick"
                 },
@@ -187,6 +214,10 @@ namespace Service.Tests.Repositories
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "zimbabwean"
+                    },
                     SourceLanguageName = "zimbabwean",
                     Value = "stick"
                 },
@@ -217,18 +248,30 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "arabic"
+                    },
                     SourceLanguageName = "arabic",
                     Value = "stick"
                 },
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "not so arabic"
+                    },
                     SourceLanguageName = "not so arabic",
                     Value = "not-a-stick"
                 },
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "zimbabwean"
+                    },
                     SourceLanguageName = "zimbabwean",
                     Value = "stick"
                 },
@@ -242,6 +285,7 @@ namespace Service.Tests.Repositories
 
         }
 
+        //TODO querying strings not working
         [Fact]
         public void GetByLanguageAndValue_ShouldNotBeEmpty()
         {
@@ -249,6 +293,10 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "arabic"
+                    },
                     SourceLanguageName = "arabic",
                     Value = "stick"
                 },
@@ -267,6 +315,10 @@ namespace Service.Tests.Repositories
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "not so arabic"
+                    },
                     SourceLanguageName = "not so arabic",
                     Value = "stick"
                 },
@@ -279,6 +331,10 @@ namespace Service.Tests.Repositories
 
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "zimbabwean"
+                    },
                     SourceLanguageName = "zimbabwean",
                     Value = "stick"
                 },
@@ -305,6 +361,10 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "arabic"
+                    },
                     SourceLanguageName = "arabic",
                     Value = "stick",
                     Properties = new WordPropertySet
@@ -357,10 +417,9 @@ namespace Service.Tests.Repositories
             repository.Create(entities[1]);
             repository.Create(entities[2]);
 
-            //detach them so that eager loading must be made to retrieve properties
-            repository.Detach(entities[0]);
-            repository.Detach(entities[1]);
-            repository.Detach(entities[2]);
+            //changing context so that entities must be loaded from db, not from memory
+            this.changeContext();
+            repository = new WordRepository(this.context);
 
             var found = repository.GetOne(w => w.Value == "sticky");
 
@@ -376,6 +435,10 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
+                    SourceLanguage = new Language
+                    {
+                        Name = "arabic"
+                    },
                     SourceLanguageName = "arabic",
                     Value = "stick",
                     Properties = new WordPropertySet
@@ -428,10 +491,8 @@ namespace Service.Tests.Repositories
             repository.Create(entities[1]);
             repository.Create(entities[2]);
 
-            //detach them so that eager loading must be made to retrieve properties
-            repository.Detach(entities[0]);
-            repository.Detach(entities[1]);
-            repository.Detach(entities[2]);
+            this.changeContext();
+            repository = new WordRepository(this.context);
 
             var foundWords = repository.Get(w => w.Value.StartsWith("stick"), x => x);
             var indexed = new List<Word>(foundWords);
@@ -440,7 +501,7 @@ namespace Service.Tests.Repositories
 
             Assert.Equal("arabic", indexed[0].SourceLanguageName);
             Assert.Equal("stick", indexed[0].Value);
-            Assert.Equal(1, indexed[0].Properties.Count);
+            Assert.Single(indexed[0].Properties);
             
             Assert.Equal("arabic", indexed[1].SourceLanguageName);
             Assert.Equal("sticky", indexed[1].Value);

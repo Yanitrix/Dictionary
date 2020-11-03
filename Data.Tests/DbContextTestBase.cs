@@ -1,5 +1,6 @@
 ﻿using Data.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Data.Tests
     public class DbContextTestBase : IDisposable
     {
         protected DatabaseContext context;
+
+        private DbContextOptions<DatabaseContext> options;
 
         public DbContextTestBase()
         {
@@ -20,14 +23,26 @@ namespace Data.Tests
             context.Dispose();
         }
 
-        protected void initializeDatabase()
+        protected void changeContext()
         {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
+            this.context.Dispose();
+            this.context = new DatabaseContext(options);
+        }
+
+        private void initializeDatabase()
+        {
+            this.context?.Database.EnsureDeleted();
+            this.context?.Dispose();
+
+            var services = new ServiceCollection().AddEntityFrameworkSqlServer().BuildServiceProvider();
+
+            options = new DbContextOptionsBuilder<DatabaseContext>()
+                .UseSqlServer($"Server=(localdb)\\mssqllocaldb;Database=dictionary_{Guid.NewGuid()};Trusted_Connection=True").
+                UseInternalServiceProvider(services).
+                Options;
 
             this.context = new DatabaseContext(options);
-
-            context.Database.EnsureCreated();
+            this.context.Database.Migrate();
         }
     }
 }
