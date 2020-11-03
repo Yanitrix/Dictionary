@@ -23,7 +23,7 @@ namespace Data.Models
             if (obj == null) return 0;
             var hash = new HashCode();
             hash.Add(obj.Name.Trim().ToUpper());
-            hash.Add(obj.Values.GetHashCode());
+            hash.Add(obj.Values?.GetHashCode());
             return hash.ToHashCode();
         }
     }
