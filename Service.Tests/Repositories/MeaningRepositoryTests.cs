@@ -21,10 +21,41 @@ namespace Service.Tests.Repositories
             expressionRepo = new ExpressionRepository(this.context);
         }
 
-        private Meaning createEntityWihtExamples()
+        private void reloadRepos()
+        {
+            changeContext();
+            repo = new MeaningRepository(this.context);
+            entryRepo = new EntryRepository(this.context);
+            expressionRepo = new ExpressionRepository(this.context);
+        }
+
+        private Dictionary dummyDic() => new Dictionary
+        {
+            LanguageIn = new Language
+            {
+                Name = "dummy language"
+            },
+            LanguageOutName = "dummy language"
+        };
+
+        private Word dummyWord() => new Word
+        {
+            SourceLanguageName = "dummy language",
+            Value = "dummy value"
+        };
+
+        private Entry dummyEntry() => new Entry
+        {
+            Dictionary = dummyDic(),
+            Word = dummyWord()
+        };
+
+        private Meaning createMeaningWihtExamples()
         {
             var entity = new Meaning
             {
+                Entry = dummyEntry(),
+
                 Value = "stick",
                 Examples = new List<Expression>
                 {
@@ -45,7 +76,7 @@ namespace Service.Tests.Repositories
             return entity;
         }
 
-        private Meaning createEntityWithExamplesAndEntry()
+        private Meaning createMeaningWithExamplesAndEntry()
         {
             var entity = new Meaning
             {
@@ -64,11 +95,8 @@ namespace Service.Tests.Repositories
                         Translation = "to be out or order"
                     }
                 },
-                Entry = new Entry
-                {
-                    DictionaryIndex = 1,
-                    WordID = 1,
-                }
+
+                Entry = dummyEntry()
             };
 
             return entity;
@@ -78,8 +106,9 @@ namespace Service.Tests.Repositories
         {
             var entry = new Entry
             {
-                DictionaryIndex = 1,
-                WordID = 1,
+                Dictionary = dummyDic(),
+                Word = dummyWord(),
+
                 Meanings = new HashSet<Meaning>
                 {
                     new Meaning
@@ -88,7 +117,11 @@ namespace Service.Tests.Repositories
                         Value = "stringsub",
                         Examples = new List<Expression>
                         {
-                            new Expression{}
+                            new Expression
+                            {
+                                Text = "text",
+                                Translation = "translation"
+                            },
                         }
                     },
 
@@ -98,8 +131,16 @@ namespace Service.Tests.Repositories
                         Value = "pan",
                         Examples = new List<Expression>
                         {
-                            new Expression{},
-                            new Expression{}
+                            new Expression
+                            {
+                                Text = "text1",
+                                Translation = "translation1"
+                            },
+                            new Expression
+                            {
+                                Text = "text2",
+                                Translation = "translation2"
+                            },
                         }
                     },
 
@@ -109,9 +150,21 @@ namespace Service.Tests.Repositories
                         Value = "this is not a stringsub",
                         Examples = new List<Expression>
                         {
-                            new Expression{},
-                            new Expression{},
-                            new Expression{}
+                            new Expression
+                            {
+                                Text = "text3",
+                                Translation = "translation3"
+                            },
+                            new Expression
+                            {
+                                Text = "text4",
+                                Translation = "translation4"
+                            },
+                            new Expression
+                            {
+                                Text = "text5",
+                                Translation = "translation5"
+                            },
                         }
                     },
 
@@ -125,9 +178,9 @@ namespace Service.Tests.Repositories
         [Fact]
         public void AddWithChildren_ChildrenExist()
         {
-            var entity = createEntityWihtExamples();
+            var entity = createMeaningWihtExamples();
             repo.Create(entity);
-            repo.Detach(entity);
+
 
             var inDB = repo.All().FirstOrDefault();
             context.Entry(inDB).Collection(m => m.Examples).Load();
@@ -141,9 +194,9 @@ namespace Service.Tests.Repositories
         [Fact]
         public void GetByID_ReturnsEntityWithExamples()
         {
-            var entity = createEntityWihtExamples();
+            var entity = createMeaningWihtExamples();
             repo.Create(entity);
-            repo.Detach(entity);
+            reloadRepos();
 
             var id = entity.ID;
             var found = repo.GetByID(id);
@@ -155,19 +208,17 @@ namespace Service.Tests.Repositories
         [Fact]
         public void GetByID_ReturnsEntityWithExamplesAndEntry()
         {
-            var entity = createEntityWithExamplesAndEntry();
+            var entity = createMeaningWithExamplesAndEntry();
             repo.Create(entity);
-            repo.Detach(entity);
+            reloadRepos();
 
             var id = entity.ID;
 
-            var found = repo.GetByID(id);
+            var found = repo.GetByIDWithEntry(id);
 
             Assert.NotNull(found);
             Assert.NotEmpty(found.Examples);
             Assert.NotNull(found.Entry);
-            Assert.Equal(1, found.Entry.DictionaryIndex);
-            Assert.Equal(1, found.Entry.WordID);
         }
 
         //test cases: empty or null
@@ -176,7 +227,7 @@ namespace Service.Tests.Repositories
         {
             var entity = createEntryWithMeanings();
             entryRepo.Create(entity);
-            entryRepo.Detach(entity);
+            reloadRepos();
 
             var entryID = entity.ID;
 
@@ -206,7 +257,7 @@ namespace Service.Tests.Repositories
         {
             var entity = createEntryWithMeanings();
             entryRepo.Create(entity);
-            entryRepo.Detach(entity);
+            reloadRepos();
 
             var found = repo.GetByValueSubstring(query);
             Assert.NotNull(found);
@@ -218,7 +269,7 @@ namespace Service.Tests.Repositories
         {
             var entity = createEntryWithMeanings();
             entryRepo.Create(entity);
-            entryRepo.Detach(entity);
+            reloadRepos();
 
             var entryID = entity.ID;
 
@@ -248,7 +299,7 @@ namespace Service.Tests.Repositories
         {
             var entity = createEntryWithMeanings();
             entryRepo.Create(entity);
-            entryRepo.Detach(entity);
+            reloadRepos();
 
             var found = repo.GetByNotesSubstring(query);
             Assert.NotNull(found);
@@ -258,9 +309,9 @@ namespace Service.Tests.Repositories
         [Fact]
         public void Delete_CascadeDeleteWorks()
         {
-            var entity = createEntityWihtExamples();
+            var entity = createMeaningWihtExamples();
             repo.Create(entity);
-            repo.Detach(entity);
+            reloadRepos();
 
             var id = entity.ID;
 

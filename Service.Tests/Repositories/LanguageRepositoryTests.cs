@@ -14,7 +14,6 @@ namespace Service.Tests.Repositories
         public LanguageRepositoryTests()
         {
             repo = new LanguageRepository(context);
-            //putData();
         }
 
         private void putData()
@@ -27,6 +26,12 @@ namespace Service.Tests.Repositories
             };
 
             repo.CreateRange(list.ToArray());
+        }
+
+        private void reloadRepo()
+        {
+            this.changeContext();
+            repo = new LanguageRepository(this.context);
         }
 
         private void putData1()
@@ -103,9 +108,7 @@ namespace Service.Tests.Repositories
             };
 
             repo.CreateRange(entities);
-            //detaching so that they must be loaded from DB
-            repo.Detach(entities[0]);
-            repo.Detach(entities[1]);
+            reloadRepo();
         }
 
         [Fact]
@@ -122,7 +125,7 @@ namespace Service.Tests.Repositories
         [InlineData("ssds")]
         [InlineData("polish")]
         [InlineData("russian")]
-        [InlineData("śöäąć")]
+        [InlineData("śöäąćń")]
         public void GetByName_NameDoesNotExist_ReturnsNull(String name)
         {
             putData();
