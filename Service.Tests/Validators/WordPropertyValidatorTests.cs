@@ -1,7 +1,6 @@
 ﻿using Service.Validation;
 using Data.Models;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Service.Tests.Validators
@@ -53,7 +52,7 @@ namespace Service.Tests.Validators
             Assert.False(result.IsValid);
         }
 
-        [Fact]  
+        [Fact]
         public void NameNotEmpty_ShouldBeValid()
         {
             entity.Name = "s";
