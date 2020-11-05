@@ -4,6 +4,7 @@ using System;
 namespace Service.Repository
 {
     //virtual properties and zero constructor because of moq
+    //TODO implement UOW in proper way
     public class UnitOfWork : IDisposable
     {
         private readonly DatabaseContext context;
@@ -12,12 +13,10 @@ namespace Service.Repository
         private IWordRepository wordRepo;
         private IEntryRepository entryRepo;
         private IMeaningRepository meaningRepo;
-        private IExpressionRepository expressionRepo;
+        private IExampleRepository exampleRepo;
+        private IFreeExpressionRepository freeExpressionRepo;
 
-        public UnitOfWork()
-        {
-
-        }
+        public UnitOfWork() { }
 
         public UnitOfWork(DatabaseContext context)
         {
@@ -64,11 +63,19 @@ namespace Service.Repository
             }
         }
 
-        public virtual IExpressionRepository Expressions
+        public virtual IExampleRepository Examples
         {
             get
             {
-                return expressionRepo ??= new ExpressionRepository(context);
+                return exampleRepo ??= new ExampleRepository(context);
+            }
+        }
+
+        public virtual IFreeExpressionRepository FreeExpressions
+        {
+            get
+            {
+                return freeExpressionRepo ??= new FreeExpressionRepository(context);
             }
         }
 

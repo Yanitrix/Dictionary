@@ -12,13 +12,13 @@ namespace Service.Tests.Repositories
     {
         public IMeaningRepository repo;
         public IEntryRepository entryRepo;
-        public IExpressionRepository expressionRepo;
+        public IExampleRepository exampleRepo;
 
         public MeaningRepositoryTests()
         {
             repo = new MeaningRepository(this.context);
             entryRepo = new EntryRepository(this.context);
-            expressionRepo = new ExpressionRepository(this.context);
+            exampleRepo = new ExampleRepository(this.context);
         }
 
         private void reloadRepos()
@@ -26,7 +26,7 @@ namespace Service.Tests.Repositories
             changeContext();
             repo = new MeaningRepository(this.context);
             entryRepo = new EntryRepository(this.context);
-            expressionRepo = new ExpressionRepository(this.context);
+            exampleRepo = new ExampleRepository(this.context);
         }
 
         private Dictionary dummyDic() => new Dictionary
@@ -57,15 +57,15 @@ namespace Service.Tests.Repositories
                 Entry = dummyEntry(),
 
                 Value = "stick",
-                Examples = new List<Expression>
+                Examples = new List<Example>
                 {
-                    new Expression
+                    new Example
                     {
                         Text = "gegessen sein",
                         Translation = "to be dead and buried"
                     },
 
-                    new Expression
+                    new Example
                     {
                         Text = "außer Betrieb sein",
                         Translation = "to be out or order"
@@ -81,15 +81,15 @@ namespace Service.Tests.Repositories
             var entity = new Meaning
             {
                 Value = "stick",
-                Examples = new List<Expression>
+                Examples = new List<Example>
                 {
-                    new Expression
+                    new Example
                     {
                         Text = "gegessen sein",
                         Translation = "to be dead and buried"
                     },
 
-                    new Expression
+                    new Example
                     {
                         Text = "außer Betrieb sein",
                         Translation = "to be out or order"
@@ -115,9 +115,9 @@ namespace Service.Tests.Repositories
                     {
                         Notes = "substring",
                         Value = "stringsub",
-                        Examples = new List<Expression>
+                        Examples = new List<Example>
                         {
-                            new Expression
+                            new Example
                             {
                                 Text = "text",
                                 Translation = "translation"
@@ -129,14 +129,14 @@ namespace Service.Tests.Repositories
                     {
                         Notes = "this is a substring",
                         Value = "pan",
-                        Examples = new List<Expression>
+                        Examples = new List<Example>
                         {
-                            new Expression
+                            new Example
                             {
                                 Text = "text1",
                                 Translation = "translation1"
                             },
-                            new Expression
+                            new Example
                             {
                                 Text = "text2",
                                 Translation = "translation2"
@@ -148,28 +148,26 @@ namespace Service.Tests.Repositories
                     {
                         Notes = "hstus",
                         Value = "this is not a stringsub",
-                        Examples = new List<Expression>
+                        Examples = new List<Example>
                         {
-                            new Expression
+                            new Example
                             {
                                 Text = "text3",
                                 Translation = "translation3"
                             },
-                            new Expression
+                            new Example
                             {
                                 Text = "text4",
                                 Translation = "translation4"
                             },
-                            new Expression
+                            new Example
                             {
                                 Text = "text5",
                                 Translation = "translation5"
                             },
                         }
                     },
-
                 },
-
             };
 
             return entry;
@@ -181,14 +179,12 @@ namespace Service.Tests.Repositories
             var entity = createMeaningWihtExamples();
             repo.Create(entity);
 
-
             var inDB = repo.All().FirstOrDefault();
             context.Entry(inDB).Collection(m => m.Examples).Load();
 
             Assert.NotNull(inDB);
-            Assert.NotEmpty(expressionRepo.All());
+            Assert.NotEmpty(exampleRepo.All());
             Assert.NotEmpty(inDB.Examples);
-
         }
 
         [Fact]
@@ -319,7 +315,7 @@ namespace Service.Tests.Repositories
             repo.Delete(inDB);
 
             Assert.Empty(repo.All());
-            Assert.Empty(expressionRepo.All());
+            Assert.Empty(exampleRepo.All());
         }
     }
 }

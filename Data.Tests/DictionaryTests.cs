@@ -53,15 +53,15 @@ namespace Data.Tests
                     Word = data.Languages[0].Words.Single(w => w.Value == "essen"),
                     Meanings = new HashSet<Meaning>
                     {
-                        new Meaning{Value = "eat", Examples = new HashSet<Expression>
+                        new Meaning{Value = "eat", Examples = new HashSet<Example>
                             {
-                                new Expression{Text = "gegessen sein", Translation = "to be dead and buried"}
+                                new Example{Text = "gegessen sein", Translation = "to be dead and buried"}
                             } 
                         }
                         ,
-                        new Meaning{Value = "dine", Examples = new HashSet<Expression>
+                        new Meaning{Value = "dine", Examples = new HashSet<Example>
                             {
-                                new Expression{Text = "von etw. essen", Translation = "to eat from sth."}
+                                new Example{Text = "von etw. essen", Translation = "to eat from sth."}
                             }
                         }
                     },
