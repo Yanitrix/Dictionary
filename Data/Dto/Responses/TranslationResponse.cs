@@ -15,8 +15,8 @@ namespace Data.Dto
 
         //now, separate lists for FreeExpressions
 
-        public IEnumerable<Expression> ResultExpressions { get; set; }
+        public IEnumerable<FreeExpression> ResultExpressions { get; set; }
 
-        public IEnumerable<Expression> OppositeResultExpressions { get; set; }
+        public IEnumerable<FreeExpression> OppositeResultExpressions { get; set; }
     }
 }

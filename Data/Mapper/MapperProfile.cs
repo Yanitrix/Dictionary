@@ -1,9 +1,6 @@
 ﻿using Data.Dto;
 using AutoMapper;
 using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Data.Mapper
 {
@@ -13,13 +10,14 @@ namespace Data.Mapper
         {
             CreateMap<LanguageDto, Language>().ReverseMap();
             CreateMap<WordDto, Word>().ReverseMap();
+            CreateMap<WordPropertyDto, WordProperty>().ReverseMap();
 
             CreateMap<DictionaryDto, Dictionary>().ReverseMap();
-            CreateMap<ExpressionDto, Expression>().ReverseMap();
             CreateMap<EntryDto, Entry>().ReverseMap();
             CreateMap<MeaningDto, Meaning>().ReverseMap();
 
-            CreateMap<WordPropertyDto, WordProperty>().ReverseMap();
+            CreateMap<ExampleDto, Example>().ReverseMap();
+            CreateMap<FreeExpressionDto, FreeExpression>().ReverseMap();
         }
     }
 }
