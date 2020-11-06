@@ -50,11 +50,19 @@ namespace Service.Tests.Service
             }
         }
 
-        protected Mock<IExpressionRepository> expRepo
+        protected Mock<IFreeExpressionRepository> freeExpressionRepo
         {
             set
             {
-                uow.Setup(_ => _.Expressions).Returns(value.Object);
+                uow.Setup(_ => _.FreeExpressions).Returns(value.Object);
+            }
+        }
+
+        protected Mock<IExampleRepository> exampleRepo
+        {
+            set
+            {
+                uow.Setup(_ => _.Examples).Returns(value.Object);
             }
         }
     }

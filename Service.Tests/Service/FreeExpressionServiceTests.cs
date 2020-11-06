@@ -1,0 +1,94 @@
+﻿using Data.Models;
+using Moq;
+using Service.Repository;
+using Service.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Xunit;
+
+namespace Service.Tests.Service
+{
+    public class FreeExpressionServiceTests : UowTestBase
+    {
+        IService<FreeExpression> service;
+        Mock<IFreeExpressionRepository> _repo = new Mock<IFreeExpressionRepository>();
+        Mock<IDictionaryRepository> _dictRepo = new Mock<IDictionaryRepository>();
+
+
+        public FreeExpressionServiceTests()
+        {
+            freeExpressionRepo = _repo;
+            dictRepo = _dictRepo;
+            service = new FreeExpressionService(this.uow.Object, VMoq.Instance<FreeExpression>());
+        }
+
+        private FreeExpression entity { get => new FreeExpression { DictionaryIndex = 12 }; }
+
+        [Fact]
+        public void TryAdd_DictionaryExists_AddsProperly()
+        {
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
+
+            var result = service.TryAdd(entity);
+
+            _repo.Verify(_ => _.Create(It.IsAny<FreeExpression>()), Times.Once);
+            Assert.Empty(result);
+            Assert.True(result.IsValid);
+        }
+
+        [Fact]
+        public void TryAdd_DictionaryDoesNotExist_ReturnsError()
+        {
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+
+            var result = service.TryAdd(entity);
+
+            _repo.Verify(_ => _.Create(It.IsAny<FreeExpression>()), Times.Never);
+            Assert.Single(result);
+            Assert.Equal("Dictionary not found", result.First().Key);
+        }
+
+
+        [Fact]
+        public void TryUpdate_FreeExpressionExistsButAnotherErrorOccurs_ReturnsError()
+        {
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(true);
+
+            var result = service.TryUpdate(entity);
+
+            _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Never);
+            Assert.Single(result);
+            Assert.Equal("Dictionary not found", result.First().Key);
+        }
+
+        [Fact]
+        public void TryUpdate_ExpressionExists_UpdatesProperly()
+        {
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(true);
+
+            var result = service.TryUpdate(entity);
+
+            _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Once);
+            Assert.Empty(result);
+            Assert.True(result.IsValid);
+        }
+
+        [Fact]
+        public void TryUpdate_ExpressionDoesNotExist_ReturnsError()
+        {
+            _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
+            _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(false);
+
+            var result = service.TryUpdate(entity);
+
+            _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Never);
+            Assert.Single(result);
+            Assert.False(result.IsValid);
+
+        }
+    }
+}
