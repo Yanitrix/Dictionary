@@ -45,15 +45,16 @@ namespace Dictionary_MVC
             services.AddSingleton<AbstractValidator<Dictionary>, DictionaryValidator>();
             services.AddSingleton<AbstractValidator<Entry>, EntryValidator>();
             services.AddSingleton<AbstractValidator<Meaning>, MeaningValidator>();
-            services.AddSingleton<AbstractValidator<Expression>, ExpressionValidator>();
+            services.AddSingleton<AbstractValidator<Example>, ExampleValidator>();
+            services.AddSingleton<AbstractValidator<FreeExpression>, FreeExpressionValidator>();
 
             services.AddTransient<ILanguageRepository, LanguageRepository>();
             services.AddTransient<IWordRepository, WordRepository>();
             services.AddTransient<IDictionaryRepository, DictionaryRepository>();
             services.AddTransient<IEntryRepository, EntryRepository>();
             services.AddTransient<IMeaningRepository, MeaningRepository>();
-            services.AddTransient<IExpressionRepository, ExpressionRepository>();
-
+            services.AddTransient<IExampleRepository, ExampleRepository>();
+            services.AddTransient<IFreeExpressionRepository, FreeExpressionRepository>();
 
             services.AddAutoMapper(typeof(MapperProfile));
         }
