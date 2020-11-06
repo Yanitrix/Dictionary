@@ -10,6 +10,11 @@ namespace Service.Repository
     {
         public FreeExpressionRepository(DatabaseContext context) : base(context) { }
 
+        public FreeExpression GetByID(int id)
+        {
+            return GetOne(f => f.ID == id);
+        }
+
         public IEnumerable<FreeExpression> GetByDictionaryAndTextSubstring(int dictionaryIndex, string textSubstring)
         {
             if (textSubstring == null || String.IsNullOrWhiteSpace(textSubstring)) return Enumerable.Empty<FreeExpression>();

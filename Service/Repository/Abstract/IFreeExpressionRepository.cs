@@ -6,6 +6,8 @@ namespace Service.Repository
 {
     public interface IFreeExpressionRepository : IRepository<FreeExpression>
     {
+        public FreeExpression GetByID(int id);
+
         //TODO write about code duplication.
         public IEnumerable<FreeExpression> GetByTextSubstring(String text);
 
