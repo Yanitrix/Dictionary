@@ -35,6 +35,5 @@ namespace Data.Models
                 $"Language out: {LanguageOutName}\n" +
                 $"Entries: \n\t{entr}\n";
         }
-
     }
 }

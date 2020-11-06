@@ -11,7 +11,6 @@ namespace Data.Database
         {
         }
 
-
         public DbSet<Language> Languages { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<WordProperty> WordProperties { get; set; }
@@ -83,7 +82,6 @@ namespace Data.Database
                 .HasPrincipalKey(dictionary => dictionary.Index)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             dictionary
                 .HasOne(dictionary => dictionary.LanguageIn)
                 .WithMany()
@@ -95,7 +93,6 @@ namespace Data.Database
                 .WithMany()
                 .HasForeignKey(dictionary => dictionary.LanguageOutName)
                 .OnDelete(DeleteBehavior.Cascade);
-
 
             entry
                 .HasMany(entry => entry.Meanings)
@@ -114,7 +111,6 @@ namespace Data.Database
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
-
 
         }
     }

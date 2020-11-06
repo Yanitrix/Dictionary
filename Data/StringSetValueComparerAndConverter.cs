@@ -28,7 +28,6 @@ namespace Data
 
     }
 
-    //TODO that should be tested
     public class StringSetConverter : JsonConverter<StringSet>
     {
         public override StringSet ReadJson(JsonReader reader, Type objectType, [AllowNull] StringSet existingValue, bool hasExistingValue, JsonSerializer serializer)
