@@ -1,6 +1,5 @@
 ﻿using Data.Models;
 using Data.Tests;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -15,8 +14,8 @@ namespace Service.Tests.Repositories
         IDictionaryRepository dictRepo;
         IEntryRepository entryRepo;
         IMeaningRepository meaningRepo;
-        IExpressionRepository expressionRepo;
-
+        IFreeExpressionRepository freeExpressionRepo;
+        IExampleRepository exampleRepo;
 
         public CascadeDeleteTests()
         {
@@ -25,15 +24,26 @@ namespace Service.Tests.Repositories
             dictRepo = new DictionaryRepository(this.context);
             entryRepo = new EntryRepository(this.context);
             meaningRepo = new MeaningRepository(this.context);
-            expressionRepo = new ExpressionRepository(this.context);
+            freeExpressionRepo = new FreeExpressionRepository(this.context);
+            exampleRepo = new ExampleRepository(this.context);
+        }
+
+        private void reloadRepos()
+        {
+            changeContext();
+            langRepo = new LanguageRepository(this.context);
+            wordRepo = new WordRepository(this.context);
+            dictRepo = new DictionaryRepository(this.context);
+            entryRepo = new EntryRepository(this.context);
+            meaningRepo = new MeaningRepository(this.context);
+            freeExpressionRepo = new FreeExpressionRepository(this.context);
+            exampleRepo = new ExampleRepository(this.context);
         }
 
         /*
          to delete:
-        dictionary with expressions, //done
-        meaning with expressions,  //done
-        meaning and dictionary with same expressions,  //done
-        expressions that's inside a dictionary and also inside a meaning of one of the dictionary entries  //done
+        dictionary with free expressions, //done
+        meaning with examples,  //done
 
         entry with meanings, //done
         dictionary with entries, //done
@@ -59,53 +69,57 @@ namespace Service.Tests.Repositories
             {
                 LanguageIn = new Language { Name = "in" },
                 LanguageOut = new Language { Name = "out" },
-                FreeExpressions = new List<Expression>
+                FreeExpressions = new List<FreeExpression>
                 {
-                    new Expression
+                    new FreeExpression
                     {
                         Text = "text",
                         Translation = "translation"
                     },
 
-                    new Expression
+                    new FreeExpression
                     {
                         Text = "text",
                         Translation = "Transllation"
                     },
 
-                    new Expression
+                    new FreeExpression
                     {
                         Text = "text",
                         Translation = "translation"
                     },
 
-                    new Expression
+                    new FreeExpression
                     {
                         Text = "text",
                         Translation = "translation"
                     },
-
                 }
             };
 
-            var exp = new Expression
+            var exp = new FreeExpression
             {
+                Dictionary = new Dictionary
+                {
+                    LanguageInName = "out",
+                    LanguageOutName = "in"
+                },
+
                 Text = "sdasda",
                 Translation = "sdasd"
             };
 
             dictRepo.Create(dict);
-            expressionRepo.Create(exp);
+            freeExpressionRepo.Create(exp);
 
             Assert.NotEmpty(dictRepo.All());
-            Assert.Equal(5, expressionRepo.All().Count());
+            Assert.Equal(5, freeExpressionRepo.All().Count());
 
-            dictRepo.Detach(dict);
+            reloadRepos();
             dictRepo.Delete(dict);
 
-            Assert.Empty(dictRepo.All());
-            Assert.Single(expressionRepo.All());
-
+            Assert.Single(dictRepo.All());
+            Assert.Single(freeExpressionRepo.All());
         }
 
         [Fact]
@@ -124,21 +138,21 @@ namespace Service.Tests.Repositories
                     Word = dummyWord,
                 },
 
-                Examples = new List<Expression>
+                Examples = new List<Example>
                 {
-                    new Expression
+                    new Example
                     {
                         Text = "text",
                         Translation = "translation"
                     },
 
-                    new Expression
+                    new Example
                     {
                         Text = "text",
                         Translation = "Transllation"
                     },
 
-                    new Expression
+                    new Example
                     {
                         Text = "text",
                         Translation = "translation"
@@ -146,209 +160,51 @@ namespace Service.Tests.Repositories
                 }
             };
 
-            Expression[] expressions =
-            {
-                new Expression
-                {
-                    Text = "a",
-                    Translation = "b"
-                },
-
-                new Expression
-                {
-                    Text = "a",
-                    Translation = "b"
-                }
-            };
-
-            meaningRepo.Create(meaning);
-            expressionRepo.CreateRange(expressions);
-
-            Assert.NotEmpty(meaningRepo.All());
-            Assert.Equal(5, expressionRepo.All().Count());
-
-            meaningRepo.Detach(meaning);
-            meaningRepo.Delete(meaning);
-
-            Assert.Empty(meaningRepo.All());
-            Assert.Equal(2, expressionRepo.All().Count());
-        }
-
-        [Fact]
-        public void DeleteMeaningAndDictionaryWithSameExpression_ShouldBeNoErrors()
-        {
-            Expression[] exprs =
-            {
-                new Expression
-                {
-                    Text = "text",
-                    Translation = "translation"
-                },
-
-                new Expression
-                {
-                    Text = "text",
-                    Translation = "translation"
-                },
-
-                new Expression
-                {
-                    Text = "text",
-                    Translation = "translation"
-                },
-
-                new Expression
-                {
-                    Text = "text",
-                    Translation = "translation"
-                },
-
-            };
-
             var dict = new Dictionary
             {
-                LanguageIn = new Language { Name = "in" },
-                LanguageOut = new Language { Name = "out" },
-                FreeExpressions = new HashSet<Expression>
-                {
-                    new Expression
-                    {
-                        Text = "text2",
-                        Translation = "translation2"
-                    },
-
-                    new Expression
-                    {
-                        Text = "text2",
-                        Translation = "translation2"
-                    },
-                }
-            };
-
-            var meaning = new Meaning
-            {
-                //different dictionary as this above
-
-                Entry = new Entry
-                {
-                    Dictionary = new Dictionary
-                    {
-                        LanguageIn = new Language { Name = "rein" },
-                        LanguageOut = new Language { Name = "raus" },
-                    },
-
-                    Word = new Word
-                    {
-                        SourceLanguageName = "rein",
-                        Value = "value"
-                    },
-
-                },
-
-
-                Examples = new HashSet<Expression>
-                {
-                    new Expression
-                    {
-                        Text = "text3",
-                        Translation = "translation3"
-                    }
-                }
-            };
-
-            dictRepo.Create(dict);
-            meaningRepo.Create(meaning);
-
-            exprs[0].DictionaryIndex = dict.Index;
-            exprs[1].DictionaryIndex = dict.Index;
-            exprs[0].MeaningID = meaning.ID;
-            exprs[1].MeaningID = meaning.ID;
-
-            expressionRepo.CreateRange(exprs);
-
-            //so now:
-            //dictionary has 4 expressions,
-            //meaning has 3 expressions
-            //2 of them are common
-            //2 expressions are free
-
-            meaningRepo.Delete(meaning);
-            dictRepo.Delete(dict);
-
-            Assert.Empty(meaningRepo.All());
-
-            Assert.Equal(2, expressionRepo.All().Count());
-        }
-
-        [Fact]
-        public void DeleteDictionaryWithMeaning_BothHaveSameExpression()
-        {
-            Expression[] expressions =
-            {
-                new Expression
-                {
-                    Text = "text1",
-                    Translation = "trans1"
-                },
-
-                new Expression
-                {
-                    Text = "text2",
-                    Translation = "trans2"
-                },
-
-                new Expression
-                {
-                    Text = "text3",
-                    Translation = "trans3"
-                },
-            };
-
-
-            var dict = new Dictionary
-            {
-                LanguageIn = new Language { Name = "in" },
-                LanguageOut = new Language { Name = "out" },
-                FreeExpressions = new HashSet<Expression>
-                {
-                    expressions[0],
-                    expressions[1]
-                },
-
+                LanguageInName = "out",
+                LanguageOutName = "in",
                 Entries = new HashSet<Entry>
                 {
                     new Entry
                     {
-                        Word = dummyWord,
-
+                        Word = new Word { SourceLanguageName = "out", Value = "v"},
                         Meanings = new HashSet<Meaning>
                         {
                             new Meaning
                             {
-                                Examples = new HashSet<Expression>
+                                Value = "s",
+                                Examples = new HashSet<Example>
                                 {
-                                    expressions[0],
-                                    expressions[1]
+                                    new Example
+                                    {
+                                        Text = "a",
+                                        Translation = "b"
+                                    },
+
+                                    new Example
+                                    {
+                                        Text = "a",
+                                        Translation = "b"
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
             };
 
-            expressionRepo.CreateRange(expressions);
+            meaningRepo.Create(meaning);
             dictRepo.Create(dict);
 
-            Assert.Single(dictRepo.All());
-            Assert.Equal(3, expressionRepo.All().Count());
+            Assert.NotEmpty(meaningRepo.All());
+            Assert.Equal(5, exampleRepo.All().Count());
+
+            reloadRepos();
+            meaningRepo.Delete(meaning);
+
             Assert.Single(meaningRepo.All());
-
-            dictRepo.Delete(dict);
-
-            Assert.Empty(dictRepo.All());
-            Assert.Empty(meaningRepo.All());
-            Assert.Single(expressionRepo.All());
+            Assert.Equal(2, exampleRepo.All().Count());
         }
 
         [Fact]
@@ -362,7 +218,6 @@ namespace Service.Tests.Repositories
 
             Meaning[] meanings =
             {
-
                 new Meaning
                 {
                     Value = "free1"
@@ -413,7 +268,6 @@ namespace Service.Tests.Repositories
                         {
                             Value = "entry2.meaning3"
                         },
-
                     }
                 },
 
@@ -428,8 +282,6 @@ namespace Service.Tests.Repositories
             dict.Entries = entries.ToHashSet();
 
             dictRepo.Create(dict);
-            //entryRepo.CreateRange(entries);
-            //meaningRepo.CreateRange(meanings);
 
             Assert.Equal(3, entryRepo.All().Count());
             Assert.Equal(7, meaningRepo.All().Count());
@@ -438,14 +290,6 @@ namespace Service.Tests.Repositories
 
             Assert.Equal(2, entryRepo.All().Count());
             Assert.Equal(5, meaningRepo.All().Count());
-
-            //var indexed = new List<Meaning>(meaningRepo.All());
-
-            //Assert.Equal("entry2.meaning1", indexed[0].Value);
-            //Assert.Equal("entry2.meaning2", indexed[1].Value);
-            //Assert.Equal("entry2.meaning3", indexed[2].Value);
-            //Assert.Equal("free2", indexed[3].Value);
-            //Assert.Equal("free1", indexed[4].Value);
         }
 
         [Fact]
@@ -504,7 +348,6 @@ namespace Service.Tests.Repositories
                     Dictionary = dict1,
                     Word = dummyWord,
                 }
-
             };
 
             dictRepo.Create(dict);
@@ -559,7 +402,6 @@ namespace Service.Tests.Repositories
                     {
                         Value = "schlafen"
                     },
-
                 }
             };
 
@@ -619,15 +461,15 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "Stock",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to get the stick",
                                         Translation  = "den Stock bekommen"
                                     },
 
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to give sb the stick",
                                         Translation = "jdm eine Tracht Prügel verpassen"
@@ -663,7 +505,6 @@ namespace Service.Tests.Repositories
                                     Values = new StringSet{"noun"}
                                 }
                             }
-
                         },
 
                         Meanings = new HashSet<Meaning>
@@ -671,9 +512,9 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "Zug",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to board a train",
                                         Translation = "in einen Zug einsteigen"
@@ -685,22 +526,21 @@ namespace Service.Tests.Repositories
                             {
                                 Value = "Serie",
                                 Notes = "series",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to be in train",
                                         Translation = "im Gange sein"
                                     },
 
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "a train of events",
                                         Translation = "eine Kette von Ereignissen"
                                     }
                                 }
                             }
-
                         }
                     }
                 }
@@ -718,7 +558,6 @@ namespace Service.Tests.Repositories
             Assert.Single(dictRepo.All());
             Assert.Single(wordRepo.All());
             Assert.Single(entryRepo.All());
-
         }
 
         [Fact]
@@ -755,7 +594,6 @@ namespace Service.Tests.Repositories
                     LanguageInName = "english",
                     LanguageOutName = "russian"
                 }
-
             };
 
             langRepo.CreateRange(langs);
@@ -769,7 +607,6 @@ namespace Service.Tests.Repositories
             Assert.Equal(3, dictRepo.All().Count());
             Assert.Equal(4, langRepo.All().Count());
 
-            var germanInDB = langRepo.GetByName("German");
             langRepo.Delete(german);
 
             Assert.Equal(3, langRepo.All().Count());

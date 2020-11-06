@@ -4,28 +4,25 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/expression")]
-    public class ExpressionController : Controller
+    public class FreeExpressionController : Controller
     {
-        private readonly IService<Expression> service;
-        private readonly IExpressionRepository repo;
+        private readonly IService<FreeExpression> service;
+        private readonly IFreeExpressionRepository repo;
         private readonly IMapper mapper;
 
-        public ExpressionController(IService<Expression> service, IExpressionRepository repo, IMapper mapper)
+        public FreeExpressionController(IService<FreeExpression> service, IFreeExpressionRepository repo, IMapper mapper)
         {
             this.service = service;
             this.repo = repo;
             this.mapper = mapper;
         }
 
-        [HttpGet("{int}")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var exp = repo.GetByID(id);
@@ -34,7 +31,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] ExpressionDto dto)
+        public IActionResult Post([FromBody] FreeExpressionDto dto)
         {
             var exp = ToExp(dto);
             var result = service.TryAdd(exp);
@@ -43,7 +40,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ExpressionDto dto)
+        public IActionResult Put(int id, [FromBody] FreeExpressionDto dto)
         {
             var exp = ToExp(dto);
             exp.ID = id;
@@ -61,6 +58,6 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        private Expression ToExp(ExpressionDto dto) => mapper.Map<ExpressionDto, Expression>(dto);
+        private FreeExpression ToExp(FreeExpressionDto dto) => mapper.Map<FreeExpressionDto, FreeExpression>(dto);
     }
 }

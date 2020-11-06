@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Data.Dto
 {
-    public class ExpressionDto
+    public class FreeExpressionDto
     {
         public int ID { get; set; }
 
-        public int? DictionaryIndex { get; set; }
-
-        public int? MeaningID { get; set; }
+        public int DictionaryIndex { get; set; }
 
         [Required]
         public String Text { get; set; }

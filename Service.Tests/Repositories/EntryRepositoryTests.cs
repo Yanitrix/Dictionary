@@ -26,7 +26,6 @@ namespace Service.Tests.Repositories
             repo = new EntryRepository(this.context);
         }
 
-        //TODO split method into two
         private Dictionary[] createDictWithEverythingNeeded()
         {
             //first has 2 entries
@@ -58,15 +57,15 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "Stock",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to get the stick",
                                         Translation  = "den Stock bekommen"
                                     },
 
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to give sb the stick",
                                         Translation = "jdm eine Tracht Prügel verpassen"
@@ -102,7 +101,6 @@ namespace Service.Tests.Repositories
                                     Values = new StringSet{"noun"}
                                 }
                             }
-
                         },
 
                         Meanings = new HashSet<Meaning>
@@ -110,9 +108,9 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "Zug",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to board a train",
                                         Translation = "in einen Zug einsteigen"
@@ -124,22 +122,21 @@ namespace Service.Tests.Repositories
                             {
                                 Value = "Serie",
                                 Notes = "series",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "to be in train",
                                         Translation = "im Gange sein"
                                     },
 
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "a train of events",
                                         Translation = "eine Kette von Ereignissen"
                                     }
                                 }
                             }
-
                         }
                     }
                 }
@@ -185,7 +182,6 @@ namespace Service.Tests.Repositories
                             {
                                 Value = "stick",
                                 Notes = "lange Holzstange",
-
                             },
 
                             new Meaning
@@ -202,9 +198,9 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "floor",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "im 1. Stock",
                                         Translation = "on the first floor"
@@ -215,9 +211,9 @@ namespace Service.Tests.Repositories
                             new Meaning
                             {
                                 Value = "storey",
-                                Examples = new HashSet<Expression>
+                                Examples = new HashSet<Example>
                                 {
-                                    new Expression
+                                    new Example
                                     {
                                         Text = "im 1. Stock",
                                         Translation = "on the first storey"
@@ -233,7 +229,6 @@ namespace Service.Tests.Repositories
 
             return new Dictionary[] { dict, dict1 };
         }
-
 
         //test both dictionaries
         [Fact]
@@ -259,7 +254,6 @@ namespace Service.Tests.Repositories
             Assert.Equal("stick", found.Word.Value);
         }
 
-
         [Fact]
         public void GetByDictionaryAndWord_RetursProperEntityWithLoadedReferences()
         {
@@ -281,7 +275,6 @@ namespace Service.Tests.Repositories
             Assert.Equal(expectedId, found.ID);
             Assert.Equal(word, found.Word.Value, true);
             Assert.Equal(dictIdx, found.DictionaryIndex);
-
         }
 
         //edge cases: null, empty strings

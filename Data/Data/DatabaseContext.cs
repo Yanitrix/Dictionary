@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Data;
-using Data.Models;
+﻿using Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Data.Database
 {
@@ -15,15 +11,15 @@ namespace Data.Database
         {
         }
 
-
         public DbSet<Language> Languages { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<WordProperty> WordProperties { get; set; }
 
         public DbSet<Dictionary> Dictionaries { get; set; }
         public DbSet<Entry> Entries { get; set; }
-        public DbSet<Expression> Expressions { get; set; }
         public DbSet<Meaning> Meanings { get; set; }
+        public DbSet<Example> Examples { get; set; }
+        public DbSet<FreeExpression> FreeExpressions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -65,7 +61,8 @@ namespace Data.Database
 
             var dictionary = builder.Entity<Dictionary>().ToTable("Dictionary");
             var entry = builder.Entity<Entry>().ToTable("Entry");
-            var expression = builder.Entity<Expression>().ToTable("Expression");
+            var example = builder.Entity<Example>().ToTable("Example");
+            var freeExpression = builder.Entity<FreeExpression>().ToTable("FreeExpression");
             var meaning = builder.Entity<Meaning>().ToTable("Meaning");
 
             dictionary.Property(d => d.Index).ValueGeneratedOnAdd();
@@ -83,8 +80,7 @@ namespace Data.Database
                 .WithOne(freeExpression => freeExpression.Dictionary)
                 .HasForeignKey(freeExpression => freeExpression.DictionaryIndex)
                 .HasPrincipalKey(dictionary => dictionary.Index)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .OnDelete(DeleteBehavior.Cascade);
 
             dictionary
                 .HasOne(dictionary => dictionary.LanguageIn)
@@ -97,7 +93,6 @@ namespace Data.Database
                 .WithMany()
                 .HasForeignKey(dictionary => dictionary.LanguageOutName)
                 .OnDelete(DeleteBehavior.Cascade);
-
 
             entry
                 .HasMany(entry => entry.Meanings)
@@ -113,10 +108,9 @@ namespace Data.Database
                 .HasMany(meaning => meaning.Examples)
                 .WithOne(example => example.Meaning)
                 .HasForeignKey(example => example.MeaningID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
-
 
         }
     }

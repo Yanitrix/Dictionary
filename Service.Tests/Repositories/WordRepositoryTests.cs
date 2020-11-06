@@ -15,7 +15,6 @@ namespace Service.Tests.Repositories
         public WordRepositoryTests()
         {
             repository = new WordRepository(this.context);
-
         }
 
         [Fact]
@@ -53,7 +52,6 @@ namespace Service.Tests.Repositories
 
             Assert.Equal(2, wordInDb.Properties.Count);
             Assert.Equal(idInDb, wordInDb.ID);
-
         }
 
         [Fact]
@@ -91,7 +89,6 @@ namespace Service.Tests.Repositories
 
             Assert.Equal(newValue, updated.Value);
             Assert.Equal(newLanguageName, updated.SourceLanguageName);
-
         }
 
         [Fact]
@@ -113,7 +110,6 @@ namespace Service.Tests.Repositories
             Assert.False(repository.All().Any());
         }
 
-
         [Theory]
         [InlineData(4)]
         public void GetByID_NotFound_ShouldReturnNull(int givenId)
@@ -132,7 +128,6 @@ namespace Service.Tests.Repositories
 
             Assert.NotEqual(entity.ID, givenId);
             Assert.Null(found);
-
         }
 
         [Fact]
@@ -172,7 +167,6 @@ namespace Service.Tests.Repositories
             Assert.Equal(2, second.ID);
             Assert.Equal("ów", second.SourceLanguageName);
             Assert.Equal("hot", second.Value);
-
         }
 
         [Fact]
@@ -238,7 +232,6 @@ namespace Service.Tests.Repositories
 
             Assert.Equal("zimbabwean", indexed[2].SourceLanguageName);
             Assert.Equal("stick", indexed[2].Value);
-
         }
 
         [Fact]
@@ -282,10 +275,8 @@ namespace Service.Tests.Repositories
             var found = repository.GetByValue("that's not a stick");
 
             Assert.Empty(found);
-
         }
 
-        //TODO querying strings not working
         [Fact]
         public void GetByLanguageAndValue_ShouldNotBeEmpty()
         {
@@ -353,7 +344,6 @@ namespace Service.Tests.Repositories
             }
         }
 
-
         [Fact]
         public void GetOne_ShouldNotReturnNull_PropertiesLoaded()
         {
@@ -410,7 +400,6 @@ namespace Service.Tests.Repositories
                         }
                     }
                 },
-
             };
 
             repository.Create(entities[0]);
@@ -484,7 +473,6 @@ namespace Service.Tests.Repositories
                         }
                     }
                 },
-
             };
 
             repository.Create(entities[0]);
@@ -502,12 +490,11 @@ namespace Service.Tests.Repositories
             Assert.Equal("arabic", indexed[0].SourceLanguageName);
             Assert.Equal("stick", indexed[0].Value);
             Assert.Single(indexed[0].Properties);
-            
+
             Assert.Equal("arabic", indexed[1].SourceLanguageName);
             Assert.Equal("sticky", indexed[1].Value);
             Assert.Equal(2, indexed[1].Properties.Count);
 
         }
-
     }
 }

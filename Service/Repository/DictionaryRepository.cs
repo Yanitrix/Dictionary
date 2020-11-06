@@ -26,18 +26,6 @@ namespace Service.Repository
             return repo.Find(languageIn, languageOut);
         }
 
-        public override Dictionary Delete(Dictionary entity)
-        {
-            var children = context.Expressions.Where(e => e.DictionaryIndex == entity.Index);
-            context.Expressions.RemoveRange(children);
-            //context.Entry(entity).State = EntityState.Deleted;
-            //context.Entry(entity).Collection(d => d.FreeExpressions).Load();
-            //context.Set<Expression>().RemoveRange(entity.FreeExpressions);
-            repo.Remove(entity);
-            context.SaveChanges();
-            return entity;
-        }
-
         public bool ExistsByIndex(int index)
         {
             return Exists(d => d.Index == index);

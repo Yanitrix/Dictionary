@@ -43,21 +43,15 @@ namespace Service.Repository
             return Get(m => m.Notes.Contains(notes), x => x, null, includeExamplesAndEntry);
         }
 
-        public override Meaning Delete(Meaning entity)
-        {
-            var children = context.Expressions.Where(e => e.MeaningID == entity.ID);
-            context.Expressions.RemoveRange(children);
-            //context.Entry(entity).State = EntityState.Unchanged;
-            //context.Entry(entity).Collection(m => m.Examples).Load();
-            //context.Set<Expression>().RemoveRange(entity.Examples);
-            repo.Remove(entity);
-            context.SaveChanges();
-            return entity;
-        }
-
         public bool ExistsByID(int id)
         {
             return Exists(m => m.ID == id);
+        }
+
+        //TODO implement repo
+        public IEnumerable<Meaning> GetByDictionaryAndValueSubstring(int dictionaryIndex, string valueSubstring)
+        {
+            throw new NotImplementedException();
         }
     }
 }

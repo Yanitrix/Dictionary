@@ -23,7 +23,7 @@ namespace Data.Models
 
         public ISet<Entry> Entries { get; set; } = new HashSet<Entry>();
 
-        public ICollection<Expression> FreeExpressions { get; set; } = new List<Expression>();
+        public ICollection<FreeExpression> FreeExpressions { get; set; } = new List<FreeExpression>();
 
         public override string ToString()
         {
@@ -35,6 +35,5 @@ namespace Data.Models
                 $"Language out: {LanguageOutName}\n" +
                 $"Entries: \n\t{entr}\n";
         }
-
     }
 }

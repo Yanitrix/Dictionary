@@ -4,56 +4,72 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Service.Repository;
+using System.Linq;
 
 namespace Service.Tests.Repositories
 {
-    public class ExpressionRepositoryTests : DbContextTestBase
+    public class FreeExpressionRepositoryTests : DbContextTestBase
     {
-        public IExpressionRepository repo;
+        public IFreeExpressionRepository repo;
 
-        public ExpressionRepositoryTests()
+        public FreeExpressionRepositoryTests()
         {
-            this.repo = new ExpressionRepository(this.context);
+            this.repo = new FreeExpressionRepository(this.context);
             putData();
         }
 
         private void putData()
         {
-            Expression[] entities =
+            var dictionary = new Dictionary
             {
-                new Expression
+                LanguageIn = new Language
+                {
+                    Name = "german"
+                },
+
+                LanguageOut = new Language
+                {
+                    Name = "english"
+                },
+            };
+
+            FreeExpression[] entities =
+            {
+                new FreeExpression
                 {
                     Text = "gegessen sein",
                     Translation = "to be dead and buried"
                 },
-                new Expression
+                new FreeExpression
                 {
                     Text = "außer Betrieb sein",
                     Translation = "be out of order"
                 },
-                new Expression
+                new FreeExpression
                 {
                     Text = "etwas ins Rollen bringen",
                     Translation = "to set sth in motion"
                 },
-                new Expression
+                new FreeExpression
                 {
                     Text = "etwas ins Rollen bringen",
                     Translation = "to get sth underway"
                 },
-                new Expression
+                new FreeExpression
                 {
                     Text = "auf etwas großen Wert legen",
                     Translation = "to place a high value on sth"
                 },
-                new Expression
+                new FreeExpression
                 {
                     Text = "im Überfluss vorhanden sein",
                     Translation = "to be in plentiful supply"
                 },
             };
 
-            repo.CreateRange(entities);
+            dictionary.FreeExpressions = entities.ToList();
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
         }
 
         [Theory]
@@ -97,20 +113,19 @@ namespace Service.Tests.Repositories
         public void GetTextBySubstring_FoundsProper()
         {
             var found = repo.GetByTextSubstring("sein");
-            var indexed = new List<Expression>(found);
+            var indexed = new List<FreeExpression>(found);
 
             Assert.Equal(3, indexed.Count);
             Assert.Equal("gegessen sein", indexed[0].Text);
             Assert.Equal("außer Betrieb sein", indexed[1].Text);
             Assert.Equal("im Überfluss vorhanden sein", indexed[2].Text);
-
         }
 
         [Fact]
         public void GetTranslationBySubstring_FoundProper()
         {
             var found = repo.GetByTranslationSubstring("sth");
-            var indexed = new List<Expression>(found);
+            var indexed = new List<FreeExpression>(found);
 
             Assert.Equal(3, indexed.Count);
             Assert.Equal("to set sth in motion", indexed[0].Translation);

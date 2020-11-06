@@ -50,7 +50,7 @@ namespace Api.Controllers
 
             //then query for examples in meanings
             //then query free expressions
-            var similarExpressions = uow.Expressions.GetByDictionaryTextSubstring(dictionary.Index, query);
+            var similarExamples = uow.Examples.GetByDictionaryAndTextSubstring(dictionary.Index, query);
 
             return null;
         }
