@@ -58,3 +58,4 @@ _api/translate/{dictionaryName}/{queryString}?bidir_ | Here the magic happens. _
 
 * Authentication and authorization, user profiles, favourites, etc.
 * Learning mode (wroking something similar to flashcards on [Quizlet](https://quizlet.com/))
+* Front end (well, learning mode cannot function without frontend, unless you want to learn arabic using Postman)
