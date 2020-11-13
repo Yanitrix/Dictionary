@@ -42,7 +42,7 @@ _api/dictionary_ | for [dictionaries](https://github.com/Yanitrix/Dictionary/blo
 _api/entry_ | for [entries](https://github.com/Yanitrix/Dictionary/blob/master/Data/Dto/EntryDto.cs)
 _api/meaning_ | for [meanings](https://github.com/Yanitrix/Dictionary/blob/master/Data/Dto/MeaningDto.cs). You can also include some [examples](https://github.com/Yanitrix/Dictionary/blob/master/Data/Dto/ExampleDto.cs)
 _api/expression_ | for [free expressions](https://github.com/Yanitrix/Dictionary/blob/master/Data/Dto/FreeExpressionDto.cs)
-_api/translate/{dictionaryName}/{queryString}?bidir_ | Here the magic happens. _dictionaryName_ is a combination of input and output languages' names of a dictionary. E.g. _polish-english_ for a dictionary with input language _polish_ and output language _english_. _queryString_ is the word you're looking for. Set _bidir_ to true if you want to search in both "parts" of a dictionary (_polish -> english_ and _english -> polish_)
+_api/translate/{dictionaryName}/{queryString}?bidir_ | Here the magic happens. _dictionaryName_ is a combination of input and output languages' names of a dictionary. E.g. _polish-english_ for a dictionary with input language _polish_ and output language _english_. _queryString_ is the word you're looking for. Set _bidir_ to true if you want to search also in the opoosite dictionary (_polish -> english_ and _english -> polish_)
 
 
 ### Things that have been done:
