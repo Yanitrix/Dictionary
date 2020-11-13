@@ -45,6 +45,16 @@ _api/expression_ | for [free expressions](https://github.com/Yanitrix/Dictionary
 _api/translate/{dictionaryName}/{queryString}?bidir_ | Here the magic happens. _dictionaryName_ is a combination of input and output languages' names of a dictionary. E.g. _polish-english_ for a dictionary with input language _polish_ and output language _english_. _queryString_ is the word you're looking for. Set _bidir_ to true if you want to search in both "parts" of a dictionary (_polish -> english_ and _english -> polish_)
 
 
+### Things that have been done:
 
+* Server side valiation (using _FLuentValidation_)
+* Database setup, storing entities (using _EF Core_, repository and UOW patterns)
 
+### Now working on:
 
+* Endpoints
+
+### In future I want to implement:
+
+* Authentication and authorization, user profiles, favourites, etc.
+* Learning mode (wroking something similar to flashcards on [Quizlet](https://quizlet.com/))
