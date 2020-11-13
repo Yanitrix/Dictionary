@@ -16,5 +16,6 @@ namespace Data.Dto
 
         public String Notes { get; set; }
 
+        public ICollection<ExampleDto> Examples { get; set; }
     }
 }

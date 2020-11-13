@@ -7,8 +7,6 @@ namespace Data.Dto
     {
         public int ID { get; set; }
 
-        public int MeaningID { get; set; }
-
         [Required]
         public String Text { get; set; }
         [Required]
