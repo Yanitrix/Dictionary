@@ -49,7 +49,7 @@ _api/translate/{dictionaryName}/{queryString}?bidir_ | Here the magic happens. _
 
 * Server side valiation (using _FLuentValidation_)
 * Database setup, storing entities (using _EF Core_, repository and UOW patterns)
-
+* Unit test, integration tests (using _xUnit_ and _Moq_)
 ### Now working on:
 
 * Endpoints
