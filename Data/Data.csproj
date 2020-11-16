@@ -5,20 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20200723145704_ExpressionsOut.cs" />
-    <Compile Remove="Data\Migrations\20200723145704_ExpressionsOut.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200823130441_CascadeDeletingChildEntities.cs" />
-    <Compile Remove="Data\Migrations\20200823130441_CascadeDeletingChildEntities.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200823142503_CascadeDeletingChildEntities.cs" />
-    <Compile Remove="Data\Migrations\20200823142503_CascadeDeletingChildEntities.Designer.cs" />
-    <Compile Remove="Data\Migrations\20201031160731_CustomCollections.cs" />
-    <Compile Remove="Data\Migrations\20201031160731_CustomCollections.Designer.cs" />
-    <Compile Remove="Data\Migrations\20201105131517_SplitExpression.cs" />
-    <Compile Remove="Data\Migrations\20201105131517_SplitExpression.Designer.cs" />
-    <Compile Remove="Data\Migrations\20201105150303_SpliExpression.cs" />
-    <Compile Remove="Data\Migrations\20201105150303_SpliExpression.Designer.cs" />
-    <Compile Remove="Data\Migrations\20201105154529_SplitExpressionIntoTwoClasses.cs" />
-    <Compile Remove="Data\Migrations\20201105154529_SplitExpressionIntoTwoClasses.Designer.cs" />
+    <Compile Remove="Database\Migrations\20200723145704_ExpressionsOut.cs" />
+    <Compile Remove="Database\Migrations\20200723145704_ExpressionsOut.Designer.cs" />
+    <Compile Remove="Database\Migrations\20200823130441_CascadeDeletingChildEntities.cs" />
+    <Compile Remove="Database\Migrations\20200823130441_CascadeDeletingChildEntities.Designer.cs" />
+    <Compile Remove="Database\Migrations\20200823142503_CascadeDeletingChildEntities.cs" />
+    <Compile Remove="Database\Migrations\20200823142503_CascadeDeletingChildEntities.Designer.cs" />
+    <Compile Remove="Database\Migrations\20201031160731_CustomCollections.cs" />
+    <Compile Remove="Database\Migrations\20201031160731_CustomCollections.Designer.cs" />
+    <Compile Remove="Database\Migrations\20201105131517_SplitExpression.cs" />
+    <Compile Remove="Database\Migrations\20201105131517_SplitExpression.Designer.cs" />
+    <Compile Remove="Database\Migrations\20201105150303_SpliExpression.cs" />
+    <Compile Remove="Database\Migrations\20201105150303_SpliExpression.Designer.cs" />
+    <Compile Remove="Database\Migrations\20201105154529_SplitExpressionIntoTwoClasses.cs" />
+    <Compile Remove="Database\Migrations\20201105154529_SplitExpressionIntoTwoClasses.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
