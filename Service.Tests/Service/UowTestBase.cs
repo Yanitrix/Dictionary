@@ -1,14 +1,11 @@
 ﻿using Moq;
 using Service.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Service.Tests.Service
 {
     public class UowTestBase
     {
-        protected Mock<UnitOfWork> uow = new Mock<UnitOfWork>();
+        protected Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
 
         protected Mock<ILanguageRepository> langRepo
         {
