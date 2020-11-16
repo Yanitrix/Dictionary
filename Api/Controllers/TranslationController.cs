@@ -11,9 +11,9 @@ namespace Api.Controllers
     [Route("api/translate")]
     public class TranslationController : Controller
     {
-        private readonly UnitOfWork uow;
+        private readonly IUnitOfWork uow;
 
-        public TranslationController(UnitOfWork uow)
+        public TranslationController(IUnitOfWork uow)
         {
             this.uow = uow;
         }
