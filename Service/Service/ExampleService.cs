@@ -11,7 +11,7 @@ namespace Service
         private readonly IExampleRepository repo;
         private readonly IMeaningRepository meaningRepo;
 
-        public ExampleService(UnitOfWork uow, AbstractValidator<Example> v) : base(v)
+        public ExampleService(IUnitOfWork uow, AbstractValidator<Example> v) : base(v)
         {
             this.repo = uow.Examples;
             this.meaningRepo = uow.Meanings;

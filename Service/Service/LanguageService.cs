@@ -10,7 +10,7 @@ namespace Service
     {
         private readonly ILanguageRepository repo;
 
-        public LanguageService(UnitOfWork uow, AbstractValidator<Language> _v) :base(_v)
+        public LanguageService(IUnitOfWork uow, AbstractValidator<Language> _v) :base(_v)
         {
             this.repo = uow.Languages;
         }

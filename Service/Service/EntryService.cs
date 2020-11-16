@@ -12,7 +12,7 @@ namespace Service
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
 
-        public EntryService(UnitOfWork uow, AbstractValidator<Entry> _v)
+        public EntryService(IUnitOfWork uow, AbstractValidator<Entry> _v)
             : base(_v)
         {
             this.wordRepo = uow.Words;

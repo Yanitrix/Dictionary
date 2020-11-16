@@ -12,7 +12,7 @@ namespace Service
         private readonly ILanguageRepository langRepo;
 
 
-        public WordService(UnitOfWork uow, AbstractValidator<Word> validator)
+        public WordService(IUnitOfWork uow, AbstractValidator<Word> validator)
             :base(validator)
         {
             this.repo = uow.Words;
