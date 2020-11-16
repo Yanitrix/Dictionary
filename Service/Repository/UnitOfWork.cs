@@ -3,9 +3,7 @@ using System;
 
 namespace Service.Repository
 {
-    //virtual properties and zero constructor because of moq
-    //TODO implement UOW in proper way
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DatabaseContext context;
         private ILanguageRepository langRepo;
@@ -23,7 +21,7 @@ namespace Service.Repository
             this.context = context;
         }
 
-        public virtual ILanguageRepository Languages
+        public ILanguageRepository Languages
         {
             get
             {
@@ -31,7 +29,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IDictionaryRepository Dictionaries
+        public IDictionaryRepository Dictionaries
         {
             get
             {
@@ -39,7 +37,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IWordRepository Words
+        public IWordRepository Words
         {
             get
             {
@@ -47,7 +45,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IEntryRepository Entries
+        public IEntryRepository Entries
         {
             get
             {
@@ -55,7 +53,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IMeaningRepository Meanings
+        public IMeaningRepository Meanings
         {
             get
             {
@@ -63,7 +61,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IExampleRepository Examples
+        public IExampleRepository Examples
         {
             get
             {
@@ -71,7 +69,7 @@ namespace Service.Repository
             }
         }
 
-        public virtual IFreeExpressionRepository FreeExpressions
+        public IFreeExpressionRepository FreeExpressions
         {
             get
             {
