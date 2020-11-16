@@ -56,6 +56,8 @@ namespace Dictionary_MVC
             services.AddTransient<IExampleRepository, ExampleRepository>();
             services.AddTransient<IFreeExpressionRepository, FreeExpressionRepository>();
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             services.AddAutoMapper(typeof(MapperProfile));
         }
 
