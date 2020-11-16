@@ -10,7 +10,7 @@ namespace Service.Service
         private readonly IFreeExpressionRepository repo;
         private readonly IDictionaryRepository dictRepo;
 
-        public FreeExpressionService(UnitOfWork uow, AbstractValidator<FreeExpression> v) : base(v) {
+        public FreeExpressionService(IUnitOfWork uow, AbstractValidator<FreeExpression> v) : base(v) {
 
             repo = uow.FreeExpressions;
             dictRepo = uow.Dictionaries;

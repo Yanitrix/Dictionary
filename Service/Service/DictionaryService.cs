@@ -11,7 +11,7 @@ namespace Service
         private readonly ILanguageRepository langRepo;
         private readonly IDictionaryRepository repo;
 
-        public DictionaryService(UnitOfWork uow, AbstractValidator<Dictionary> validator)
+        public DictionaryService(IUnitOfWork uow, AbstractValidator<Dictionary> validator)
             :base(validator)
         {
             this.langRepo = uow.Languages;
