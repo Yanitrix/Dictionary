@@ -33,8 +33,6 @@ namespace Dictionary_MVC
                 options.UseSqlServer(
                     Configuration.GetConnectionString("ConnectionString")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<DatabaseContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

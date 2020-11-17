@@ -3,7 +3,6 @@ using FluentValidation;
 using Service.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
-
 namespace Service
 {
     public class ExampleService : ServiceBase<Example>
