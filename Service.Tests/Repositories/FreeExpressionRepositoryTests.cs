@@ -113,24 +113,23 @@ namespace Service.Tests.Repositories
         public void GetTextBySubstring_FoundsProper()
         {
             var found = repo.GetByTextSubstring("sein");
-            var indexed = new List<FreeExpression>(found);
 
-            Assert.Equal(3, indexed.Count);
-            Assert.Equal("gegessen sein", indexed[0].Text);
-            Assert.Equal("außer Betrieb sein", indexed[1].Text);
-            Assert.Equal("im Überfluss vorhanden sein", indexed[2].Text);
+            Assert.Equal(3, found.Count());
+            Assert.Contains(found, f => String.Equals(f.Text, "gegessen sein", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(found, f => String.Equals(f.Text, "außer Betrieb sein", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(found, f => String.Equals(f.Text, "im Überfluss vorhanden sein", StringComparison.OrdinalIgnoreCase));
+
         }
 
         [Fact]
         public void GetTranslationBySubstring_FoundProper()
         {
             var found = repo.GetByTranslationSubstring("sth");
-            var indexed = new List<FreeExpression>(found);
 
-            Assert.Equal(3, indexed.Count);
-            Assert.Equal("to set sth in motion", indexed[0].Translation);
-            Assert.Equal("to get sth underway", indexed[1].Translation);
-            Assert.Equal("to place a high value on sth", indexed[2].Translation);
+            Assert.Equal(3, found.Count());
+            Assert.Contains(found, f => String.Equals(f.Translation, "to set sth in motion", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(found, f => String.Equals(f.Translation, "to get sth underway", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(found, f => String.Equals(f.Translation, "to place a high value on sth", StringComparison.OrdinalIgnoreCase));
         }
     }
 }
