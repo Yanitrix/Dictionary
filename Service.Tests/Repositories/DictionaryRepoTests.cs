@@ -201,5 +201,92 @@ namespace Service.Tests.Repositories
             Assert.Null(found);
         }
 
+        [Theory]
+        [InlineData("russian", "japanese")]
+        [InlineData("english", "german")]
+        [InlineData("japanese", "zimbabwean")]
+        public void ExistsByLanguages_NameFound_ReturnsTrue(String langIn, String langOut)
+        {
+            putData();
+            var result = repo.ExistsByLanguages(langIn, langOut);
+
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("polish", "english")]
+        [InlineData("japanese", "russian")]
+        [InlineData("", null)]
+        [InlineData(" ", "\t\t\rn")]//on purpose
+        [InlineData(null, null)]
+        [InlineData("", " ")]
+        public void ExistsByLanguages_NameNotFoundOrNullOrEmpty(String langIn, String langOut)
+        {
+            putData();
+            var result = repo.ExistsByLanguages(langIn, langOut);
+
+            Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData("russian")]
+        [InlineData("english")]
+        [InlineData("german")]
+        public void GetByLanguageIn_NameFound_ReturnsNotNull(String name)
+        {
+            putData();
+            var found = repo.GetAllByLanguageIn(name);
+
+            Assert.NotNull(found);
+            foreach (var i in found)
+                Assert.Equal(name, i.LanguageInName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("polish")]
+        [InlineData("zimbabwean")]
+        [InlineData(" ")]
+        [InlineData("\n")]
+        [InlineData(null)]
+        [InlineData(" \t")]
+        public void GetByLanguageIn_NotFound_ReturnsEmpty(String name)
+        {
+            putData();
+
+            var result = repo.GetAllByLanguageIn(name);
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Theory]
+        [InlineData("polish")]
+        [InlineData("japanese")]
+        [InlineData("zimbabwean")]
+        public void GetByLanguageOut_NameFound_ReturnsNotNull(String name)
+        {
+            putData();
+            var found = repo.GetAllByLanguageOut(name);
+
+            Assert.NotNull(found);
+            foreach (var i in found)
+                Assert.Equal(name, i.LanguageOutName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("russian")]
+        [InlineData(" ")]
+        [InlineData("\n")]
+        [InlineData(null)]
+        [InlineData(" \t")]
+        public void GetByLanguageOut_NotFound_ReturnsEmpty(String name)
+        {
+            putData();
+
+            var result = repo.GetAllByLanguageOut(name);
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
     }
 }

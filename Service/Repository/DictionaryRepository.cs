@@ -2,6 +2,7 @@
 using Data.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,20 +32,26 @@ namespace Service.Repository
             return Exists(d => d.Index == index);
         }
 
-        public bool ExistsByLanguages(string languageIn, string languageOut)
+        public bool ExistsByLanguages(string langIn, string langOut)
         {
-            return Exists(d => EF.Functions.Like(d.LanguageInName, $"%{languageIn}%")
-            || EF.Functions.Like(d.LanguageOutName, $"%{languageOut}%"));
+            if (String.IsNullOrEmpty(langIn) || String.IsNullOrWhiteSpace(langIn))
+                return false;
+            return Exists(d => EF.Functions.Like(d.LanguageInName, langIn)
+            && EF.Functions.Like(d.LanguageOutName, langOut));
         }
 
         public IEnumerable<Dictionary> GetAllByLanguageIn(string langIn)
         {
-            throw new System.NotImplementedException();
+            if (String.IsNullOrEmpty(langIn) || String.IsNullOrWhiteSpace(langIn))
+                return Enumerable.Empty<Dictionary>();
+            return Get(d => EF.Functions.Like(d.LanguageInName, langIn), x => x);
         }
 
-        public IEnumerable<Dictionary> GetAllByLanguageOut(string langIn)
+        public IEnumerable<Dictionary> GetAllByLanguageOut(string langOut)
         {
-            throw new System.NotImplementedException();
+            if (String.IsNullOrEmpty(langOut) || String.IsNullOrWhiteSpace(langOut))
+                return Enumerable.Empty<Dictionary>();
+            return Get(d => EF.Functions.Like(d.LanguageOutName, langOut), x => x);
         }
     }
 }
