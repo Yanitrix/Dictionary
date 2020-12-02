@@ -1,5 +1,5 @@
-﻿using Data.Dto;
-using AutoMapper;
+﻿using AutoMapper;
+using Data.Dto;
 using Data.Models;
 
 namespace Data.Mapper
@@ -9,15 +9,23 @@ namespace Data.Mapper
         public MapperProfile()
         {
             CreateMap<LanguageDto, Language>().ReverseMap();
-            CreateMap<WordDto, Word>().ReverseMap();
+            CreateMap<CreateWord, Word>();
+            CreateMap<UpdateWord, Word>();
+            CreateMap<Word, GetWord>();
             CreateMap<WordPropertyDto, WordProperty>().ReverseMap();
 
-            CreateMap<DictionaryDto, Dictionary>().ReverseMap();
-            CreateMap<EntryDto, Entry>().ReverseMap();
-            CreateMap<MeaningDto, Meaning>().ReverseMap();
+            CreateMap<CreateDictionary, Dictionary>();
+            CreateMap<Dictionary, GetDictionary>();
+            CreateMap<CreateFreeExpression, FreeExpression>(); //UpdateFreeExpression inherits CreateFreeExpression
+            CreateMap<FreeExpression, GetFreeExpression>();
 
-            CreateMap<ExampleDto, Example>().ReverseMap();
-            CreateMap<FreeExpressionDto, FreeExpression>().ReverseMap();
+
+            CreateMap<CreateEntry, Entry>(); //UpdateEntry inherits CreateEntry
+            CreateMap<Entry, GetEntry>();
+            CreateMap<CreateMeaning, Meaning>();
+            CreateMap<UpdateMeaning, Meaning>();
+            CreateMap<Meaning, GetMeaning>();
+
         }
     }
 }

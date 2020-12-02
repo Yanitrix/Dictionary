@@ -3,13 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
 {
-    public class ExampleDto
+    public class CreateFreeExpression
     {
-        public int ID { get; set; }
+        [Required]
+        public int DictionaryIndex { get; set; }
 
         [Required]
         public String Text { get; set; }
+
         [Required]
         public String Translation { get; set; }
+
     }
 }

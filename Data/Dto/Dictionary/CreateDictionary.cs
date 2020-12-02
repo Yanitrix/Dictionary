@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Data.Dto
 {
-    public class WordPropertyDto
+    public class CreateDictionary
     {
-        public int ID { get; set; }
 
         [Required]
-        public String Name { get; set; }
+        public String LanguageInName { get; set; }
 
         [Required]
-        public String Value { get; set; }
+        public String LanguageOutName { get; set; }
+
     }
 }
