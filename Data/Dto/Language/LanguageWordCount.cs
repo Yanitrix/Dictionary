@@ -7,6 +7,7 @@ namespace Data.Dto
     public class LanguageWordCount
     {
         public String LanguageName { get; set; }
+
         public int WordCount { get; set; }
     }
 }

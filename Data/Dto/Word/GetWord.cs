@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
 {
-    public class WordDto
+    public class GetWord
     {
         public int ID { get; set; }
 
@@ -13,9 +13,6 @@ namespace Data.Dto
 
         [Required]
         public String Value { get; set; }
-
-        [Required]
-        public String SpeechPartName { get; set; }
 
         [Required]
         public ISet<WordPropertyDto> WordProperties { get; set; } = new HashSet<WordPropertyDto>();

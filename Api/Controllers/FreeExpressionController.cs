@@ -23,41 +23,46 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public ActionResult<GetFreeExpression> Get(int id)
         {
-            var exp = repo.GetByID(id);
-            if (exp == null) return NotFound();
-            return Json(exp);
+            var entity = repo.GetByID(id);
+            if (entity == null)
+                return NotFound();
+            return ToDto(entity);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] FreeExpressionDto dto)
+        public IActionResult Post([FromBody] CreateFreeExpression dto)
         {
-            var exp = ToExp(dto);
-            var result = service.TryAdd(exp);
-            if (!result.IsValid) return BadRequest(result);
-            return Created("api/expression" + exp.ID, exp);
+            var entity = ToEntity(dto);
+            var result = service.TryAdd(entity);
+            if (!result.IsValid)
+                return BadRequest(result);
+            return Created("api/expression" + entity.ID, ToDto(entity));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] FreeExpressionDto dto)
+        public IActionResult Put(int id, [FromBody] UpdateFreeExpression dto)
         {
-            var exp = ToExp(dto);
-            exp.ID = id;
-            var result = service.TryUpdate(exp);
-            if (!result.IsValid) return BadRequest(result);
+            var entity = ToEntity(dto);
+            entity.ID = id;
+            var result = service.TryUpdate(entity);
+            if (!result.IsValid)
+                return BadRequest(result);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var exp = repo.GetByID(id);
-            if (exp == null) return NotFound();
-            repo.Delete(exp);
+            var entity = repo.GetByID(id);
+            if (entity == null)
+                return NotFound();
+            repo.Delete(entity);
             return NoContent();
         }
 
-        private FreeExpression ToExp(FreeExpressionDto dto) => mapper.Map<FreeExpressionDto, FreeExpression>(dto);
+        private FreeExpression ToEntity(CreateFreeExpression dto) => mapper.Map<CreateFreeExpression, FreeExpression>(dto);
+        private GetFreeExpression ToDto(FreeExpression exp) => mapper.Map<FreeExpression, GetFreeExpression>(exp);
     }
 }

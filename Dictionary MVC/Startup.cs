@@ -12,6 +12,7 @@ using Data.Models;
 using Data.Mapper;
 using Service.Validation;
 using Service.Repository;
+using Service;
 
 namespace Dictionary_MVC
 {
@@ -32,6 +33,8 @@ namespace Dictionary_MVC
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("ConnectionString")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -54,6 +57,13 @@ namespace Dictionary_MVC
             services.AddTransient<IExampleRepository, ExampleRepository>();
             services.AddTransient<IFreeExpressionRepository, FreeExpressionRepository>();
 
+            services.AddTransient<IService<Language>, LanguageService>();
+            services.AddTransient<IService<Word>, WordService>();
+            services.AddTransient<IService<Dictionary>, DictionaryService>();
+            services.AddTransient<IService<Entry>, EntryService>();
+            services.AddTransient<IService<Meaning>, MeaningService>();
+            services.AddTransient<IService<FreeExpression>, FreeExpressionService>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(MapperProfile));
@@ -65,7 +75,6 @@ namespace Dictionary_MVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

@@ -29,29 +29,33 @@ namespace Api.Controllers
         //All()? i dont think so
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public ActionResult<GetEntry> Get(int id)
         {
+            //TODO include meanings and examples
             var entry = repo.GetByID(id);
-            if (entry == null) return NotFound();
-            return Json(entry);
+            if (entry == null)
+                return NotFound();
+            return ToDto(entry);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] EntryDto dto)
+        public IActionResult Post([FromBody] CreateEntry dto)
         {
-            var entry = ToEntry(dto);
+            var entry = ToEntity(dto);
             var result = service.TryAdd(entry);
-            if (!result.IsValid) return BadRequest(result);
-            return Created("api/entry/" + entry.ID, entry);
+            if (!result.IsValid)
+                return BadRequest(result);
+            return Created("api/entry/" + entry.ID, ToDto(entry));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] EntryDto dto)
+        public IActionResult Put(int id, [FromBody] UpdateEntry dto)
         {
-            var entry = ToEntry(dto);
+            var entry = ToEntity(dto);
             entry.ID = id;
             var result = service.TryUpdate(entry);
-            if (!result.IsValid) return BadRequest(result);
+            if (!result.IsValid)
+                return BadRequest(result);
             return Ok();
         }
 
@@ -59,12 +63,13 @@ namespace Api.Controllers
         public IActionResult Delete(int id)
         {
             var entry = repo.GetByID(id);
-            if (entry == null) return NotFound();
+            if (entry == null)
+                return NotFound();
             repo.Delete(entry);
             return NoContent();
         }
 
-        private Entry ToEntry(EntryDto dto) => mapper.Map<EntryDto, Entry>(dto);
-        private EntryDto ToDto(Entry e) => mapper.Map<Entry, EntryDto>(e);
+        private Entry ToEntity(CreateEntry dto) => mapper.Map<CreateEntry, Entry>(dto);
+        private GetEntry ToDto(Entry e) => mapper.Map<Entry, GetEntry>(e);
     }
 }

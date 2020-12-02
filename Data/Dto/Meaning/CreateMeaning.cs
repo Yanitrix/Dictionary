@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Data.Dto
 {
-    public class MeaningDto
-    {
-        public int ID { get; set; }
 
+    public class CreateMeaning
+    {
         [Required]
         public int EntryID { get; set; }
 
@@ -16,6 +14,8 @@ namespace Data.Dto
 
         public String Notes { get; set; }
 
-        public ICollection<ExampleDto> Examples { get; set; }
+        public ICollection<ExampleDto> Examples { get; set; } = new List<ExampleDto>();
     }
+
+
 }

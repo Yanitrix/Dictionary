@@ -3,12 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
 {
-    public class FreeExpressionDto
+    public class ExampleDto
     {
-        public int ID { get; set; }
-
-        public int DictionaryIndex { get; set; }
-
         [Required]
         public String Text { get; set; }
         [Required]

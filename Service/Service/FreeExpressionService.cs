@@ -3,7 +3,7 @@ using FluentValidation;
 using Service.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
-namespace Service.Service
+namespace Service
 {
     public class FreeExpressionService : ServiceBase<FreeExpression>
     {

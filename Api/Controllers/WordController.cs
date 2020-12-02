@@ -27,21 +27,25 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
+        //todo add some qerying maybe?
         //[HttpGet]
         //All() //won't do that because it would cause a heavy request for all words
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public ActionResult<GetWord> Get(int id)
         {
             var word = repo.GetByID(id);
             if (word == null) return NotFound();
 
-            return Json(ToDto(word));
+            return ToDto(word);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] WordDto dto)
+        public IActionResult Post([FromBody] CreateWord dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var entity = ToWord(dto);
             Utils.RemoveRedundantWhitespaces(entity.Properties);
 
@@ -49,11 +53,11 @@ namespace Api.Controllers
             if (!result.IsValid)
                 return BadRequest(result);
 
-            return Created("api/word/" + entity.ID, entity);
+            return Created("api/word/" + entity.ID, ToDto(entity));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] WordDto dto)
+        public IActionResult Put(int id, [FromBody] UpdateWord dto)
         {
             var entity = ToWord(dto);
             entity.ID = id;
@@ -62,21 +66,23 @@ namespace Api.Controllers
             var result = service.TryUpdate(entity);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Ok("Resource updated succesfully");
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var word = repo.GetByID(id);
-            if (word == null) return NotFound();
+            if (word == null)
+                return NotFound();
             repo.Delete(word);
             return NoContent();
         }
 
-        private Word ToWord(WordDto dto) => mapper.Map<WordDto, Word>(dto);
+        private Word ToWord(CreateWord dto) => mapper.Map<CreateWord, Word>(dto);
+        private Word ToWord(UpdateWord dto) => mapper.Map<UpdateWord, Word>(dto);
 
-        private WordDto ToDto(Word word) => mapper.Map<Word, WordDto>(word);
+        private GetWord ToDto(Word word) => mapper.Map<Word, GetWord>(word);
 
     }
 }
