@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Service.Repository;
 using Service;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -25,43 +26,47 @@ namespace Api.Controllers
         }
 
         //TODO should test it with bulk data
-        public IEnumerable<LanguageWordCount> Index()
+        [HttpGet]
+        public ActionResult<IEnumerable<LanguageWordCount>> Index()
         {
-            return repo.AllWithWordCount();
+            return repo.AllWithWordCount().ToList();
         }
 
+        //todo write response dto that includes words
         [HttpGet("{name}")]
-        public IActionResult Get(String name, bool withWords)
+        public ActionResult<LanguageDto> Get(String name, bool withWords = false)
         {
-            Language entity = (withWords) ? repo.GetByNameWithWords(name) : repo.GetByName(name);
+            Language entity = withWords ? repo.GetByNameWithWords(name) : repo.GetByName(name);
 
-            if (entity == null) return NotFound($"Language with Name: \"{name}\" doesn't exist");
+            if (entity == null)
+                return NotFound($"Language with Name: \"{name}\" doesn't exist");
 
-            return Json(entity);
+            return ToDto(entity);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] String name)
+        public IActionResult Create([FromBody] LanguageDto dto)
         {
-            var entity = new Language
-            {
-                Name = name
-            };
+            var entity = ToEntity(dto);
 
             var result = service.TryAdd(entity);
-            if (result.IsValid) return Created("api/language/" + entity.Name, entity);
-            else return BadRequest(result);
+            if (!result.IsValid)
+                return BadRequest(result);
+            return Created("api/language/" + entity.Name, ToDto(entity));
         }
 
         [HttpDelete("{name}")]
         public IActionResult Delete(String name)
         {
             var entity = repo.GetByName(name);
-            if (entity == null) return NotFound($"Language with Name: \"{name}\" doesn't exist");
+            if (entity == null) 
+                return NotFound($"Language with Name: \"{name}\" doesn't exist");
 
             repo.Delete(entity);
-
             return NoContent();
         }
+
+        private Language ToEntity(LanguageDto dto) => mapper.Map<LanguageDto, Language>(dto);
+        private LanguageDto ToDto(Language entity) => mapper.Map<Language, LanguageDto>(entity);
     }
 }

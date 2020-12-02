@@ -4,9 +4,6 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Api.Controllers
 {
@@ -26,18 +23,18 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public ActionResult<GetMeaning> Get(int id)
         {
-            var meaning = repo.GetByID(id);
-            if (meaning == null)
+            var entity = repo.GetByID(id);
+            if (entity == null)
                 return NotFound();
 
-            return Json(ToDto(meaning));
+            return ToDto(entity);
         }
 
         //TODO check if returned http codes are good and also take care of magic strings like "api/meaning"
         [HttpPost]
-        public IActionResult Post([FromBody] MeaningDto dto)
+        public IActionResult Post([FromBody] CreateMeaning dto)
         {
             var entity = ToEntity(dto);
             var result = service.TryAdd(entity);
@@ -47,7 +44,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] MeaningDto dto)
+        public IActionResult Put(int id, [FromBody] UpdateMeaning dto)
         {
             var entity = ToEntity(dto);
             entity.ID = id;
@@ -67,7 +64,8 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        private MeaningDto ToDto(Meaning m) => mapper.Map<Meaning, MeaningDto>(m);
-        private Meaning ToEntity(MeaningDto dto) => mapper.Map<MeaningDto, Meaning>(dto);
+        private GetMeaning ToDto(Meaning m) => mapper.Map<Meaning, GetMeaning>(m);
+        private Meaning ToEntity(CreateMeaning dto) => mapper.Map<CreateMeaning, Meaning>(dto);
+        private Meaning ToEntity(UpdateMeaning dto) => mapper.Map<UpdateMeaning, Meaning>(dto);
     }
 }
