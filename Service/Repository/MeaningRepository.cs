@@ -48,10 +48,11 @@ namespace Service.Repository
             return Exists(m => m.ID == id);
         }
 
-        //TODO implement repo
         public IEnumerable<Meaning> GetByDictionaryAndValueSubstring(int dictionaryIndex, string valueSubstring)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrEmpty(valueSubstring))
+                return Enumerable.Empty<Meaning>();
+            return Get(m => m.Entry.DictionaryIndex == dictionaryIndex && EF.Functions.Like(m.Value, $"%{valueSubstring}%"), x => x);
         }
     }
 }
