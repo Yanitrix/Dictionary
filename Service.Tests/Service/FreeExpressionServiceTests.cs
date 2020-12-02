@@ -1,7 +1,6 @@
 ﻿using Data.Models;
 using Moq;
 using Service.Repository;
-using Service.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
