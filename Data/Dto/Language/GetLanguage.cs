@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Dto
 {
-    public class LanguageDto
+    public class GetLanguage
     {
-        [Required]
         public String Name { get; set; }
+        public ICollection<GetWord> Words { get; set; }
     }
 }
