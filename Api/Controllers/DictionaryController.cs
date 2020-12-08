@@ -55,7 +55,7 @@ namespace Api.Controllers
             var result = service.TryAdd(entity);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/dictionary" + entity.Index, entity);
+            return Created("api/dictionary" + entity.Index, ToDto(entity));
         }
 
         [HttpDelete("{index}")]

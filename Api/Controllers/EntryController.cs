@@ -39,7 +39,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateEntry dto)
+        public IActionResult Post([FromBody] CreateOrUpdateEntry dto)
         {
             var entry = ToEntity(dto);
             var result = service.TryAdd(entry);
@@ -49,7 +49,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateEntry dto)
+        public IActionResult Put(int id, [FromBody] CreateOrUpdateEntry dto)
         {
             var entry = ToEntity(dto);
             entry.ID = id;
@@ -69,7 +69,7 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        private Entry ToEntity(CreateEntry dto) => mapper.Map<CreateEntry, Entry>(dto);
+        private Entry ToEntity(CreateOrUpdateEntry dto) => mapper.Map<CreateOrUpdateEntry, Entry>(dto);
         private GetEntry ToDto(Entry e) => mapper.Map<Entry, GetEntry>(e);
     }
 }

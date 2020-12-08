@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
 {
-    public class CreateEntry
+    public class CreateOrUpdateEntry
     {
         [Required]
         public int DictionaryIndex { get; set; }

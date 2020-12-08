@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
@@ -10,6 +11,6 @@ namespace Data.Dto
         public String Name { get; set; }
 
         [Required]
-        public String Value { get; set; }
+        public ICollection<String> Values { get; set; }
     }
 }
