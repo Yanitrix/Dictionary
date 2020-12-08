@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Dto
 {
-    public class CreateFreeExpression
+    public class CreateOrUpdateFreeExpression
     {
         [Required]
         public int DictionaryIndex { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Data.Dto
 {
-    public class GetFreeExpression : CreateFreeExpression
+    public class GetFreeExpression : CreateOrUpdateFreeExpression
     {
         public int ID { get; set; }
     }
