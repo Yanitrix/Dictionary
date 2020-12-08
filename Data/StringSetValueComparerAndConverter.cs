@@ -1,13 +1,13 @@
 ﻿using Data.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Data
 {
@@ -22,23 +22,35 @@ namespace Data
 
         public static ValueConverter<StringSet, String> Converter { get; } = new
             ValueConverter<StringSet, String>(
-                source => JsonConvert.SerializeObject(source, Formatting.Indented, new StringSetConverter()),
-                dest => JsonConvert.DeserializeObject<StringSet>(dest, new StringSetConverter())
+                stringSet => JsonSerializer.Serialize(stringSet, new JsonSerializerOptions { WriteIndented = true, Converters = { new StringSetConverter() } }),
+                jsonString => JsonSerializer.Deserialize<StringSet>(jsonString, new JsonSerializerOptions { Converters = { new StringSetConverter() } })
             );
 
     }
 
     public class StringSetConverter : JsonConverter<StringSet>
     {
-        public override StringSet ReadJson(JsonReader reader, Type objectType, [AllowNull] StringSet existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override StringSet Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var val = (String)reader.Value;
-            return new StringSet(JsonConvert.DeserializeObject<HashSet<String>>(val).ToArray());
+            var result = new StringSet();
+            reader.Read();
+            while(reader.TokenType != JsonTokenType.EndArray)
+            {
+                result.Add(reader.GetString());
+                reader.Read();
+            }
+
+            return result;
+
         }
 
-        public override void WriteJson(JsonWriter writer, [AllowNull] StringSet value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, StringSet value, JsonSerializerOptions options)
         {
-            JsonConvert.SerializeObject(value.ToHashSet());
+            writer.WriteStartArray();
+            foreach (var i in value)
+                writer.WriteStringValue(i);
+            writer.WriteEndArray();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Data.Models
 {
@@ -12,6 +13,8 @@ namespace Data.Models
         public StringSet(params String[] content) : base(content, new StringEqualityComparer())
         {
         }
+
+        public StringSet():base(new StringEqualityComparer()){}
 
         public override int GetHashCode()
         {
@@ -27,5 +30,14 @@ namespace Data.Models
             return hash;
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append('[');
+            foreach (var i in this)
+                sb.Append(i + ",");
+            sb.Append(']');
+            return sb.ToString();
+        }
     }
 }
