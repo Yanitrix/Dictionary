@@ -34,7 +34,7 @@ namespace Api.Controllers
 
         //todo write response dto that includes words
         [HttpGet("{name}")]
-        public ActionResult<LanguageDto> Get(String name, bool withWords = false)
+        public ActionResult<GetLanguage> Get(String name, bool withWords = false)
         {
             Language entity = withWords ? repo.GetByNameWithWords(name) : repo.GetByName(name);
 
@@ -45,7 +45,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] LanguageDto dto)
+        public IActionResult Create([FromBody] CreateLanguage dto)
         {
             var entity = ToEntity(dto);
 
@@ -66,7 +66,7 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        private Language ToEntity(LanguageDto dto) => mapper.Map<LanguageDto, Language>(dto);
-        private LanguageDto ToDto(Language entity) => mapper.Map<Language, LanguageDto>(entity);
+        private Language ToEntity(CreateLanguage dto) => mapper.Map<CreateLanguage, Language>(dto);
+        private GetLanguage ToDto(Language entity) => mapper.Map<Language, GetLanguage>(entity);
     }
 }

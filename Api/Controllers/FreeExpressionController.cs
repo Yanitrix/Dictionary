@@ -32,7 +32,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateFreeExpression dto)
+        public IActionResult Post([FromBody] CreateOrUpdateFreeExpression dto)
         {
             var entity = ToEntity(dto);
             var result = service.TryAdd(entity);
@@ -42,7 +42,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateFreeExpression dto)
+        public IActionResult Put(int id, [FromBody] CreateOrUpdateFreeExpression dto)
         {
             var entity = ToEntity(dto);
             entity.ID = id;
@@ -62,7 +62,7 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        private FreeExpression ToEntity(CreateFreeExpression dto) => mapper.Map<CreateFreeExpression, FreeExpression>(dto);
+        private FreeExpression ToEntity(CreateOrUpdateFreeExpression dto) => mapper.Map<CreateOrUpdateFreeExpression, FreeExpression>(dto);
         private GetFreeExpression ToDto(FreeExpression exp) => mapper.Map<FreeExpression, GetFreeExpression>(exp);
     }
 }
