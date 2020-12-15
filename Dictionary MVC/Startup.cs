@@ -6,7 +6,6 @@ using Data.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
 using FluentValidation;
 using Data.Models;
 using Data.Mapper;
@@ -66,7 +65,7 @@ namespace Dictionary_MVC
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddAutoMapper(typeof(MapperProfile));
+            services.AddSimpleMapper<MappingConfig>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
