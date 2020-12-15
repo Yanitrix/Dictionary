@@ -15,7 +15,7 @@ namespace Data.Dto
         public String Value { get; set; }
 
         [Required]
-        public ISet<WordPropertyDto> WordProperties { get; set; } = new HashSet<WordPropertyDto>();
+        public ISet<WordPropertyDto> Properties { get; set; } = new HashSet<WordPropertyDto>();
 
     }
 }

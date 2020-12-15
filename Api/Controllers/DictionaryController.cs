@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Data.Dto;
+﻿using Data.Dto;
+using Data.Mapper;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
