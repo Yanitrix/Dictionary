@@ -9,6 +9,6 @@ namespace Data.Dto
     public class GetLanguage
     {
         public String Name { get; set; }
-        public ICollection<GetWord> Words { get; set; }
+        public ICollection<GetWord> Words { get; set; } = new List<GetWord>();
     }
 }
