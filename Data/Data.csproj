@@ -5,23 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Database\Migrations\20200723145704_ExpressionsOut.cs" />
-    <Compile Remove="Database\Migrations\20200723145704_ExpressionsOut.Designer.cs" />
-    <Compile Remove="Database\Migrations\20200823130441_CascadeDeletingChildEntities.cs" />
-    <Compile Remove="Database\Migrations\20200823130441_CascadeDeletingChildEntities.Designer.cs" />
-    <Compile Remove="Database\Migrations\20200823142503_CascadeDeletingChildEntities.cs" />
-    <Compile Remove="Database\Migrations\20200823142503_CascadeDeletingChildEntities.Designer.cs" />
-    <Compile Remove="Database\Migrations\20201031160731_CustomCollections.cs" />
-    <Compile Remove="Database\Migrations\20201031160731_CustomCollections.Designer.cs" />
-    <Compile Remove="Database\Migrations\20201105131517_SplitExpression.cs" />
-    <Compile Remove="Database\Migrations\20201105131517_SplitExpression.Designer.cs" />
-    <Compile Remove="Database\Migrations\20201105150303_SpliExpression.cs" />
-    <Compile Remove="Database\Migrations\20201105150303_SpliExpression.Designer.cs" />
-    <Compile Remove="Database\Migrations\20201105154529_SplitExpressionIntoTwoClasses.cs" />
-    <Compile Remove="Database\Migrations\20201105154529_SplitExpressionIntoTwoClasses.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0"></PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
@@ -32,6 +15,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
 </Project>
