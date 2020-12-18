@@ -33,11 +33,11 @@ namespace Service.Tests.Validators
         }
 
         [Fact]
-        public void PropertiesEmpty_ShouldNotBeValid()
+        public void PropertiesEmpty_ShouldBeValid()
         {
             entity.Properties = new WordPropertySet();
 
-            Assert.False(validator.Validate(entity).IsValid);
+            Assert.True(validator.Validate(entity).IsValid);
         }
 
         [Theory]
