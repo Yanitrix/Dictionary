@@ -18,6 +18,13 @@ namespace Service.Repository
 
         public LanguageRepository(DatabaseContext context):base(context) { }
 
+        public override Language Delete(Language entity)
+        {
+            var children = context.Set<Dictionary>().Where(d => d.LanguageInName == entity.Name || d.LanguageOutName == entity.Name);
+            context.RemoveRange(children);
+            return base.Delete(entity);
+        }
+
         public Language GetByName(String name)
         {
             return repo.Find(name);

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Data.Database.Migrations
+namespace Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201117171224_ImplementTPT")]
-    partial class ImplementTPT
+    [Migration("20201217172917_DictionariesAndEverythingBelow")]
+    partial class DictionariesAndEverythingBelow
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,7 +185,7 @@ namespace Data.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WordID")
+                    b.Property<int>("WordID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -396,13 +396,13 @@ namespace Data.Database.Migrations
                     b.HasOne("Data.Models.Language", "LanguageIn")
                         .WithMany()
                         .HasForeignKey("LanguageInName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Data.Models.Language", "LanguageOut")
                         .WithMany()
                         .HasForeignKey("LanguageOutName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("LanguageIn");
@@ -480,7 +480,8 @@ namespace Data.Database.Migrations
                     b.HasOne("Data.Models.Word", null)
                         .WithMany("Properties")
                         .HasForeignKey("WordID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

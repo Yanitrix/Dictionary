@@ -7,6 +7,8 @@ namespace Data.Models
 {
     public class WordProperty
     {
+        public int WordID { get; set; }
+
         [Required]
         public int ID { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Data.Database.Migrations
+namespace Data.Migrations
 {
-    public partial class Dictionaries : Migration
+    public partial class DictionariesAndEverythingBelow : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,9 +10,9 @@ namespace Data.Database.Migrations
                 name: "Dictionary",
                 columns: table => new
                 {
-                    LanguageInName = table.Column<string>(nullable: false),
-                    LanguageOutName = table.Column<string>(nullable: false),
-                    Index = table.Column<int>(nullable: false)
+                    LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Index = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
@@ -24,23 +24,23 @@ namespace Data.Database.Migrations
                         column: x => x.LanguageInName,
                         principalTable: "Language",
                         principalColumn: "Name",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Dictionary_Language_LanguageOutName",
                         column: x => x.LanguageOutName,
                         principalTable: "Language",
                         principalColumn: "Name",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Entry",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DictionaryIndex = table.Column<int>(nullable: false),
-                    WordID = table.Column<int>(nullable: false)
+                    DictionaryIndex = table.Column<int>(type: "int", nullable: false),
+                    WordID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,18 +56,39 @@ namespace Data.Database.Migrations
                         column: x => x.WordID,
                         principalTable: "Word",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FreeExpression",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DictionaryIndex = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FreeExpression", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FreeExpression_Dictionary_DictionaryIndex",
+                        column: x => x.DictionaryIndex,
+                        principalTable: "Dictionary",
+                        principalColumn: "Index",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Meaning",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EntryID = table.Column<int>(nullable: false),
-                    Value = table.Column<string>(nullable: true),
-                    Notes = table.Column<string>(nullable: true)
+                    EntryID = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,31 +102,24 @@ namespace Data.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Expression",
+                name: "Example",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(nullable: true),
-                    Translation = table.Column<string>(nullable: true),
-                    EntryID = table.Column<int>(nullable: true),
-                    MeaningID = table.Column<int>(nullable: true)
+                    MeaningID = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Expression", x => x.ID);
+                    table.PrimaryKey("PK_Example", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Expression_Entry_EntryID",
-                        column: x => x.EntryID,
-                        principalTable: "Entry",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Expression_Meaning_MeaningID",
+                        name: "FK_Example_Meaning_MeaningID",
                         column: x => x.MeaningID,
                         principalTable: "Meaning",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -121,17 +135,18 @@ namespace Data.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Entry_WordID",
                 table: "Entry",
-                column: "WordID");
+                column: "WordID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Expression_EntryID",
-                table: "Expression",
-                column: "EntryID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expression_MeaningID",
-                table: "Expression",
+                name: "IX_Example_MeaningID",
+                table: "Example",
                 column: "MeaningID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FreeExpression_DictionaryIndex",
+                table: "FreeExpression",
+                column: "DictionaryIndex");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Meaning_EntryID",
@@ -142,7 +157,10 @@ namespace Data.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Expression");
+                name: "Example");
+
+            migrationBuilder.DropTable(
+                name: "FreeExpression");
 
             migrationBuilder.DropTable(
                 name: "Meaning");

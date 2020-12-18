@@ -27,14 +27,8 @@ namespace Data.Database
 
             #region languages and words and wordproperties
 
-            var language = builder.Entity<Language>().ToTable("Language");
+            builder.Entity<Language>().ToTable("Language");
             var word = builder.Entity<Word>().ToTable("Word");
-
-            language
-                .HasMany(language => language.Words)
-                .WithOne(word => word.SourceLanguage)
-                .HasForeignKey(word => word.SourceLanguageName)
-                .OnDelete(DeleteBehavior.Cascade);
 
             word
                 .HasOne<Entry>()
@@ -42,12 +36,7 @@ namespace Data.Database
                 .HasForeignKey<Entry>(entry => entry.WordID)
                 .OnDelete(DeleteBehavior.Cascade); //deleting all entries that contain given word
 
-            word
-                .HasMany(word => word.Properties)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            var wordProperty = builder.Entity<WordProperty>().ToTable("WordProperty");
+            builder.Entity<WordProperty>().ToTable("WordProperty");
 
             //storing Set<String>
             var propertyBuilder = builder.Entity<WordProperty>().Property(wp => wp.Values);
@@ -86,29 +75,17 @@ namespace Data.Database
                 .HasOne(dictionary => dictionary.LanguageIn)
                 .WithMany()
                 .HasForeignKey(dictionary => dictionary.LanguageInName)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             dictionary
                 .HasOne(dictionary => dictionary.LanguageOut)
                 .WithMany()
                 .HasForeignKey(dictionary => dictionary.LanguageOutName)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entry
-                .HasMany(entry => entry.Meanings)
-                .WithOne(meaning => meaning.Entry)
-                .HasForeignKey(meaning => meaning.EntryID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             entry
                 .HasIndex(entry => entry.WordID)  //a word can be in only one entry, i'm not quite sure if it's the correct way to do it but i think it'll work
                 .IsUnique();
-
-            meaning
-                .HasMany(meaning => meaning.Examples)
-                .WithOne(example => example.Meaning)
-                .HasForeignKey(example => example.MeaningID)
-                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 

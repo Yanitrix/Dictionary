@@ -4,24 +4,22 @@ using Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Data.Database.Migrations
+namespace Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200723180450_ExpressionsOut")]
-    partial class ExpressionsOut
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.4")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Database.Models.Dictionary", b =>
+            modelBuilder.Entity("Data.Models.Dictionary", b =>
                 {
                     b.Property<string>("LanguageInName")
                         .HasColumnType("nvarchar(450)");
@@ -32,7 +30,7 @@ namespace Data.Database.Migrations
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.HasKey("LanguageInName", "LanguageOutName");
 
@@ -41,12 +39,12 @@ namespace Data.Database.Migrations
                     b.ToTable("Dictionary");
                 });
 
-            modelBuilder.Entity("Database.Models.Entry", b =>
+            modelBuilder.Entity("Data.Models.Entry", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("DictionaryIndex")
                         .HasColumnType("int");
@@ -58,40 +56,63 @@ namespace Data.Database.Migrations
 
                     b.HasIndex("DictionaryIndex");
 
-                    b.HasIndex("WordID");
+                    b.HasIndex("WordID")
+                        .IsUnique();
 
                     b.ToTable("Entry");
                 });
 
-            modelBuilder.Entity("Database.Models.Expression", b =>
+            modelBuilder.Entity("Data.Models.Example", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DictionaryIndex")
-                        .HasColumnType("int");
+                        .UseIdentityColumn();
 
                     b.Property<int>("MeaningID")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MeaningID");
+
+                    b.ToTable("Example");
+                });
+
+            modelBuilder.Entity("Data.Models.FreeExpression", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("DictionaryIndex")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("DictionaryIndex");
 
-                    b.HasIndex("MeaningID");
-
-                    b.ToTable("Expression");
+                    b.ToTable("FreeExpression");
                 });
 
-            modelBuilder.Entity("Database.Models.Language", b =>
+            modelBuilder.Entity("Data.Models.Language", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -101,12 +122,12 @@ namespace Data.Database.Migrations
                     b.ToTable("Language");
                 });
 
-            modelBuilder.Entity("Database.Models.Meaning", b =>
+            modelBuilder.Entity("Data.Models.Meaning", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("EntryID")
                         .HasColumnType("int");
@@ -115,6 +136,7 @@ namespace Data.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -124,61 +146,16 @@ namespace Data.Database.Migrations
                     b.ToTable("Meaning");
                 });
 
-            modelBuilder.Entity("Database.Models.SpeechPart", b =>
-                {
-                    b.Property<string>("LanguageName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Index")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("LanguageName", "Name");
-
-                    b.ToTable("SpeechPart");
-                });
-
-            modelBuilder.Entity("Database.Models.SpeechPartProperty", b =>
+            modelBuilder.Entity("Data.Models.Word", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PossibleValues")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SpeechPartIndex")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("SpeechPartIndex");
-
-                    b.ToTable("SpeechPartProperty");
-                });
-
-            modelBuilder.Entity("Database.Models.Word", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("SourceLanguageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SpeechPartName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -191,20 +168,22 @@ namespace Data.Database.Migrations
                     b.ToTable("Word");
                 });
 
-            modelBuilder.Entity("Database.Models.WordProperty", b =>
+            modelBuilder.Entity("Data.Models.WordProperty", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Value")
+                    b.Property<string>("Values")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WordID")
+                    b.Property<int>("WordID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -224,18 +203,18 @@ namespace Data.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -246,7 +225,7 @@ namespace Data.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -278,8 +257,8 @@ namespace Data.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -291,12 +270,12 @@ namespace Data.Database.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -314,17 +293,17 @@ namespace Data.Database.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -335,7 +314,7 @@ namespace Data.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -357,12 +336,10 @@ namespace Data.Database.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -399,12 +376,10 @@ namespace Data.Database.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -414,95 +389,97 @@ namespace Data.Database.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Database.Models.Dictionary", b =>
+            modelBuilder.Entity("Data.Models.Dictionary", b =>
                 {
-                    b.HasOne("Database.Models.Language", "LanguageIn")
+                    b.HasOne("Data.Models.Language", "LanguageIn")
                         .WithMany()
                         .HasForeignKey("LanguageInName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.Language", "LanguageOut")
+                    b.HasOne("Data.Models.Language", "LanguageOut")
                         .WithMany()
                         .HasForeignKey("LanguageOutName")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("LanguageIn");
+
+                    b.Navigation("LanguageOut");
                 });
 
-            modelBuilder.Entity("Database.Models.Entry", b =>
+            modelBuilder.Entity("Data.Models.Entry", b =>
                 {
-                    b.HasOne("Database.Models.Dictionary", "Dictionary")
+                    b.HasOne("Data.Models.Dictionary", "Dictionary")
                         .WithMany("Entries")
                         .HasForeignKey("DictionaryIndex")
                         .HasPrincipalKey("Index")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.Word", "Word")
-                        .WithMany()
-                        .HasForeignKey("WordID")
+                    b.HasOne("Data.Models.Word", "Word")
+                        .WithOne()
+                        .HasForeignKey("Data.Models.Entry", "WordID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Dictionary");
+
+                    b.Navigation("Word");
                 });
 
-            modelBuilder.Entity("Database.Models.Expression", b =>
+            modelBuilder.Entity("Data.Models.Example", b =>
                 {
-                    b.HasOne("Database.Models.Dictionary", "Dictionary")
+                    b.HasOne("Data.Models.Meaning", "Meaning")
+                        .WithMany("Examples")
+                        .HasForeignKey("MeaningID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meaning");
+                });
+
+            modelBuilder.Entity("Data.Models.FreeExpression", b =>
+                {
+                    b.HasOne("Data.Models.Dictionary", "Dictionary")
                         .WithMany("FreeExpressions")
                         .HasForeignKey("DictionaryIndex")
                         .HasPrincipalKey("Index")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.Meaning", "Meaning")
-                        .WithMany("Examples")
-                        .HasForeignKey("MeaningID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Dictionary");
                 });
 
-            modelBuilder.Entity("Database.Models.Meaning", b =>
+            modelBuilder.Entity("Data.Models.Meaning", b =>
                 {
-                    b.HasOne("Database.Models.Entry", "Entry")
+                    b.HasOne("Data.Models.Entry", "Entry")
                         .WithMany("Meanings")
                         .HasForeignKey("EntryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Entry");
                 });
 
-            modelBuilder.Entity("Database.Models.SpeechPart", b =>
+            modelBuilder.Entity("Data.Models.Word", b =>
                 {
-                    b.HasOne("Database.Models.Language", "Language")
-                        .WithMany("SpeechParts")
-                        .HasForeignKey("LanguageName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Database.Models.SpeechPartProperty", b =>
-                {
-                    b.HasOne("Database.Models.SpeechPart", "SpeechPart")
-                        .WithMany("Properties")
-                        .HasForeignKey("SpeechPartIndex")
-                        .HasPrincipalKey("Index")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Database.Models.Word", b =>
-                {
-                    b.HasOne("Database.Models.Language", "SourceLanguage")
+                    b.HasOne("Data.Models.Language", "SourceLanguage")
                         .WithMany("Words")
                         .HasForeignKey("SourceLanguageName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("SourceLanguage");
                 });
 
-            modelBuilder.Entity("Database.Models.WordProperty", b =>
+            modelBuilder.Entity("Data.Models.WordProperty", b =>
                 {
-                    b.HasOne("Database.Models.Word", null)
+                    b.HasOne("Data.Models.Word", null)
                         .WithMany("Properties")
-                        .HasForeignKey("WordID");
+                        .HasForeignKey("WordID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -554,6 +531,33 @@ namespace Data.Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Data.Models.Dictionary", b =>
+                {
+                    b.Navigation("Entries");
+
+                    b.Navigation("FreeExpressions");
+                });
+
+            modelBuilder.Entity("Data.Models.Entry", b =>
+                {
+                    b.Navigation("Meanings");
+                });
+
+            modelBuilder.Entity("Data.Models.Language", b =>
+                {
+                    b.Navigation("Words");
+                });
+
+            modelBuilder.Entity("Data.Models.Meaning", b =>
+                {
+                    b.Navigation("Examples");
+                });
+
+            modelBuilder.Entity("Data.Models.Word", b =>
+                {
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }
