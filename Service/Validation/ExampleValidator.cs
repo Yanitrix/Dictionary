@@ -13,8 +13,6 @@ namespace Service.Validation
             RuleFor(ex => ex.Text).NotEmpty().NoDigits();
             RuleFor(ex => ex.Translation).NotEmpty().NoDigits();
 
-            RuleFor(ex => ex.MeaningID).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
-
         }
     }
 }
