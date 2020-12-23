@@ -25,6 +25,8 @@ namespace Api.Controllers
         //[HttpGet]
         //All()? i dont think so
 
+        //TODO querying entry by word value
+        //TODO wordproperties are not included with word
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
