@@ -4,6 +4,9 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -22,8 +25,18 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
-        //[HttpGet]
-        //All()? i dont think so
+        [HttpGet]
+        public ActionResult<IEnumerable<GetEntry>> Get(String word, int? dictionaryIndex)
+        {
+            if (word == null && dictionaryIndex == null)
+                return new List<GetEntry>();
+            if (word != null && dictionaryIndex != null)
+                return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word).Select(ToDto).ToList();
+            if (word != null)
+                return repo.GetByWord(word).Select(ToDto).ToList();
+            return repo.GetByDictionary(dictionaryIndex.Value).Select(ToDto).ToList();
+        }
+
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
