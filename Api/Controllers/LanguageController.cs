@@ -32,7 +32,6 @@ namespace Api.Controllers
             return repo.AllWithWordCount().ToList();
         }
 
-        //todo write response dto that includes words
         [HttpGet("{name}")]
         public ActionResult<GetLanguage> Get(String name, bool withWords = false)
         {

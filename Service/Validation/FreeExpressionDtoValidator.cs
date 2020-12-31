@@ -1,16 +1,18 @@
 ﻿using Commons;
-using Data.Models;
+using Data.Dto;
 using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Service.Validation
 {
-    public class FreeExpressionValidator : AbstractValidator<FreeExpression>
+    public class FreeExpressionDtoValidator : AbstractValidator<CreateOrUpdateFreeExpression>
     {
-
-        public FreeExpressionValidator()
+        public FreeExpressionDtoValidator()
         {
-            RuleFor(ex => ex.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
-
             RuleFor(ex => ex.Text).NotEmpty().NoDigits();
             RuleFor(ex => ex.Translation).NotEmpty().NoDigits();
 

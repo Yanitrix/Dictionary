@@ -1,27 +1,25 @@
 ﻿using Service.Repository;
 using Data.Models;
-using FluentValidation;
 using System;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class WordService : ServiceBase<Word>
+    public class WordService : IService<Word>
     {
         private readonly IWordRepository repo;
         private readonly ILanguageRepository langRepo;
+        private IValidationDictionary validationDictionary;
 
-
-        public WordService(IUnitOfWork uow, AbstractValidator<Word> validator)
-            :base(validator)
+        public WordService(IUnitOfWork uow)
         {
             this.repo = uow.Words;
             this.langRepo = uow.Languages;
         }
 
-        public override IValidationDictionary TryAdd(Word entity)
+        public IValidationDictionary TryAdd(Word entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             CheckLanguageAndProperties(entity);
 
@@ -31,9 +29,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Word entity)
+        public IValidationDictionary TryUpdate(Word entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             //check if entity already exists
             if (!repo.ExistsByID(entity.ID))
@@ -56,7 +54,7 @@ namespace Service
             //check if language exists
             if (!langRepo.ExistsByName(entity.SourceLanguageName))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language, String>(l => l.Name, entity.SourceLanguageName));
+                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language>(l => l.Name, entity.SourceLanguageName));
                 return;
             }
 

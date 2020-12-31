@@ -8,7 +8,7 @@ using Service.Repository;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/entry")]
+    [Route("api/meaning")]
     public class MeaningController : Controller
     {
         private readonly IService<Meaning> service;

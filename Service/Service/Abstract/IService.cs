@@ -1,5 +1,4 @@
-﻿
-namespace Service
+﻿namespace Service
 {
     public interface IService<T>
     {
@@ -7,6 +6,5 @@ namespace Service
         
         public IValidationDictionary TryUpdate(T entity);
 
-        public IValidationDictionary IsValid(T entity);
     }
 }

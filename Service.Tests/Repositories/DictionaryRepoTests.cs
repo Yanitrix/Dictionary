@@ -1,6 +1,5 @@
 ﻿using Service.Repository;
 using Data.Models;
-using Data.Tests;
 using System;
 using System.Linq;
 using Xunit;

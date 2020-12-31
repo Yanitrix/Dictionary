@@ -1,19 +1,17 @@
 ﻿using Commons;
-using Data.Models;
+using Data.Dto;
 using FluentValidation;
 
 namespace Service.Validation
 {
-    public class WordValidator : AbstractValidator<Word>
+    public class CreateWordValidator : AbstractValidator<CreateWord>
     {
-        public WordValidator()
+
+        public CreateWordValidator()
         {
-            RuleFor(w => w.ID).Empty().WithMessage(MessageConstants.EMPTY_ID);
             RuleFor(w => w.SourceLanguageName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).NoDigitsNoSpaces();
-
             RuleFor(w => w.Value).NotEmpty().NoDigits();
-
-            RuleForEach(w => w.Properties).SetValidator(new WordPropertyValidator());
+            RuleForEach(w => w.Properties).SetValidator(new WordPropertyDtoValidator());
         }
     }
 }

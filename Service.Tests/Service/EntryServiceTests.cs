@@ -18,7 +18,7 @@ namespace Service.Tests.Service
             wordRepo = _wordRepo;
             entryRepo = _repo;
             dictRepo = _dictRepo;
-            service = new EntryService(this.uow.Object, VMoq.Instance<Entry>());
+            service = new EntryService(this.uow.Object);
         }
 
         [Fact]

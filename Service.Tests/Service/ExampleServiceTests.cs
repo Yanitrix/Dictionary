@@ -17,7 +17,7 @@ namespace Service.Tests.Service
         {
             exampleRepo = _repo;
             meaningRepo = _meaningRepo;
-            service = new ExampleService(this.uow.Object, VMoq.Instance<Example>());
+            service = new ExampleService(this.uow.Object);
         }
 
         [Fact]

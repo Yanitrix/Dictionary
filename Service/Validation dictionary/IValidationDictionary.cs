@@ -8,5 +8,7 @@ namespace Service
         void AddError(String key, String errorMsg);
 
         bool IsValid { get; }
+
+        public static IValidationDictionary New() => new ValidationDictionary();
     }
 }

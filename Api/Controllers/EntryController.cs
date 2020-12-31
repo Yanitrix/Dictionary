@@ -24,11 +24,9 @@ namespace Api.Controllers
 
         //[HttpGet]
         //All()? i dont think so
-
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
-            //TODO include meanings and examples
             var entry = repo.GetByID(id);
             if (entry == null)
                 return NotFound();

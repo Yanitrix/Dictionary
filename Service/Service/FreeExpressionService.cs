@@ -1,24 +1,25 @@
 ﻿using Data.Models;
-using FluentValidation;
 using Service.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class FreeExpressionService : ServiceBase<FreeExpression>
+    public class FreeExpressionService : IService<FreeExpression>
     {
         private readonly IFreeExpressionRepository repo;
         private readonly IDictionaryRepository dictRepo;
+        private IValidationDictionary validationDictionary;
 
-        public FreeExpressionService(IUnitOfWork uow, AbstractValidator<FreeExpression> v) : base(v) {
+        public FreeExpressionService(IUnitOfWork uow)
+        {
 
             repo = uow.FreeExpressions;
             dictRepo = uow.Dictionaries;
         }
 
-        public override IValidationDictionary TryAdd(FreeExpression entity)
+        public IValidationDictionary TryAdd(FreeExpression entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             CheckDictionary(entity);
 
@@ -27,9 +28,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(FreeExpression entity)
+        public IValidationDictionary TryUpdate(FreeExpression entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
@@ -48,7 +49,7 @@ namespace Service
         {
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Example, Meaning, int>(m => m.ID, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Example, Meaning>(m => m.ID, entity.DictionaryIndex));
             }
         }
     }

@@ -1,26 +1,24 @@
 ﻿using Data.Models;
-using FluentValidation;
 using Service.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
 
 namespace Service
 {
-    public class DictionaryService : ServiceBase<Dictionary>
+    public class DictionaryService : IService<Dictionary>
     {
         private readonly ILanguageRepository langRepo;
         private readonly IDictionaryRepository repo;
 
-        public DictionaryService(IUnitOfWork uow, AbstractValidator<Dictionary> validator)
-            :base(validator)
+        public DictionaryService(IUnitOfWork uow)
         {
             this.langRepo = uow.Languages;
             this.repo = uow.Dictionaries;
         }
 
-        public override IValidationDictionary TryAdd(Dictionary entity)
+        public IValidationDictionary TryAdd(Dictionary entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            var validationDictionary = IValidationDictionary.New();
 
             //check if dict already exists
             if (repo.ExistsByLanguages(entity.LanguageInName, entity.LanguageOutName))
@@ -41,9 +39,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Dictionary entity)
+        public IValidationDictionary TryUpdate(Dictionary entity)
         {
-            validationDictionary = new ValidationDictionary();
+            var validationDictionary = IValidationDictionary.New();
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_DICTIONARY_DESC);
 

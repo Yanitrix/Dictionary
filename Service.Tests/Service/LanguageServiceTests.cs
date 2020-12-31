@@ -18,7 +18,7 @@ namespace Service.Tests.Service
         public LanguageServiceTests()
         {
             langRepo = langRepoMock;
-            service = new LanguageService(this.uow.Object, VMoq.Instance<Language>());
+            service = new LanguageService(this.uow.Object);
         }
 
         [Fact]

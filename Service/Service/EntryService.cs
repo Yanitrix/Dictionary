@@ -1,28 +1,27 @@
 ﻿using Data.Models;
-using FluentValidation;
 using Service.Repository;
 using System;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class EntryService : ServiceBase<Entry>
+    public class EntryService : IService<Entry>
     {
         private readonly IWordRepository wordRepo;
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
+        private IValidationDictionary validationDictionary;
 
-        public EntryService(IUnitOfWork uow, AbstractValidator<Entry> _v)
-            : base(_v)
+        public EntryService(IUnitOfWork uow)
         {
             this.wordRepo = uow.Words;
             this.dictRepo = uow.Dictionaries;
             this.repo = uow.Entries;
         }
 
-        public override IValidationDictionary TryAdd(Entry entity)
+        public IValidationDictionary TryAdd(Entry entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             CheckAll(entity);
 
@@ -32,9 +31,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Entry entity)
+        public IValidationDictionary TryUpdate(Entry entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             //check if exists
             if (!repo.ExistsByID(entity.ID))
@@ -56,7 +55,7 @@ namespace Service
             //check if word exists
             if (!wordRepo.ExistsByID(entity.WordID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word, int>(w => w.ID, entity.WordID));
+                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word>(w => w.ID, entity.WordID));
                 return;
             }
 
@@ -70,7 +69,7 @@ namespace Service
             //check if dictionary exists
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary, int>(d => d.Index, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
                 return;
             }
 
