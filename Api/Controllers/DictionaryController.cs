@@ -17,7 +17,7 @@ namespace Api.Controllers
 
         private readonly IService<Dictionary> service;
         private readonly IDictionaryRepository repo;
-        private IMapper mapper;
+        private readonly IMapper mapper;
 
         public DictionaryController(IService<Dictionary> service, IDictionaryRepository repo, IMapper mapper)
         {
@@ -27,7 +27,6 @@ namespace Api.Controllers
         }
 
         //TODO maybe return all with counted entries and expressions?
-        //some querying by languages maybe
         [HttpGet]
         public IEnumerable<GetDictionary> Index(String langIn = null, String langOut = null, String lang = null)
         {

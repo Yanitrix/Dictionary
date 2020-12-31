@@ -7,7 +7,7 @@ namespace Data.Dto
     {
         public int ID { get; set; }
 
-        public int DictionaryIndex { get; set; }
+        public GetDictionary Dictionary { get; set; }
 
         public GetWord Word { get; set; }
 

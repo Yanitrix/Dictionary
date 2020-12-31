@@ -5,6 +5,9 @@ using Data.Util;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -24,8 +27,16 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
-        //[HttpGet]
-        //All() //won't do that because it would cause a heavy request for all words
+        //some algorithm to find similar words when non exact are found?
+        [HttpGet]
+        public ActionResult<IEnumerable<GetWord>> Get(String value)
+        {
+            if (value == null)
+                return new List<GetWord>();
+            //It queries by the exact value, not substring
+            var words = repo.GetByValue(value, true);
+            return words.Select(ToDto).ToList();
+        }
 
         [HttpGet("{id}")]
         public ActionResult<GetWord> Get(int id)

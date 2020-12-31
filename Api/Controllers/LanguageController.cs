@@ -33,9 +33,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public ActionResult<GetLanguage> Get(String name, bool withWords = false)
+        public ActionResult<GetLanguage> Get(String name)
         {
-            Language entity = withWords ? repo.GetByNameWithWords(name) : repo.GetByName(name);
+            Language entity = repo.GetByNameWithWords(name);
 
             if (entity == null)
                 return NotFound($"Language with Name: \"{name}\" doesn't exist");

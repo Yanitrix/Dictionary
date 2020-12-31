@@ -132,11 +132,14 @@ namespace Data.Mapper
             {
                 var meaningMap = ResolveMappingFunction<Meaning, GetMeaning>();
                 var wordMap = ResolveMappingFunction<Word, GetWord>();
+                var dicMap = ResolveMappingFunction<Dictionary, GetDictionary>();
 
-                var dest = new GetEntry();
-                dest.DictionaryIndex = src.DictionaryIndex;
-                dest.ID = src.ID;
-                dest.Word = wordMap(src.Word);
+                var dest = new GetEntry
+                {
+                    Dictionary = dicMap(src.Dictionary),
+                    ID = src.ID,
+                    Word = wordMap(src.Word)
+                };
                 foreach (var i in src.Meanings)
                     dest.Meanings.Add(meaningMap(i));
 
