@@ -49,7 +49,7 @@ namespace Service
         {
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Example, Meaning, int>(m => m.ID, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Example, Meaning>(m => m.ID, entity.DictionaryIndex));
             }
         }
     }

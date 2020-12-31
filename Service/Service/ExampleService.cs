@@ -49,7 +49,7 @@ namespace Service
             //check if meaning exists
             if (!meaningRepo.ExistsByID(entity.MeaningID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Meaning>(), Msg.NOTFOUND_DESC<Example, Meaning, int>(m => m.ID, entity.MeaningID));
+                validationDictionary.AddError(Msg.NOTFOUND<Meaning>(), Msg.NOTFOUND_DESC<Example, Meaning>(m => m.ID, entity.MeaningID));
             }
         }
     }

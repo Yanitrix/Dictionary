@@ -51,7 +51,7 @@ namespace Service
             //only checking if entry exists
             if (!entryRepo.ExistsByID(entity.EntryID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Entry>(), Msg.NOTFOUND_DESC<Meaning, Entry, int>(e => e.ID, entity.EntryID));
+                validationDictionary.AddError(Msg.NOTFOUND<Entry>(), Msg.NOTFOUND_DESC<Meaning, Entry>(e => e.ID, entity.EntryID));
             }
         }
     }

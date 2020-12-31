@@ -55,7 +55,7 @@ namespace Service
             //check if word exists
             if (!wordRepo.ExistsByID(entity.WordID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word, int>(w => w.ID, entity.WordID));
+                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word>(w => w.ID, entity.WordID));
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace Service
             //check if dictionary exists
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary, int>(d => d.Index, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
                 return;
             }
 

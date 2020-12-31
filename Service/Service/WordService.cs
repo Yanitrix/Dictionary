@@ -54,7 +54,7 @@ namespace Service
             //check if language exists
             if (!langRepo.ExistsByName(entity.SourceLanguageName))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language, String>(l => l.Name, entity.SourceLanguageName));
+                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language>(l => l.Name, entity.SourceLanguageName));
                 return;
             }
 
