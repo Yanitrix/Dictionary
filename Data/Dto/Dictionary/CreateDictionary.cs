@@ -9,10 +9,10 @@ namespace Data.Dto
     {
 
         [Required]
-        public String LanguageInName { get; set; }
+        public String LanguageIn { get; set; }
 
         [Required]
-        public String LanguageOutName { get; set; }
+        public String LanguageOut { get; set; }
 
     }
 }
