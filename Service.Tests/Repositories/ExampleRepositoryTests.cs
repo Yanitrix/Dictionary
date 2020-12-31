@@ -1,10 +1,7 @@
 ﻿using Data.Models;
-using Data.Tests;
 using Service.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Service.Tests.Repositories
