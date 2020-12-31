@@ -39,7 +39,6 @@ namespace Commons
         
         public static String NOTFOUND<T>() => $"{typeof(T).Name} not found";
         public static String DOESNT_EXIST_DESC<T>() => $"{typeof(T).Name} with given primary key does not exist in the database. There is nothing to update";
-        //TODO why isnt object used here?
         public static String NOTFOUND_DESC<A, B>(Expression<Func<B, object>> pkeyEx, object pkeyValue)
         {
             return pkeyEx.Body switch

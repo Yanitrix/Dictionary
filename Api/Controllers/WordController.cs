@@ -24,7 +24,6 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
-        //todo add some qerying maybe?
         //[HttpGet]
         //All() //won't do that because it would cause a heavy request for all words
 
