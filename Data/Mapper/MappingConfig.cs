@@ -83,8 +83,8 @@ namespace Data.Mapper
             {
                 return new()
                 {
-                    LanguageInName = src.LanguageInName,
-                    LanguageOutName = src.LanguageOutName
+                    LanguageInName = src.LanguageIn,
+                    LanguageOutName = src.LanguageOut
                 };
             });
 
@@ -93,8 +93,8 @@ namespace Data.Mapper
                 return new()
                 {
                     Index = src.Index,
-                    LanguageInName = src.LanguageInName,
-                    LanguageOutName = src.LanguageOutName
+                    LanguageIn = src.LanguageInName,
+                    LanguageOut = src.LanguageOutName
                 };
             });
 

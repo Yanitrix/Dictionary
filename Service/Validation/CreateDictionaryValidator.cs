@@ -9,9 +9,9 @@ namespace Service.Validation
     {
         public CreateDictionaryValidator()
         {
-            RuleFor(d => d.LanguageInName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
-            RuleFor(d => d.LanguageOutName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
-            RuleFor(d => d.LanguageInName).NotEqual(d => d.LanguageOutName, StringComparer.OrdinalIgnoreCase).WithMessage("LanguageIn and LanguageOut cannot be same");
+            RuleFor(d => d.LanguageIn).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
+            RuleFor(d => d.LanguageOut).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
+            RuleFor(d => d.LanguageIn).NotEqual(d => d.LanguageOut, StringComparer.OrdinalIgnoreCase).WithMessage("LanguageIn and LanguageOut cannot be same");
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Service.Repository
 
         public IEnumerable<LanguageWordCount> AllWithWordCount()
         {
-            return repo.Select(lang => new LanguageWordCount { LanguageName = lang.Name, WordCount = lang.Words.Count }).OrderBy(count => count.LanguageName).ToList();
+            return repo.Select(lang => new LanguageWordCount { Name = lang.Name, WordCount = lang.Words.Count }).OrderBy(count => count.Name).ToList();
         }
     }
 }
