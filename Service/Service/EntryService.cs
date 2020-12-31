@@ -1,28 +1,27 @@
 ﻿using Data.Models;
-using FluentValidation;
 using Service.Repository;
 using System;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class EntryService : ServiceBase<Entry>
+    public class EntryService : IService<Entry>
     {
         private readonly IWordRepository wordRepo;
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
+        private IValidationDictionary validationDictionary;
 
-        public EntryService(IUnitOfWork uow, AbstractValidator<Entry> _v)
-            : base(_v)
+        public EntryService(IUnitOfWork uow)
         {
             this.wordRepo = uow.Words;
             this.dictRepo = uow.Dictionaries;
             this.repo = uow.Entries;
         }
 
-        public override IValidationDictionary TryAdd(Entry entity)
+        public IValidationDictionary TryAdd(Entry entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             CheckAll(entity);
 
@@ -32,9 +31,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Entry entity)
+        public IValidationDictionary TryUpdate(Entry entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             //check if exists
             if (!repo.ExistsByID(entity.ID))

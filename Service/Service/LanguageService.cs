@@ -1,23 +1,22 @@
 ﻿using Service.Repository;
 using Data.Models;
-using FluentValidation;
 using Msg = Commons.ValidationErrorMessages;
 
 
 namespace Service
 {
-    public class LanguageService : ServiceBase<Language>
+    public class LanguageService : IService<Language>
     {
         private readonly ILanguageRepository repo;
 
-        public LanguageService(IUnitOfWork uow, AbstractValidator<Language> _v) :base(_v)
+        public LanguageService(IUnitOfWork uow)
         {
             this.repo = uow.Languages;
         }
 
-        public override IValidationDictionary TryAdd(Language entity)
+        public IValidationDictionary TryAdd(Language entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            var validationDictionary = IValidationDictionary.New();
 
             if (repo.ExistsByName(entity.Name))
             {
@@ -32,9 +31,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Language entity)
+        public IValidationDictionary TryUpdate(Language entity)
         {
-            validationDictionary = new ValidationDictionary();
+            var validationDictionary = IValidationDictionary.New();
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_LANGUAGE_DESC);
 

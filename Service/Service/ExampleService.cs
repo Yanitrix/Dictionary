@@ -1,24 +1,24 @@
 ﻿using Data.Models;
-using FluentValidation;
 using Service.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class ExampleService : ServiceBase<Example>
+    public class ExampleService : IService<Example>
     {
         private readonly IExampleRepository repo;
         private readonly IMeaningRepository meaningRepo;
+        private IValidationDictionary validationDictionary;
 
-        public ExampleService(IUnitOfWork uow, AbstractValidator<Example> v) : base(v)
+        public ExampleService(IUnitOfWork uow)
         {
             this.repo = uow.Examples;
             this.meaningRepo = uow.Meanings;
         }
 
-        public override IValidationDictionary TryAdd(Example entity)
+        public IValidationDictionary TryAdd(Example entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
 
             CheckMeaning(entity);
 
@@ -27,9 +27,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public override IValidationDictionary TryUpdate(Example entity)
+        public IValidationDictionary TryUpdate(Example entity)
         {
-            if (!IsValid(entity).IsValid) return validationDictionary;
+            this.validationDictionary = IValidationDictionary.New();
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
