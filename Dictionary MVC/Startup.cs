@@ -12,6 +12,8 @@ using Data.Mapper;
 using Service.Validation;
 using Service.Repository;
 using Service;
+using Api.Filters;
+using FluentValidation.AspNetCore;
 
 namespace Dictionary_MVC
 {
@@ -35,18 +37,14 @@ namespace Dictionary_MVC
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-
-            services.AddSingleton<AbstractValidator<Language>, LanguageValidator>();
-            services.AddSingleton<AbstractValidator<Word>, WordValidator>();
-            services.AddSingleton<AbstractValidator<WordProperty>, WordPropertyValidator>();
-
-            services.AddSingleton<AbstractValidator<Dictionary>, DictionaryValidator>();
-            services.AddSingleton<AbstractValidator<Entry>, EntryValidator>();
-            services.AddSingleton<AbstractValidator<Meaning>, MeaningValidator>();
-            services.AddSingleton<AbstractValidator<Example>, ExampleValidator>();
-            services.AddSingleton<AbstractValidator<FreeExpression>, FreeExpressionValidator>();
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add<ValidationActionFilter>();
+            }).AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining<Startup>();
+                opt.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+            });
 
             services.AddTransient<ILanguageRepository, LanguageRepository>();
             services.AddTransient<IWordRepository, WordRepository>();
