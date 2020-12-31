@@ -14,7 +14,10 @@ namespace Service.Repository
 
         //so basically include everything
         private readonly Func<IQueryable<Entry>, IIncludableQueryable<Entry, object>> includeQuery =
-            (entries => entries.Include(e => e.Word).Include(e => e.Meanings).ThenInclude(m => m.Examples));
+            entries => entries
+            .Include(e => e.Dictionary)
+            .Include(e => e.Word).ThenInclude(w => w.Properties)
+            .Include(e => e.Meanings).ThenInclude(m => m.Examples);
 
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue)
         {
