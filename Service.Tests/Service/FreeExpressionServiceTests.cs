@@ -20,7 +20,7 @@ namespace Service.Tests.Service
         {
             freeExpressionRepo = _repo;
             dictRepo = _dictRepo;
-            service = new FreeExpressionService(this.uow.Object, VMoq.Instance<FreeExpression>());
+            service = new FreeExpressionService(this.uow.Object);
         }
 
         private FreeExpression entity { get => new FreeExpression { DictionaryIndex = 12 }; }

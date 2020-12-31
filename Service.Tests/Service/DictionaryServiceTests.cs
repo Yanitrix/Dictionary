@@ -19,7 +19,7 @@ namespace Service.Tests.Service
         {
             langRepo = _langRepo;
             dictRepo = _dictRepo;
-            service = new DictionaryService(this.uow.Object, VMoq.Instance<Dictionary>());
+            service = new DictionaryService(this.uow.Object);
         }
 
         [Fact]

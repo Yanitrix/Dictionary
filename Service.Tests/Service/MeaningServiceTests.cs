@@ -16,7 +16,7 @@ namespace Service.Tests.Service
         {
             meaningRepo = _repo;
             entryRepo = _entryRepo;
-            service = new MeaningService(this.uow.Object, VMoq.Instance<Meaning>());
+            service = new MeaningService(this.uow.Object);
         }
 
         [Fact]

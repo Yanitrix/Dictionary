@@ -18,7 +18,7 @@ namespace Service.Tests.Service
         {
             wordRepo = _wordRepo;
             langRepo = _langRepo;
-            service = new WordService(this.uow.Object, VMoq.Instance<Word>());
+            service = new WordService(this.uow.Object);
         }
 
         [Fact]
