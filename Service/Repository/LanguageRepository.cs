@@ -48,7 +48,7 @@ namespace Service.Repository
 
         public bool ExistsByName(string name)
         {
-            return Exists(l => EF.Functions.Like(l.Name, $"%{name}%"));
+            return Exists(l => EF.Functions.Like(l.Name, $"{name}"));
         }
 
         public IEnumerable<LanguageWordCount> AllWithWordCount()
