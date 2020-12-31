@@ -1,7 +1,7 @@
 # Dictionary
 A REST API made for adding and retrieving words/phrases to/from a dictionary. 
 
-### _**Work in progress**_
+### _**Work in progress, so some things are broken now**_
 
 
 ## So how does it work?
