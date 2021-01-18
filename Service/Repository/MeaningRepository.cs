@@ -54,7 +54,7 @@ namespace Service.Repository
             return Get(m => m.Entry.DictionaryIndex == dictionaryIndex && EF.Functions.Like(m.Value, $"%{valueSubstring}%"), x => x);
         }
         //Does not update EntryID
-        public override Meaning Update(Meaning entity)
+        public override void Update(Meaning entity)
         {
             //retrieve, change, update
             var inDB = context.Meanings.Find(entity.ID);
@@ -63,8 +63,6 @@ namespace Service.Repository
             inDB.Notes = entity.Notes;
             inDB.Examples = entity.Examples;
             context.SaveChanges();
-
-            return entity;
         }
     }
 }

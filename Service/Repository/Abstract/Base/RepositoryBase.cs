@@ -94,16 +94,10 @@ namespace Service.Repository
             return query.ToList();
         }
 
-        public void Detach(T entity)
-        {
-            context.Entry(entity).State = EntityState.Detached;
-        }
-
-        public virtual T Create(T entity)
+        public virtual void Create(T entity)
         {
             repo.Add(entity);
             context.SaveChanges();
-            return entity;
         }
 
         public virtual void CreateRange(params T[] entities)
@@ -127,18 +121,16 @@ namespace Service.Repository
             return repo.Where(condition).Select(mapper).ToList();
         }
 
-        public virtual T Update(T entity)
+        public virtual void Update(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
-            return entity;
         }
 
-        public virtual T Delete(T entity)
+        public virtual void Delete(T entity)
         {
             repo.Remove(entity);
             context.SaveChanges();
-            return entity;
         }
 
         public bool Exists(Expression<Func<T, bool>> condition)
