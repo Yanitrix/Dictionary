@@ -1,5 +1,4 @@
-﻿using Commons;
-using Data.Dto;
+﻿using Data.Dto;
 using FluentValidation;
 
 namespace Service.Validation
@@ -8,7 +7,7 @@ namespace Service.Validation
     {
         public UpdateWordValidator()
         {
-            RuleFor(w => w.Value).NotEmpty().NoDigits();
+            RuleFor(w => w.Value).Cascade(CascadeMode.Stop).NotEmpty().NoDigits();
             RuleForEach(w => w.Properties).SetValidator(new WordPropertyDtoValidator());
         }
     }

@@ -7,8 +7,8 @@ namespace Service.Validation
     {
         public ExampleDtoValidator()
         {
-            RuleFor(ex => ex.Text).NotEmpty().NoDigits();
-            RuleFor(ex => ex.Translation).NotEmpty().NoDigits();
+            RuleFor(ex => ex.Text).Cascade(CascadeMode.Stop).NotEmpty().NoDigits();
+            RuleFor(ex => ex.Translation).Cascade(CascadeMode.Stop).NotEmpty().NoDigits();
         }
     }
 }

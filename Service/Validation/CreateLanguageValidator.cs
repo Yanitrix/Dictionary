@@ -7,7 +7,7 @@ namespace Service.Validation.Commons
     {
         public CreateLanguageValidator()
         {
-            RuleFor(l => l.Name).NotEmpty().NoDigitsNoSpaces();
+            RuleFor(l => l.Name).Cascade(CascadeMode.Stop).NotEmpty().NoDigitsNoSpaces();
         }
     }
 }
