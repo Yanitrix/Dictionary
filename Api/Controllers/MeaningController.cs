@@ -22,7 +22,7 @@ namespace Api.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public ActionResult<GetMeaning> Get(int id)
         {
             var entity = repo.GetByID(id);
