@@ -21,7 +21,8 @@ namespace Service
         {
             this.validationDictionary = IValidationDictionary.New();
 
-            CheckLanguageAndProperties(entity);
+            CheckLanguage(entity);
+            CheckValueAndProperties(entity);
 
             if (validationDictionary.IsValid)
                 repo.Create(entity);
@@ -40,8 +41,8 @@ namespace Service
                 return validationDictionary;
             }
 
-            //now, same checks as for adding
-            CheckLanguageAndProperties(entity);
+            //We don't check for Language because it cannot be updated.
+            CheckValueAndProperties(entity);
 
             if (validationDictionary.IsValid)
                 repo.Update(entity);
@@ -49,15 +50,8 @@ namespace Service
             return validationDictionary;
         }
 
-        private void CheckLanguageAndProperties(Word entity)
+        private void CheckValueAndProperties(Word entity)
         {
-            //check if language exists
-            if (!langRepo.ExistsByName(entity.SourceLanguageName))
-            {
-                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language>(l => l.Name, entity.SourceLanguageName));
-                return;
-            }
-
             //check if there's a word with same set of WordProperties
             var similar = repo.GetByLanguageAndValue(entity.SourceLanguageName, entity.Value, false);
             foreach (var i in similar)
@@ -66,6 +60,16 @@ namespace Service
                 {
                     validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_WORD_DESC);
                 }
+            }
+        }
+
+        private void CheckLanguage(Word entity)
+        {
+            //check if language exists
+            if (!langRepo.ExistsByName(entity.SourceLanguageName))
+            {
+                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language>(l => l.Name, entity.SourceLanguageName));
+                return;
             }
         }
     }

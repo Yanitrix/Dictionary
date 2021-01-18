@@ -41,5 +41,7 @@ namespace Service.Repository
         /// <param name="wordID"></param>
         /// <returns>a boolean</returns>
         public bool ExistsByWord(int wordID);
+
+        public bool HasMeanings(int id);
     }
 }

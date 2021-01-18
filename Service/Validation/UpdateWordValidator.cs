@@ -4,11 +4,11 @@ using FluentValidation;
 
 namespace Service.Validation
 {
-    class UpdateWordValidator : AbstractValidator<UpdateWord>
+    public class UpdateWordValidator : AbstractValidator<UpdateWord>
     {
         public UpdateWordValidator()
         {
-            RuleFor(w => w.SourceLanguageName).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY).NoDigitsNoSpaces();
+            RuleFor(w => w.Value).NotEmpty().NoDigits();
             RuleForEach(w => w.Properties).SetValidator(new WordPropertyDtoValidator());
         }
     }

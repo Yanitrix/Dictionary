@@ -38,8 +38,6 @@ namespace Service
                 return validationDictionary;
             }
 
-            CheckEntry(entity);
-
             if (validationDictionary.IsValid)
                 repo.Update(entity);
 

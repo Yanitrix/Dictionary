@@ -61,5 +61,10 @@ namespace Service.Repository
         {
             return Exists(e => e.WordID == wordID);
         }
+
+        public bool HasMeanings(int id)
+        {
+            return context.Meanings.Any(m => m.EntryID == id);
+        }
     }
 }

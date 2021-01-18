@@ -1,6 +1,5 @@
 ﻿using Data.Database;
 using Data.Models;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -53,6 +52,19 @@ namespace Service.Repository
             if (String.IsNullOrEmpty(valueSubstring))
                 return Enumerable.Empty<Meaning>();
             return Get(m => m.Entry.DictionaryIndex == dictionaryIndex && EF.Functions.Like(m.Value, $"%{valueSubstring}%"), x => x);
+        }
+        //Does not update EntryID
+        public override Meaning Update(Meaning entity)
+        {
+            //retrieve, change, update
+            var inDB = context.Meanings.Find(entity.ID);
+            context.Entry(inDB).Collection(m => m.Examples).Load();
+            inDB.Value = entity.Value;
+            inDB.Notes = entity.Notes;
+            inDB.Examples = entity.Examples;
+            context.SaveChanges();
+
+            return entity;
         }
     }
 }
