@@ -18,11 +18,11 @@ namespace Service.Repository
 
         public LanguageRepository(DatabaseContext context):base(context) { }
 
-        public override Language Delete(Language entity)
+        public override void Delete(Language entity)
         {
             var children = context.Set<Dictionary>().Where(d => d.LanguageInName == entity.Name || d.LanguageOutName == entity.Name);
             context.RemoveRange(children);
-            return base.Delete(entity);
+            base.Delete(entity);
         }
 
         public Language GetByName(String name)
@@ -40,10 +40,10 @@ namespace Service.Repository
             return GetOne(condition, null, includeQuery);
         }
 
-        public override Language Create(Language entity)
+        public override void Create(Language entity)
         {
             entity.Name = entity.Name.ToLower();
-            return base.Create(entity);
+            base.Create(entity);
         }
 
         public bool ExistsByName(string name)
