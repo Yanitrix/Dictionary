@@ -40,7 +40,7 @@ namespace Data.Mapper
             RegisterMapping<UpdateWord, Word>(src =>
             {
                 Word result = new();
-                result.SourceLanguageName = src.SourceLanguageName;
+                result.Value = src.Value;
                 var func = ResolveMappingFunction<WordPropertyDto, WordProperty>();
                 foreach (var i in src.Properties)
                     result.Properties.Add(func(i));

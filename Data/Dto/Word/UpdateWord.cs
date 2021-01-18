@@ -7,9 +7,8 @@ namespace Data.Dto
     public class UpdateWord
     {
         [Required]
-        public String SourceLanguageName { get; set; }
+        public String Value { get; set; }
 
-        [Required]
         public ISet<WordPropertyDto> Properties { get; set; } = new HashSet<WordPropertyDto>();
     }
 }

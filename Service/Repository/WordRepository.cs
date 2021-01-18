@@ -62,5 +62,17 @@ namespace Service.Repository
         {
             return Exists(w => w.ID == id);
         }
+
+        //So I think we should update Value and Properties. 
+        public override Word Update(Word entity)
+        {
+            var inDB = context.Words.Find(entity.ID);
+            context.Entry(inDB).Collection(w => w.Properties).Load();
+            inDB.Value = entity.Value;
+            inDB.Properties = entity.Properties;
+            context.SaveChanges();
+
+            return entity;
+        }
     }
 }
