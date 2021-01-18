@@ -35,6 +35,13 @@ namespace Service
         {
             this.validationDictionary = IValidationDictionary.New();
 
+            //check if has meanings. if it does, cancel updating
+            if (repo.HasMeanings(entity.ID))
+            {
+                validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_ENTRY_DESC);
+                return validationDictionary;
+            }
+
             //check if exists
             if (!repo.ExistsByID(entity.ID))
             {
@@ -60,7 +67,10 @@ namespace Service
             }
 
             //one entry per word
-            if (repo.ExistsByWord(entity.WordID))
+            var existing = repo.GetOne(e => e.WordID == entity.WordID);
+            //"Duplicate" Entry exists and its ID is different as the entity's ID - that means this is another Entry with same WordID.
+            //If the duplicate's and entity's ID are the same that means an entry is being updated - no error should be returned.
+            if (existing != null && existing.ID != entity.ID)
             {
                 validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_ENTRY_DESC);
                 return;
@@ -80,7 +90,6 @@ namespace Service
             {
                 validationDictionary.AddError(Msg.LANGUAGES_NOT_MATCH, Msg.LANGUAGES_NOT_MATCH_DESC);
             }
-
         }
     }
 }

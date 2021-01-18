@@ -32,8 +32,9 @@ namespace Commons
         
         public const String CANNOT_UPDATE = "Entity cannot be updated";
         public const String CANNOT_UPDATE_LANGUAGE_DESC = "Name property cannot be changed. If you want to add words to a Language, post them on their respective endpoint";
-        public const String CANNOT_UPDATE_DICTIONARY_DESC = "LanguageInName and LanguageOutName properties of a Dictionary cannot be updated. If you want to add Entries or FreeExpressions to a Dictionary, post them on their respective endpoints";
-        
+        public const String CANNOT_UPDATE_DICTIONARY_DESC = "LanguageInName and LanguageOutName properties of a Dictionary cannot be updated. If you want to add Entries or FreeExpressions to a Dictionary, post them on their respective endpoints.";
+        public const String CANNOT_UPDATE_ENTRY_DESC = "Properties of given Entry cannot be updated because the Entry already includes Meeanings. If you want to add Meanings to the Entry, post them on their respective endpoint.";
+
         public const String LANGUAGES_NOT_MATCH = "Language does not match";
         public const String LANGUAGES_NOT_MATCH_DESC = "SourceLanguage of the Word is different than LanguageIn of the Dictionary. The case is ignored";
         
