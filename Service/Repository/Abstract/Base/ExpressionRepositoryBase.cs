@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Repository.Abstract.Base
+namespace Service.Repository.Abstract
 {
     public abstract class ExpressionRepositoryBase<T> : RepositoryBase<T>, IExpressionRepositoryBase<T> where T : Expression
     {

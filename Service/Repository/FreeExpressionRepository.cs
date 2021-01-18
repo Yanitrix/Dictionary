@@ -1,6 +1,6 @@
 ﻿using Data.Database;
 using Data.Models;
-using Service.Repository.Abstract.Base;
+using Service.Repository.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
