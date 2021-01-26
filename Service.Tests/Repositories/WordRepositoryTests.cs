@@ -1,9 +1,9 @@
 ﻿using Data.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using Service.Repository;
+using System;
 
 namespace Service.Tests.Repositories
 {
@@ -14,6 +14,32 @@ namespace Service.Tests.Repositories
         public WordRepositoryTests()
         {
             repository = new WordRepository(this.context);
+        }
+
+        private void Disconnect()
+        {
+            changeContext();
+            repository = new WordRepository(context);
+        }
+
+        private void CreateLanguages()
+        {
+            var arabic = new Language
+            {
+                Name = "arabic"
+            };
+
+            var notArabic = new Language
+            {
+                Name = "not so arabic"
+            };
+
+            var zimbabwean = new Language
+            {
+                Name = "zimbabwean"
+            };
+
+            context.Languages.AddRange(arabic, notArabic, zimbabwean);
         }
 
         [Fact]
@@ -32,62 +58,81 @@ namespace Service.Tests.Repositories
                     new WordProperty
                     {
                         Name = "gender",
-                        Values = new StringSet{"masculine"}
+                        Values = new("masculine")
                     },
 
                     new WordProperty
                     {
                         Name = "plural form",
-                        Values = new StringSet{"indexes", "indices"}
+                        Values = new("indexes", "indices")
                     }
                 }
             };
 
             repository.Create(word);
+            Disconnect();
 
             var idInDb = word.ID;
 
             var wordInDb = repository.All().First();
-
-            Assert.Equal(2, wordInDb.Properties.Count);
+            //im not gonna check if properties are loaded because there is no reason to get all Words in repo and include their properties.
             Assert.Equal(idInDb, wordInDb.ID);
         }
 
         [Fact]
-        public void UpdateWord_FieldsShouldChange()
+        public void UpdateWord_ValueAndPropertiesChange_LanguageDoesNot()
         {
-            var entity = new Word
+            //arrange
+            var english = new Language { Name = "english" };
+            var german = new Language { Name = "german" };
+            context.Languages.AddRange(english, german);
+
+            var word = new Word
             {
-                SourceLanguage = new Language
+                SourceLanguageName = "english",
+                Properties = new()
                 {
-                    Name = "hs"
-                },
-                SourceLanguageName = "hs",
-                Value = "hs",
-                Properties = new WordPropertySet
-                {
-                    new WordProperty
+                    new()
                     {
-                        Name = "speech part",
-                        Values = new StringSet{"noun"}
+                        Name = "name1",
+                        Values = new("value1", "value2"),
+                    },
+
+                    new()
+                    {
+                        Name = "name2",
+                        Values = new("value1", "value2")
                     }
-                }
+                },
+                Value = "value"
             };
 
-            String newLanguageName = "russian";
-            String newValue = "a normal word";
+            context.Words.Add(word);
+            context.SaveChanges();
 
-            repository.Create(entity);
-            var entityInDb = repository.All().First();
-            entityInDb.SourceLanguageName = "russian";
-            entityInDb.SourceLanguage = new Language { Name = newLanguageName };
-            entityInDb.Value = "a normal word";
+            Disconnect();
+            //act
+            word.Value = "some other value";
+            word.Properties = new()
+            {
+                new()
+                {
+                    Name = "name3",
+                    Values = new("value1", "value2", "value3")
+                }
+            };
+            word.SourceLanguageName = "german";
 
-            repository.Update(entityInDb);
-            var updated = repository.All().First();
+            repository.Update(word);
+            var inDB = repository.GetByID(word.ID);
 
-            Assert.Equal(newValue, updated.Value);
-            Assert.Equal(newLanguageName, updated.SourceLanguageName);
+            //assert
+            Assert.Equal("some other value", inDB.Value);
+            Assert.Single(inDB.Properties);
+            Assert.Equal("name3", inDB.Properties.First().Name);
+            Assert.Equal(3, inDB.Properties.First().Values.Count);
+            Assert.NotEqual("german", inDB.SourceLanguageName);
+            Assert.Equal("english", inDB.SourceLanguageName);
         }
 
         [Fact]
@@ -107,26 +152,6 @@ namespace Service.Tests.Repositories
             repository.Delete(entity);
 
             Assert.False(repository.All().Any());
-        }
-
-        [Theory]
-        [InlineData(4)]
-        public void GetByID_NotFound_ShouldReturnNull(int givenId)
-        {
-            var entity = new Word
-            {
-                SourceLanguage = new Language
-                {
-                    Name = "hs"
-                },
-                SourceLanguageName = "hs",
-                Value = "stick"
-            };
-
-            var found = repository.GetByID(givenId);
-
-            Assert.NotEqual(entity.ID, givenId);
-            Assert.Null(found);
         }
 
         [Fact]
@@ -152,10 +177,13 @@ namespace Service.Tests.Repositories
                 Value = "hot"
             };
 
-            repository.CreateRange(entity1, entity2);
+            context.Words.AddRange(entity1, entity2);
+            context.SaveChanges();
+            int firstId = entity1.ID, secondId = entity2.ID;
+            Disconnect();
 
-            var first = repository.GetByID(1);
-            var second = repository.GetByID(2);
+            var first = repository.GetByID(firstId);
+            var second = repository.GetByID(secondId);
 
             Assert.NotNull(first);
             Assert.Equal(1, first.ID);
@@ -169,34 +197,32 @@ namespace Service.Tests.Repositories
         }
 
         [Fact]
-        public void GetByValue_ShouldNotBeEmpty_ShouldBeOrderedProperly()
+        public void GetByValue_ShouldBeCaseSensitive_ShouldBeOrderedProperly()
         {
             Word[] entities =
             {
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "arabic"
-                    },
                     SourceLanguageName = "arabic",
-                    Value = "stick"
+                    Value = "ąść"
                 },
 
                 new Word
                 {
-                    SourceLanguageName = "arabic",
-                    Value = "not-a-stick"
-                },
-
-                new Word
-                {
-                    SourceLanguage = new Language
-                    {
-                        Name = "not so arabic"
-                    },
                     SourceLanguageName = "not so arabic",
-                    Value = "stick"
+                    Value = "Ąść"
+                },
+
+                new Word
+                {
+                    SourceLanguageName = "arabic",
+                    Value = "not-a-ąść"
+                },
+
+                new Word
+                {
+                    SourceLanguageName = "not so arabic",
+                    Value = "ąść"
                 },
 
                 new Word
@@ -207,30 +233,90 @@ namespace Service.Tests.Repositories
 
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "zimbabwean"
-                    },
                     SourceLanguageName = "zimbabwean",
-                    Value = "stick"
+                    Value = "ąść"
                 },
             };
 
-            repository.CreateRange(entities);
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            context.SaveChanges();
+            Disconnect();
 
-            var foundWords = repository.GetByValue("stick");
+            //act
+            var expected = "ąść";
+            var foundWords = repository.GetByValue(expected);
             var indexed = new List<Word>(foundWords);
 
             Assert.Equal(3, foundWords.Count());
-
+            
             Assert.Equal("arabic", indexed[0].SourceLanguageName);
-            Assert.Equal("stick", indexed[0].Value);
+            Assert.Equal(expected, indexed[0].Value);
 
             Assert.Equal("not so arabic", indexed[1].SourceLanguageName);
-            Assert.Equal("stick", indexed[1].Value);
+            Assert.Equal(expected, indexed[1].Value);
 
             Assert.Equal("zimbabwean", indexed[2].SourceLanguageName);
-            Assert.Equal("stick", indexed[2].Value);
+            Assert.Equal(expected, indexed[2].Value);
+        }
+
+        [Theory]
+        [InlineData("chrzan")]
+        [InlineData("stöckE")]
+        [InlineData("HSTUS")]
+        public void GetByValue_ShouldBeCaseInsensitive_Found(String word)
+        {
+            Word[] entities =
+            {
+                new()
+                {
+                    SourceLanguageName = "arabic",
+                    Value = "Chrzan"
+                },
+
+                new()
+                {
+                    SourceLanguageName = "arabic",
+                    Value = "CHrzaN"
+                },
+
+                new()
+                {
+                    SourceLanguageName = "not so arabic",
+                    Value = "Stöcke"
+                },
+
+                new()
+                {
+                    SourceLanguageName = "not so arabic",
+                    Value = "sTöcke"
+                },
+
+                new()
+                {
+                    SourceLanguageName = "zimbabwean",
+                    Value = "hstus"
+                },
+
+                new()
+                {
+                    SourceLanguageName = "zimbabwean",
+                    Value = "HSTus"
+                },
+            };
+
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            context.SaveChanges();
+
+            var found = repository.GetByValue(word, false);
+
+            Assert.NotEmpty(found);
+            Assert.Equal(2, found.Count());
+            foreach(var i in found)
+            {
+                Assert.Equal(word, i.Value, ignoreCase: true);
+            }
         }
 
         [Fact]
@@ -240,106 +326,197 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "arabic"
-                    },
                     SourceLanguageName = "arabic",
                     Value = "stick"
                 },
 
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "not so arabic"
-                    },
                     SourceLanguageName = "not so arabic",
                     Value = "not-a-stick"
                 },
 
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "zimbabwean"
-                    },
                     SourceLanguageName = "zimbabwean",
                     Value = "stick"
                 },
             };
 
-            repository.CreateRange(entities);
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            Disconnect();
 
-            var found = repository.GetByValue("that's not a stick");
+            var found = repository.GetByValue("sti");
 
             Assert.Empty(found);
         }
-
         [Fact]
-        public void GetByLanguageAndValue_ShouldNotBeEmpty()
+        public void GetByLanguageAndValue_ShouldBeCaseSensitive_WordExists()
         {
             Word[] entities =
             {
-                new Word
+                new()
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "arabic"
-                    },
-                    SourceLanguageName = "arabic",
-                    Value = "stick"
+                    Value = "stick",
+                    SourceLanguageName = "arabic"
                 },
 
-                new Word
+                new()
                 {
-                    SourceLanguageName = "arabic",
-                    Value = "not-a-stick"
+                    Value = "Stick",
+                    SourceLanguageName = "arabic"
                 },
 
-                new Word
+                new()
                 {
-                    SourceLanguageName = "arabic",
-                    Value = "stick"
+                    Value = "nor stick nor Stick",
+                    SourceLanguageName = "arabic"
                 },
 
-                new Word
+                new()
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "not so arabic"
-                    },
-                    SourceLanguageName = "not so arabic",
-                    Value = "stick"
+                    Value = "stick",
+                    SourceLanguageName = "not so arabic"
                 },
 
-                new Word
+                new()
                 {
-                    SourceLanguageName = "not so arabic",
-                    Value = "not-a-stick"
+                    Value = "Stick",
+                    SourceLanguageName = "not so arabic"
                 },
 
-                new Word
+                new()
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "zimbabwean"
-                    },
-                    SourceLanguageName = "zimbabwean",
-                    Value = "stick"
-                },
+                    Value = "not a stick",
+                    SourceLanguageName = "zimbabwean"
+                }
             };
 
-            repository.CreateRange(entities);
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            context.SaveChanges();
+            Disconnect();
 
+            //act
+            //case sensitive call
             var found = repository.GetByLanguageAndValue("arabic", "stick");
 
-            Assert.Equal(2, found.Count());
+            Assert.Single(found);
 
             foreach (var i in found)
             {
                 Assert.Equal("arabic", i.SourceLanguageName);
                 Assert.Equal("stick", i.Value);
+            }
+        }
+
+        [Theory]
+        [InlineData("Arabic")] //case does not match with "arabic"
+        [InlineData("nonexistent")] //does not exist
+        [InlineData("\n\n")] //edge cases
+        [InlineData("\n\r")]
+        [InlineData("\t")]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void GetByLanguageAndValue_ShouldBeCaseSensitive_LanguageDoesNotExistOrCaseDoesNotMatch_ReturnsEmpty(String language)
+        {
+            Word[] entities =
+            {
+                new()
+                {
+                    Value = "betrügen",
+                    SourceLanguageName = "arabic"
+                },
+
+                new()
+                {
+                    Value = "betrügen",
+                    SourceLanguageName = "not so arabic"
+                },
+
+                new()
+                {
+                    Value = "Betrügen",
+                    SourceLanguageName = "not so arabic"
+                },
+
+                new()
+                {
+                    Value = "nicht betrügen",
+                    SourceLanguageName = "zimbabwean"
+                }
+            };
+
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            context.SaveChanges();
+            Disconnect();
+
+            //act
+            var found = repository.GetByLanguageAndValue(language, "betrügen");
+            
+            //assert
+            Assert.Empty(found);
+        }
+
+        [Fact]
+        public void GetByLanguageAndValue_ShouldBeCaseInsensitive()
+        {
+            Word[] entities =
+            {
+                new()
+                {
+                    Value = "stick",
+                    SourceLanguageName = "arabic"
+                },
+
+                new()
+                {
+                    Value = "Stick",
+                    SourceLanguageName = "arabic"
+                },
+
+                new()
+                {
+                    Value = "nor stick nor Stick",
+                    SourceLanguageName = "arabic"
+                },
+
+                new()
+                {
+                    Value = "stick",
+                    SourceLanguageName = "not so arabic"
+                },
+
+                new()
+                {
+                    Value = "Stick",
+                    SourceLanguageName = "not so arabic"
+                },
+
+                new()
+                {
+                    Value = "not a stick",
+                    SourceLanguageName = "zimbabwean"
+                }
+            };
+
+            CreateLanguages();
+            context.Words.AddRange(entities);
+            context.SaveChanges();
+            Disconnect();
+
+            //act
+            //case insensitive call
+            var found = repository.GetByLanguageAndValue("arabic", "stick", false);
+
+            Assert.Equal(2, found.Count());
+            foreach (var i in found)
+            {
+                Assert.Equal("arabic", i.SourceLanguageName);
+                Assert.Equal("stick", i.Value, ignoreCase: true);
             }
         }
 
@@ -361,7 +538,7 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         }
                     }
                 },
@@ -375,13 +552,13 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         },
 
                         new WordProperty
                         {
                             Name = "gender",
-                            Values = new StringSet{"masculine"}
+                            Values = new("masculine")
                         }
                     }
                 },
@@ -395,7 +572,7 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         }
                     }
                 },
@@ -423,10 +600,6 @@ namespace Service.Tests.Repositories
             {
                 new Word
                 {
-                    SourceLanguage = new Language
-                    {
-                        Name = "arabic"
-                    },
                     SourceLanguageName = "arabic",
                     Value = "stick",
                     Properties = new WordPropertySet
@@ -434,7 +607,7 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         }
                     }
                 },
@@ -448,13 +621,13 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         },
 
                         new WordProperty
                         {
                             Name = "gender",
-                            Values = new StringSet{"masculine"}
+                            Values = new("masculine")
                         }
                     }
                 },
@@ -468,18 +641,18 @@ namespace Service.Tests.Repositories
                         new WordProperty
                         {
                             Name = "speech part",
-                            Values = new StringSet{"noun", "verb" }
+                            Values = new("noun", "verb")
                         }
                     }
                 },
             };
 
+            CreateLanguages();
             repository.Create(entities[0]);
             repository.Create(entities[1]);
             repository.Create(entities[2]);
 
-            this.changeContext();
-            repository = new WordRepository(this.context);
+            Disconnect();
 
             var foundWords = repository.Get(w => w.Value.StartsWith("stick"), x => x);
             var indexed = new List<Word>(foundWords);

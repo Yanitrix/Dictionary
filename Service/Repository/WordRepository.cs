@@ -33,29 +33,35 @@ namespace Service.Repository
         }
 
         //ignores case
-        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String value, bool ignoreCase = true)
+        public IEnumerable<Word> GetByLanguageAndValue(String languageName, String value, bool caseSensitive = true)
         {
-            if (ignoreCase)
+            if (caseSensitive)
             {
-                return Get(w => EF.Functions.Like(w.SourceLanguageName, languageName) && EF.Functions.Like(w.Value, value),
-                    x => x,
-                    null, includeQuery);
+                return Get(w => w.Value == value && w.SourceLanguageName == languageName, x => x, null, includeQuery);
             }
 
-            return Get(w => w.Value == value && w.SourceLanguageName == languageName, x => x, null, includeQuery);
+            return Get(
+                w =>
+                    EF.Functions.Collate(w.SourceLanguageName, "SQL_Latin1_General_CP1_CI_AS") == languageName &&
+                    EF.Functions.Collate(w.Value, "SQL_Latin1_General_CP1_CI_AS") == value,
+                x => x,
+                null,
+                includeQuery);
         }
 
-        public IEnumerable<Word> GetByValue(String value, bool ignoreCase = true)
+        public IEnumerable<Word> GetByValue(String value, bool caseSensitive = true)
         {
-            if (ignoreCase)
+            if (caseSensitive)
             {
-                return Get(w => EF.Functions.Like(w.Value, value),
-                    x => x,
+                return Get(w => w.Value == value, x => x,
                     words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
             }
 
-            return Get(w => w.Value == value, x => x,
-                words => words.OrderBy(w => w.SourceLanguageName), includeQuery);
+            return Get(
+                w => EF.Functions.Collate(w.Value, "SQL_Latin1_General_CP1_CI_AS") == value,
+                x => x,
+                words => words.OrderBy(w => w.SourceLanguageName),
+                includeQuery);
         }
 
         public bool ExistsByID(int id)
@@ -63,7 +69,6 @@ namespace Service.Repository
             return Exists(w => w.ID == id);
         }
 
-        //So I think we should update Value and Properties. 
         public override void Update(Word entity)
         {
             var inDB = context.Words.Find(entity.ID);

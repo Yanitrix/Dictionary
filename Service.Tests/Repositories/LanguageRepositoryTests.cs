@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Service.Repository;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service.Tests.Repositories
 {
@@ -19,15 +21,16 @@ namespace Service.Tests.Repositories
         {
             var list = new List<Language>
             {
-                new Language{Name = "japanese"},
-                new Language{Name = "german"},
-                new Language{Name = "english"},
+                new (){Name = "japanese"},
+                new (){Name = "german"},
+                new (){Name = "english"},
+                new (){Name = "space space"},
             };
 
             repo.CreateRange(list.ToArray());
         }
 
-        private void reloadRepo()
+        private void Disconnect()
         {
             this.changeContext();
             repo = new LanguageRepository(this.context);
@@ -107,13 +110,19 @@ namespace Service.Tests.Repositories
             };
 
             repo.CreateRange(entities);
-            reloadRepo();
+            Disconnect();
         }
 
-        [Fact]
-        public void GetByName_StringNull_ReturnsNull()
+        [Theory]
+        [InlineData(null)]
+        [InlineData(" ")]
+        [InlineData("\t\t")]
+        [InlineData("\r\n")]
+        [InlineData("")]
+        [InlineData("\r")]
+        [InlineData("\n")]
+        public void GetByName_StringEmpty_ReturnsNull(String name)
         {
-            String name = null;
             var found = repo.GetByName(name);
 
             Assert.Null(found);
@@ -125,6 +134,7 @@ namespace Service.Tests.Repositories
         [InlineData("polish")]
         [InlineData("russian")]
         [InlineData("śöäąćń")]
+        [InlineData("English")]
         public void GetByName_NameDoesNotExist_ReturnsNull(String name)
         {
             putData();
@@ -151,7 +161,7 @@ namespace Service.Tests.Repositories
             Assert.NotEmpty(words[1].Properties);
         }
 
-        
+
         [Fact]
         public void GetByName_ReturnsEntityWithoutLoadedWords()
         {
@@ -165,5 +175,36 @@ namespace Service.Tests.Repositories
             Assert.Empty(found.Words);
         }
 
+        [Theory]
+        [InlineData("japanese")]
+        [InlineData("german")]
+        public void ExistsByName_LanguageExists_ReturnsTrue(String name)
+        {
+            putData();
+
+            var exists = repo.ExistsByName(name);
+
+            Assert.True(exists);
+        }
+
+        [Theory]
+        [InlineData("Japanese")]
+        [InlineData("German")]
+        [InlineData("asdasd")]
+        [InlineData("ąśćüö#.ü+")]
+        [InlineData("")]//edge cases
+        [InlineData(" ")]
+        [InlineData("\t\t")]
+        [InlineData("\t\n")]
+        [InlineData("\r\n")]
+        [InlineData("\r")]
+        public void ExistsByName_LanguageDoesNoyExistOrCaseDoesNotMatch_ReturnsTrue(String name)
+        {
+            putData();
+
+            var exists = repo.ExistsByName(name);
+
+            Assert.False(exists);
+        }
     }
 }

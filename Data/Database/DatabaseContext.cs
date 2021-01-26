@@ -28,6 +28,7 @@ namespace Data.Database
             #region languages and words and wordproperties
 
             builder.Entity<Language>().ToTable("Language");
+
             var word = builder.Entity<Word>().ToTable("Word");
 
             word
@@ -35,6 +36,10 @@ namespace Data.Database
                 .WithOne(entry => entry.Word)
                 .HasForeignKey<Entry>(entry => entry.WordID)
                 .OnDelete(DeleteBehavior.Cascade); //deleting all entries that contain given word
+
+            word
+                .Property(word => word.Value)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
             builder.Entity<WordProperty>().ToTable("WordProperty");
 
