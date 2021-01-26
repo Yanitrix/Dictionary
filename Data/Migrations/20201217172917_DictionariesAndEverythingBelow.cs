@@ -10,8 +10,10 @@ namespace Data.Migrations
                 name: "Dictionary",
                 columns: table => new
                 {
-                    LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS"),
+                    //LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS"),
+                    //LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
