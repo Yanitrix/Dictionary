@@ -191,7 +191,6 @@ namespace Service.Tests.Service
         // - Change value to lower/uppercase
         // - Change properties to lower/uppercase
         // - Clear properties
-        //TODO those tests are fucking stupid, they should be changed.
         [Fact]
         public void TryUpdate_ChangePropertiesToDifferent_UpdatesProperly()
         {
