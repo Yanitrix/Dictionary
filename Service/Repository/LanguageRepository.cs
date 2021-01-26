@@ -13,7 +13,7 @@ namespace Service.Repository
     
     public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository
     {
-        private readonly Func<IQueryable<Language>, IIncludableQueryable<Language, object>> includeQuery = 
+        private readonly Func<IQueryable<Language>, IIncludableQueryable<Language, object>> includeQuery =
             (languages => languages.Include(l => l.Words).ThenInclude(w => w.Properties));
 
         public LanguageRepository(DatabaseContext context):base(context) { }
@@ -27,7 +27,7 @@ namespace Service.Repository
 
         public Language GetByName(String name)
         {
-            return repo.Find(name);
+            return repo.FirstOrDefault(l => l.Name == name);
         }
 
         public Language GetByNameWithWords(String name)
@@ -35,6 +35,7 @@ namespace Service.Repository
             return GetOne(l => l.Name == name, null, includeQuery);
         }
 
+        //unused method, should be deleted
         public Language GetOneWithWords(Expression<Func<Language, bool>> condition)
         {
             return GetOne(condition, null, includeQuery);
@@ -46,9 +47,10 @@ namespace Service.Repository
             base.Create(entity);
         }
 
-        public bool ExistsByName(string name)
+        //case sensitive
+        public bool ExistsByName(String name)
         {
-            return Exists(l => EF.Functions.Like(l.Name, $"{name}"));
+            return Exists(l => l.Name == name);
         }
 
         public IEnumerable<LanguageWordCount> AllWithWordCount()
