@@ -14,33 +14,26 @@ namespace Api.Controllers
     [Route("api/entry")]
     public class EntryController : Controller
     {
-        private readonly IService<Entry> service;
-        private readonly IEntryRepository repo;
+        private readonly IEntryService service;
         private readonly IMapper mapper;
 
-        public EntryController(IService<Entry> service, IEntryRepository repo, IMapper mapper)
+        public EntryController(IEntryService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
+        //TODO some pagination maybe?
         [HttpGet]
         public ActionResult<IEnumerable<GetEntry>> Get(String word, int? dictionaryIndex)
         {
-            if (word == null && dictionaryIndex == null)
-                return new List<GetEntry>();
-            if (word != null && dictionaryIndex != null)
-                return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word).Select(ToDto).ToList();
-            if (word != null)
-                return repo.GetByWord(word).Select(ToDto).ToList();
-            return repo.GetByDictionary(dictionaryIndex.Value).Select(ToDto).ToList();
+            return service.GetByDictionaryAndWord(word, dictionaryIndex).Select(ToDto).ToArray();
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
-            var entry = repo.GetByID(id);
+            var entry = service.Get(id);
             if (entry == null)
                 return NotFound();
             return ToDto(entry);
@@ -50,7 +43,7 @@ namespace Api.Controllers
         public IActionResult Post([FromBody] CreateOrUpdateEntry dto)
         {
             var entry = ToEntity(dto);
-            var result = service.TryAdd(entry);
+            var result = service.Add(entry);
             if (!result.IsValid)
                 return BadRequest(result);
             return Created("api/entry/" + entry.ID, ToDto(entry));
@@ -61,7 +54,7 @@ namespace Api.Controllers
         {
             var entry = ToEntity(dto);
             entry.ID = id;
-            var result = service.TryUpdate(entry);
+            var result = service.Update(entry);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -70,10 +63,9 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var entry = repo.GetByID(id);
-            if (entry == null)
-                return NotFound();
-            repo.Delete(entry);
+            var result = service.Delete(id);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 

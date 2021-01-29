@@ -11,21 +11,19 @@ namespace Api.Controllers
     [Route("api/expression")]
     public class FreeExpressionController : Controller
     {
-        private readonly IService<FreeExpression> service;
-        private readonly IFreeExpressionRepository repo;
+        private readonly IFreeExpressionService service;
         private readonly IMapper mapper;
 
-        public FreeExpressionController(IService<FreeExpression> service, IFreeExpressionRepository repo, IMapper mapper)
+        public FreeExpressionController(IFreeExpressionService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetFreeExpression> Get(int id)
         {
-            var entity = repo.GetByID(id);
+            var entity = service.Get(id);
             if (entity == null)
                 return NotFound();
             return ToDto(entity);
@@ -35,7 +33,7 @@ namespace Api.Controllers
         public IActionResult Post([FromBody] CreateOrUpdateFreeExpression dto)
         {
             var entity = ToEntity(dto);
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Created("api/expression" + entity.ID, ToDto(entity));
@@ -46,7 +44,7 @@ namespace Api.Controllers
         {
             var entity = ToEntity(dto);
             entity.ID = id;
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -55,10 +53,9 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var entity = repo.GetByID(id);
-            if (entity == null)
-                return NotFound();
-            repo.Delete(entity);
+            var result = service.Delete(id);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 

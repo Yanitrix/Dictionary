@@ -3,7 +3,6 @@ using Data.Mapper;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,12 @@ namespace Api.Controllers
     public class DictionaryController : Controller
     {
 
-        private readonly IService<Dictionary> service;
-        private readonly IDictionaryRepository repo;
+        private readonly IDictionaryService service;
         private readonly IMapper mapper;
 
-        public DictionaryController(IService<Dictionary> service, IDictionaryRepository repo, IMapper mapper)
+        public DictionaryController(IDictionaryService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
@@ -30,18 +27,13 @@ namespace Api.Controllers
         [HttpGet]
         public IEnumerable<GetDictionary> Index(String langIn = null, String langOut = null, String lang = null)
         {
-            if ((langIn != null || langOut != null) && lang != null) return Enumerable.Empty<GetDictionary>();
-            if (langIn == null && langOut == null && lang == null) return repo.All().Select(ToDto);
-            if (lang != null) return repo.GetAllByLanguage(lang).Select(ToDto);
-            if (langIn != null && langOut == null) return repo.GetAllByLanguageIn(langIn).Select(ToDto);
-            if (langIn == null && langOut != null) return repo.GetAllByLanguageOut(langOut).Select(ToDto);
-            return new GetDictionary[] { ToDto(repo.GetByLanguageInAndOut(langIn, langOut)) };
+            return service.GetContainingLanguage(langIn, langOut, lang).Select(ToDto);
         }
 
         [HttpGet("{index}")]
         public ActionResult<GetDictionary> Get(int index)
         {
-            var entity = repo.GetByIndex(index);
+            var entity = service.Get(index);
             if (entity == null)
                 return NotFound();
             return ToDto(entity);
@@ -51,7 +43,7 @@ namespace Api.Controllers
         public IActionResult Post([FromBody] CreateDictionary dto)
         {
             var entity = ToEntity(dto);
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Created("api/dictionary" + entity.Index, ToDto(entity));
@@ -60,10 +52,9 @@ namespace Api.Controllers
         [HttpDelete("{index}")]
         public IActionResult Delete(int index)
         {
-            var entity = repo.GetByIndex(index);
-            if (entity == null)
-                return NotFound();
-            repo.Delete(entity);
+            var result = service.Delete(index);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 
