@@ -15,7 +15,7 @@ namespace Service.Repository
         /// <param name="dictionaryIndex"></param>
         /// <param name="wordValue"></param>
         /// <returns>Matching collection</returns>
-        public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, String wordValue);
+        public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, String wordValue, bool caseSensitive = true);
 
         /// <summary>
         /// Including Word and its Properties, Meanings and their Examples, Dictionary
@@ -23,7 +23,7 @@ namespace Service.Repository
         /// </summary>
         /// <param name="wordValue"></param>
         /// <returns></returns>
-        public IEnumerable<Entry> GetByWord(String wordValue);
+        public IEnumerable<Entry> GetByWord(String wordValue, bool caseSensitive = true);
 
         /// <summary>
         /// Returns all Entries owned by certain Dictionary
@@ -34,13 +34,6 @@ namespace Service.Repository
         public IEnumerable<Entry> GetByDictionary(int dictionaryIndex);
 
         public bool ExistsByID(int id);
-
-        /// <summary>
-        /// Checks if theres already another Entry that contains Word of given ID
-        /// </summary>
-        /// <param name="wordID"></param>
-        /// <returns>a boolean</returns>
-        public bool ExistsByWord(int wordID);
 
         public bool HasMeanings(int id);
     }
