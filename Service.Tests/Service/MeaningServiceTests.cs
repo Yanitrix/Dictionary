@@ -54,7 +54,7 @@ namespace Service.Tests.Service
         {
             EntryExists();
 
-            var result = service.TryAdd(new());
+            var result = service.Add(new());
 
             ShouldAdd();
             Assert.Empty(result);
@@ -67,7 +67,7 @@ namespace Service.Tests.Service
         {
             EntryExists(false);
 
-            var result = service.TryAdd(new());
+            var result = service.Add(new());
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -80,7 +80,7 @@ namespace Service.Tests.Service
         {
             Exists(false);
 
-            var result = service.TryUpdate(new());
+            var result = service.Update(new());
 
             ShouldNotUpdate();
             Assert.Single(result);
@@ -93,7 +93,7 @@ namespace Service.Tests.Service
         {
             Exists();
 
-            var result = service.TryUpdate(new());
+            var result = service.Update(new());
 
             ShouldUpdate();
             Assert.Empty(result);

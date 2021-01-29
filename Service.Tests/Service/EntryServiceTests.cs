@@ -111,7 +111,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             ShouldAdd();
             Assert.Empty(result);
@@ -141,7 +141,7 @@ namespace Service.Tests.Service
             WordIs(null);
             DictionaryIs(dict);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -183,7 +183,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -211,7 +211,7 @@ namespace Service.Tests.Service
             DictionaryIs(null);
             WordIs(word);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -248,7 +248,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             Assert.NotEmpty(result);
             Assert.False(result.IsValid);
@@ -283,7 +283,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -321,7 +321,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             Assert.Empty(result);
             Assert.True(result.IsValid);
@@ -360,7 +360,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             ShouldNotUpdate();
             Assert.Single(result);
@@ -400,7 +400,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             ShouldNotUpdate();
             Assert.Single(result);
@@ -448,7 +448,7 @@ namespace Service.Tests.Service
 
 
             //act
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             //assert
             ShouldNotUpdate();
@@ -497,7 +497,7 @@ namespace Service.Tests.Service
             DictionaryIs(dict);
 
             //act
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             //assert
             ShouldUpdate();
@@ -531,7 +531,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(null);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             ShouldNotUpdate();
             Assert.Single(result);

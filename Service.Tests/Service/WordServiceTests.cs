@@ -59,7 +59,7 @@ namespace Service.Tests.Service
 
             var entity = new Word();
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Once);
             Assert.Empty(result);
@@ -110,7 +110,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
@@ -124,7 +124,7 @@ namespace Service.Tests.Service
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
 
             var entity = new Word();
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
@@ -139,7 +139,7 @@ namespace Service.Tests.Service
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
 
             var entity = new Word();
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
@@ -157,7 +157,7 @@ namespace Service.Tests.Service
 
             _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
@@ -177,7 +177,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
             _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.Empty(result);
@@ -224,7 +224,7 @@ namespace Service.Tests.Service
                 .Returns(new Word[]{ existing });
 
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.True(result.IsValid);
@@ -246,7 +246,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
                 .Returns(Enumerable.Empty<Word>());
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.True(result.IsValid);
@@ -275,7 +275,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
                 .Returns(Enumerable.Empty<Word>());
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.True(result.IsValid);
@@ -298,7 +298,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
                 .Returns(new Word[]{ @new });
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
             Assert.False(result.IsValid);
@@ -321,7 +321,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
                 .Returns(Array.Empty<Word>());
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
             Assert.True(result.IsValid);
@@ -377,7 +377,7 @@ namespace Service.Tests.Service
             _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
                 .Returns(new Word[] { existing });
 
-            var result = service.TryUpdate(@new);
+            var result = service.Update(@new);
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
             Assert.False(result.IsValid);

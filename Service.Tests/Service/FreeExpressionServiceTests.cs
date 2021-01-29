@@ -30,7 +30,7 @@ namespace Service.Tests.Service
         {
             _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _repo.Verify(_ => _.Create(It.IsAny<FreeExpression>()), Times.Once);
             Assert.Empty(result);
@@ -42,7 +42,7 @@ namespace Service.Tests.Service
         {
             _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _repo.Verify(_ => _.Create(It.IsAny<FreeExpression>()), Times.Never);
             Assert.Single(result);
@@ -56,7 +56,7 @@ namespace Service.Tests.Service
             _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(false);
             _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(true);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Never);
             Assert.Single(result);
@@ -69,7 +69,7 @@ namespace Service.Tests.Service
             _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
             _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(true);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Once);
             Assert.Empty(result);
@@ -82,7 +82,7 @@ namespace Service.Tests.Service
             _dictRepo.Setup(_ => _.ExistsByIndex(It.Is<int>(i => i == entity.DictionaryIndex))).Returns(true);
             _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<FreeExpression, bool>>>())).Returns(false);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Never);
             Assert.Single(result);
