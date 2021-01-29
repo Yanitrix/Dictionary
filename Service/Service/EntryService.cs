@@ -1,11 +1,13 @@
 ﻿using Data.Models;
+using Microsoft.AspNetCore.Mvc.Core.Infrastructure;
 using Service.Repository;
 using System;
+using System.Collections.Generic;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class EntryService : IService<Entry>
+    public class EntryService : IEntryService
     {
         private readonly IWordRepository wordRepo;
         private readonly IDictionaryRepository dictRepo;
@@ -19,7 +21,21 @@ namespace Service
             this.repo = uow.Entries;
         }
 
-        public IValidationDictionary TryAdd(Entry entity)
+        public Entry Get(int id) => repo.GetByID(id);
+        
+        //todo test it
+        public IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex)
+        {
+            if (word == null && dictionaryIndex == null)
+                Array.Empty<Entry>();
+            if (word != null && dictionaryIndex != null)
+                return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word, false);
+            if (word != null)
+                return repo.GetByWord(word, false);
+            return repo.GetByDictionary(dictionaryIndex.Value);
+        }
+
+        public IValidationDictionary Add(Entry entity)
         {
             this.validationDictionary = IValidationDictionary.New();
 
@@ -31,14 +47,14 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary TryUpdate(Entry entity)
+        public IValidationDictionary Update(Entry entity)
         {
             this.validationDictionary = IValidationDictionary.New();
 
             //check if exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Entry>());
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Entry>());
                 return validationDictionary;
             }
 
@@ -55,6 +71,24 @@ namespace Service
                 repo.Update(entity);
 
             return validationDictionary;
+        }
+
+        public IValidationDictionary Delete(int id)
+        {
+            var result = IValidationDictionary.New();
+
+            var indb = repo.GetByID(id);
+
+            if (indb == null)
+            {
+                result.AddError(Msg.NOTFOUND<Entry>(), Msg.DOESNT_EXIST_PK<Entry>());
+            }
+            else
+            {
+                repo.Delete(indb);
+            }
+
+            return result;
         }
 
         private void CheckAll(Entry entity)

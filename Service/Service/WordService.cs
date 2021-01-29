@@ -2,10 +2,11 @@
 using Data.Models;
 using System;
 using Msg = Commons.ValidationErrorMessages;
+using System.Collections.Generic;
 
 namespace Service
 {
-    public class WordService : IService<Word>
+    public class WordService : IWordService
     {
         private readonly IWordRepository repo;
         private readonly ILanguageRepository langRepo;
@@ -17,7 +18,11 @@ namespace Service
             this.langRepo = uow.Languages;
         }
 
-        public IValidationDictionary TryAdd(Word entity)
+        public Word Get(int id) => repo.GetByID(id);
+
+        public IEnumerable<Word> Get(String value) => repo.GetByValue(value, false);
+
+        public IValidationDictionary Add(Word entity)
         {
             this.validationDictionary = IValidationDictionary.New();
 
@@ -30,14 +35,14 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary TryUpdate(Word entity)
+        public IValidationDictionary Update(Word entity)
         {
             this.validationDictionary = IValidationDictionary.New();
 
             //check if entity already exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Word>());
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Word>());
                 return validationDictionary;
             }
 
@@ -48,6 +53,23 @@ namespace Service
                 repo.Update(entity);
 
             return validationDictionary;
+        }
+
+        public IValidationDictionary Delete(int id)
+        {
+            var result = IValidationDictionary.New();
+            var indb = repo.GetByID(id);
+
+            if(indb == null)
+            {
+                result.AddError(Msg.NOTFOUND<Word>(), Msg.DOESNT_EXIST_PK<Word>());
+            }
+            else
+            {
+                repo.Delete(indb);
+            }
+
+            return result;
         }
 
         private void CheckValueAndProperties(Word entity)

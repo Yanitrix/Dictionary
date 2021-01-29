@@ -1,11 +1,13 @@
 ﻿using Data.Models;
 using Service.Repository;
+using System.Collections.Generic;
+using System.Linq;
 using Msg = Commons.ValidationErrorMessages;
 
 
 namespace Service
 {
-    public class DictionaryService : IService<Dictionary>
+    public class DictionaryService : IDictionaryService
     {
         private readonly ILanguageRepository langRepo;
         private readonly IDictionaryRepository repo;
@@ -16,7 +18,19 @@ namespace Service
             this.repo = uow.Dictionaries;
         }
 
-        public IValidationDictionary TryAdd(Dictionary entity)
+        public Dictionary Get(int id) => repo.GetByIndex(id);
+        //TODO test it
+        public IEnumerable<Dictionary> GetContainingLanguage(string langIn, string langOut, string lang)
+        {
+            if ((langIn != null || langOut != null) && lang != null) return Enumerable.Empty<Dictionary>();
+            if (langIn == null && langOut == null && lang == null) return repo.All();
+            if (lang != null) return repo.GetAllByLanguage(lang);
+            if (langIn != null && langOut == null) return repo.GetAllByLanguageIn(langIn);
+            if (langIn == null && langOut != null) return repo.GetAllByLanguageOut(langOut);
+            return new Dictionary[] { repo.GetByLanguageInAndOut(langIn, langOut) };
+        }
+
+        public IValidationDictionary Add(Dictionary entity)
         {
             var validationDictionary = IValidationDictionary.New();
 
@@ -39,13 +53,31 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary TryUpdate(Dictionary entity)
+        public IValidationDictionary Update(Dictionary entity)
         {
             var validationDictionary = IValidationDictionary.New();
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_DICTIONARY_DESC);
 
             return validationDictionary;
+        }
+
+        public IValidationDictionary Delete(int index)
+        {
+            var result = IValidationDictionary.New();
+
+            var inDB = repo.GetByIndex(index);
+
+            if (inDB == null)
+            {
+                result.AddError(Msg.NOTFOUND<Dictionary>(), Msg.DOESNT_EXIST_PK<Dictionary>());
+            }
+            else
+            {
+                repo.Delete(inDB);
+            }
+
+            return result;
         }
     }
 }

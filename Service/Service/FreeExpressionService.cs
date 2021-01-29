@@ -4,7 +4,7 @@ using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
 {
-    public class FreeExpressionService : IService<FreeExpression>
+    public class FreeExpressionService : IFreeExpressionService
     {
         private readonly IFreeExpressionRepository repo;
         private readonly IDictionaryRepository dictRepo;
@@ -12,12 +12,13 @@ namespace Service
 
         public FreeExpressionService(IUnitOfWork uow)
         {
-
             repo = uow.FreeExpressions;
             dictRepo = uow.Dictionaries;
         }
 
-        public IValidationDictionary TryAdd(FreeExpression entity)
+        public FreeExpression Get(int id) => repo.GetByID(id);
+
+        public IValidationDictionary Add(FreeExpression entity)
         {
             this.validationDictionary = IValidationDictionary.New();
 
@@ -28,13 +29,13 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary TryUpdate(FreeExpression entity)
+        public IValidationDictionary Update(FreeExpression entity)
         {
             this.validationDictionary = IValidationDictionary.New();
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Example>());
+                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Example>());
                 return validationDictionary;
             }
 
@@ -43,6 +44,23 @@ namespace Service
             if (validationDictionary.IsValid)
                 repo.Update(entity);
             return validationDictionary;
+        }
+
+        public IValidationDictionary Delete(int id)
+        {
+            var result = IValidationDictionary.New();
+            var indb = repo.GetByID(id);
+
+            if(indb == null)
+            {
+                result.AddError(Msg.NOTFOUND<FreeExpression>(), Msg.DOESNT_EXIST_PK<FreeExpression>());
+            }
+            else
+            {
+                repo.Delete(indb);
+            }
+
+            return result;
         }
 
         private void CheckDictionary(FreeExpression entity)
