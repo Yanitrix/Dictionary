@@ -36,7 +36,7 @@ namespace Commons
         public const String CANNOT_UPDATE_ENTRY_DESC = "Properties of given Entry cannot be updated because the Entry already includes Meeanings. If you want to add Meanings to the Entry, post them on their respective endpoint.";
 
         public const String LANGUAGES_NOT_MATCH = "Language does not match";
-        public const String LANGUAGES_NOT_MATCH_DESC = "SourceLanguage of the Word is different than LanguageIn of the Dictionary. The case is ignored";
+        public const String LANGUAGES_NOT_MATCH_DESC = "SourceLanguage of the Word is different than LanguageIn of the Dictionary. The case is NOT ignored";
         
         public static String NOTFOUND<T>() => $"{typeof(T).Name} not found";
         public static String DOESNT_EXIST_DESC<T>() => $"{typeof(T).Name} with given primary key does not exist in the database. There is nothing to update";

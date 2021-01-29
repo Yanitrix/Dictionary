@@ -35,17 +35,17 @@ namespace Service
         {
             this.validationDictionary = IValidationDictionary.New();
 
-            //check if has meanings. if it does, cancel updating
-            if (repo.HasMeanings(entity.ID))
-            {
-                validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_ENTRY_DESC);
-                return validationDictionary;
-            }
-
             //check if exists
             if (!repo.ExistsByID(entity.ID))
             {
                 validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_DESC<Entry>());
+                return validationDictionary;
+            }
+
+            //check if has meanings. if it does, cancel updating
+            if (repo.HasMeanings(entity.ID))
+            {
+                validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_ENTRY_DESC);
                 return validationDictionary;
             }
 
@@ -67,9 +67,9 @@ namespace Service
             }
 
             //one entry per word
-            var existing = repo.GetOne(e => e.WordID == entity.WordID);
-            //"Duplicate" Entry exists and its ID is different as the entity's ID - that means this is another Entry with same WordID.
-            //If the duplicate's and entity's ID are the same that means an entry is being updated - no error should be returned.
+            var existing = repo.GetOne(e => e.WordID == entity.WordID && e.DictionaryIndex == entity.DictionaryIndex);
+            //If there's another entry another Entry with same WordID and DictionaryIndex, it's a possible duplicate
+            //If the duplicate's ID is the same as the Entity's that means that the Entry is being updated. I think no error should be returned here.
             if (existing != null && existing.ID != entity.ID)
             {
                 validationDictionary.AddError(Msg.DUPLICATE, Msg.DUPLICATE_ENTRY_DESC);
@@ -86,7 +86,7 @@ namespace Service
             //check if word's source language is dictionary's language in
             var word = wordRepo.GetByID(entity.WordID);
             var dict = dictRepo.GetByIndex(entity.DictionaryIndex);
-            if (!String.Equals(word.SourceLanguageName, dict.LanguageInName, StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(word.SourceLanguageName, dict.LanguageInName, StringComparison.Ordinal))
             {
                 validationDictionary.AddError(Msg.LANGUAGES_NOT_MATCH, Msg.LANGUAGES_NOT_MATCH_DESC);
             }
