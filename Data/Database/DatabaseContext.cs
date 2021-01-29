@@ -88,8 +88,10 @@ namespace Data.Database
                 .HasForeignKey(dictionary => dictionary.LanguageOutName)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //well, it didn't work. Entry uniqueness should be determined upon its WordID and DictionaryIndex.
+            //The combination of those should be unique
             entry
-                .HasIndex(entry => entry.WordID)  //a word can be in only one entry, i'm not quite sure if it's the correct way to do it but i think it'll work
+                .HasIndex(entry => new { entry.WordID, entry.DictionaryIndex })  //there can be only one Entry in each Dictionary referring to a certain Word
                 .IsUnique();
 
             #endregion
