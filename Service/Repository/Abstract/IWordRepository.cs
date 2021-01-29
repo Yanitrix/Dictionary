@@ -15,7 +15,7 @@ namespace Service.Repository
         /// Ignores case by default.
         /// </summary>
         /// <returns>Matching collection</returns>
-        public IEnumerable<Word> GetByValue(String value, bool ignoreCase);
+        public IEnumerable<Word> GetByValue(String value, bool caseSensitive = true);
 
         /// <summary>
         /// Ignores case by default

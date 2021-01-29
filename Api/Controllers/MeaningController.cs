@@ -3,7 +3,6 @@ using Data.Mapper;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using Service.Repository;
 
 namespace Api.Controllers
 {
@@ -11,21 +10,19 @@ namespace Api.Controllers
     [Route("api/meaning")]
     public class MeaningController : Controller
     {
-        private readonly IService<Meaning> service;
-        private readonly IMeaningRepository repo;
+        private readonly IMeaningService service;
         private readonly IMapper mapper;
 
-        public MeaningController(IService<Meaning> service, IMeaningRepository repo, IMapper mapper)
+        public MeaningController(IMeaningService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetMeaning> Get(int id)
         {
-            var entity = repo.GetByID(id);
+            var entity = service.Get(id);
             if (entity == null)
                 return NotFound();
 
@@ -37,7 +34,7 @@ namespace Api.Controllers
         public IActionResult Post([FromBody] CreateMeaning dto)
         {
             var entity = ToEntity(dto);
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Created("api/meaning" + entity.ID, ToDto(entity));
@@ -48,7 +45,7 @@ namespace Api.Controllers
         {
             var entity = ToEntity(dto);
             entity.ID = id;
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -57,10 +54,9 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var entity = repo.GetByID(id);
-            if (entity == null)
-                return NotFound();
-            repo.Delete(entity);
+            var result = service.Delete(id);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 

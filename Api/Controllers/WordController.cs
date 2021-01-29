@@ -16,14 +16,12 @@ namespace Api.Controllers
     public class WordController : Controller
     {
 
-        private readonly IService<Word> service;
-        private readonly IWordRepository repo;
+        private readonly IWordService service;
         private readonly IMapper mapper;
 
-        public WordController(IService<Word> service, IWordRepository repo, IMapper mapper)
+        public WordController(IWordService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
@@ -32,16 +30,16 @@ namespace Api.Controllers
         public ActionResult<IEnumerable<GetWord>> Get(String value)
         {
             if (value == null)
-                return new List<GetWord>();
+                return Array.Empty<GetWord>();
             //It queries by the exact value, not substring
-            var words = repo.GetByValue(value, true);
+            var words = service.Get(value);
             return words.Select(ToDto).ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetWord> Get(int id)
         {
-            var word = repo.GetByID(id);
+            var word = service.Get(id);
             if (word == null) return NotFound();
 
             return ToDto(word);
@@ -56,7 +54,7 @@ namespace Api.Controllers
             var entity = ToWord(dto);
             Utils.RemoveRedundantWhitespaces(entity.Properties);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
             if (!result.IsValid)
                 return BadRequest(result);
 
@@ -70,7 +68,7 @@ namespace Api.Controllers
             entity.ID = id;
             Utils.RemoveRedundantWhitespaces(entity.Properties);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -79,10 +77,9 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var word = repo.GetByID(id);
-            if (word == null)
-                return NotFound();
-            repo.Delete(word);
+            var result = service.Delete(id);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 

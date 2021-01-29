@@ -44,20 +44,12 @@ namespace Application
                 opt.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
             });
 
-            services.AddTransient<ILanguageRepository, LanguageRepository>();
-            services.AddTransient<IWordRepository, WordRepository>();
-            services.AddTransient<IDictionaryRepository, DictionaryRepository>();
-            services.AddTransient<IEntryRepository, EntryRepository>();
-            services.AddTransient<IMeaningRepository, MeaningRepository>();
-            services.AddTransient<IExampleRepository, ExampleRepository>();
-            services.AddTransient<IFreeExpressionRepository, FreeExpressionRepository>();
-
-            services.AddTransient<IService<Language>, LanguageService>();
-            services.AddTransient<IService<Word>, WordService>();
-            services.AddTransient<IService<Dictionary>, DictionaryService>();
-            services.AddTransient<IService<Entry>, EntryService>();
-            services.AddTransient<IService<Meaning>, MeaningService>();
-            services.AddTransient<IService<FreeExpression>, FreeExpressionService>();
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<IWordService, WordService>();
+            services.AddTransient<IDictionaryService, DictionaryService>();
+            services.AddTransient<IEntryService, EntryService>();
+            services.AddTransient<IMeaningService, MeaningService>();
+            services.AddTransient<IFreeExpressionService, FreeExpressionService>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

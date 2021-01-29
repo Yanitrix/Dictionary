@@ -29,7 +29,7 @@ namespace Service.Tests.Service
             _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
 
             var entity = new Dictionary();
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             Assert.Single(result);
             Assert.Equal("Entity cannot be updated", result.First().Key);
@@ -42,7 +42,7 @@ namespace Service.Tests.Service
             _dictRepo.Setup(_ => _.ExistsByLanguages(It.IsAny<String>(), It.IsAny<String>())).Returns(false); //dictionary is not a duplicate
 
             var entity = new Dictionary();
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Once);
             Assert.Empty(result);
@@ -57,7 +57,7 @@ namespace Service.Tests.Service
 
             var entity = new Dictionary();
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Never);
             Assert.Single(result);
@@ -76,7 +76,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "out",
             };
 
-            var restult = service.TryAdd(entity);
+            var restult = service.Add(entity);
 
             Assert.Single(restult);
             Assert.Equal("Language not found", restult.First().Key);
@@ -97,7 +97,7 @@ namespace Service.Tests.Service
             };
 
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             Assert.Single(result);
             Assert.Equal("Language not found", result.First().Key);

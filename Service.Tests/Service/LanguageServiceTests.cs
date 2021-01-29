@@ -32,7 +32,7 @@ namespace Service.Tests.Service
                 Name = name
             };
 
-            var result = service.TryAdd(lang);
+            var result = service.Add(lang);
 
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Key);
@@ -47,7 +47,7 @@ namespace Service.Tests.Service
             langRepoMock.Setup(_ => _.Create(It.IsAny<Language>())).Callback<Language>(x => repo.Add(x));
 
             var lang = new Language();
-            var result = service.TryAdd(lang);
+            var result = service.Add(lang);
 
             Assert.Empty(result);
             Assert.Single(repo);
@@ -59,7 +59,7 @@ namespace Service.Tests.Service
             langRepoMock.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false);
 
             var lang = new Language();
-            var result = service.TryUpdate(lang);
+            var result = service.Update(lang);
 
             Assert.Single(result);
             Assert.Equal("Entity cannot be updated", result.First().Key);

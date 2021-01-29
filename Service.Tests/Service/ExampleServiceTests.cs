@@ -31,7 +31,7 @@ namespace Service.Tests.Service
 
             _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _repo.Verify(_ => _.Create(It.IsAny<Example>()), Times.Once);
             Assert.Empty(result);
@@ -48,7 +48,7 @@ namespace Service.Tests.Service
 
             _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(false);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
 
             _repo.Verify(_ => _.Create(It.IsAny<Example>()), Times.Never);
             Assert.Single(result);
@@ -67,7 +67,7 @@ namespace Service.Tests.Service
             _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
             _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Example, bool>>>())).Returns(true);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _repo.Verify(_ => _.Update(It.IsAny<Example>()), Times.Once);
             Assert.Empty(result);
@@ -85,7 +85,7 @@ namespace Service.Tests.Service
             _meaningRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.MeaningID))).Returns(true);
             _repo.Setup(_ => _.Exists(It.IsAny<System.Linq.Expressions.Expression<Func<Example, bool>>>())).Returns(false);
 
-            var result = service.TryUpdate(entity);
+            var result = service.Update(entity);
 
             _repo.Verify(_ => _.Update(It.IsAny<Example>()), Times.Never);
             Assert.Single(result);

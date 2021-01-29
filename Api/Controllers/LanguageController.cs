@@ -14,14 +14,12 @@ namespace Api.Controllers
     [Route("api/language")]
     public class LanguageController : Controller
     {
-        private readonly IService<Language> service;
-        private readonly ILanguageRepository repo;
+        private readonly ILanguageService service;
         private readonly IMapper mapper;
 
-        public LanguageController(ILanguageRepository repo, IService<Language> service, IMapper mapper)
+        public LanguageController(ILanguageService service, IMapper mapper)
         {
             this.service = service;
-            this.repo = repo;
             this.mapper = mapper;
         }
 
@@ -29,13 +27,13 @@ namespace Api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<LanguageWordCount>> Index()
         {
-            return repo.AllWithWordCount().ToList();
+            return service.AllWithWordCount().ToList();
         }
 
         [HttpGet("{name}")]
         public ActionResult<GetLanguage> Get(String name)
         {
-            Language entity = repo.GetByNameWithWords(name);
+            Language entity = service.Get(name);
 
             if (entity == null)
                 return NotFound($"Language with Name: \"{name}\" doesn't exist");
@@ -48,7 +46,7 @@ namespace Api.Controllers
         {
             var entity = ToEntity(dto);
 
-            var result = service.TryAdd(entity);
+            var result = service.Add(entity);
             if (!result.IsValid)
                 return BadRequest(result);
             return Created("api/language/" + entity.Name, ToDto(entity));
@@ -57,11 +55,9 @@ namespace Api.Controllers
         [HttpDelete("{name}")]
         public IActionResult Delete(String name)
         {
-            var entity = repo.GetByName(name);
-            if (entity == null) 
-                return NotFound($"Language with Name: \"{name}\" doesn't exist");
-
-            repo.Delete(entity);
+            var result = service.Delete(name);
+            if (!result.IsValid)
+                return NotFound(result);
             return NoContent();
         }
 

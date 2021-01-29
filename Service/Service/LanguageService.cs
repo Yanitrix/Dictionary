@@ -1,11 +1,13 @@
 ﻿using Service.Repository;
 using Data.Models;
 using Msg = Commons.ValidationErrorMessages;
-
+using Data.Dto;
+using System;
+using System.Collections.Generic;
 
 namespace Service
 {
-    public class LanguageService : IService<Language>
+    public class LanguageService : ILanguageService
     {
         private readonly ILanguageRepository repo;
 
@@ -14,7 +16,11 @@ namespace Service
             this.repo = uow.Languages;
         }
 
-        public IValidationDictionary TryAdd(Language entity)
+        public Language Get(String name) => repo.GetByNameWithWords(name);
+
+        public IEnumerable<LanguageWordCount> AllWithWordCount() => repo.AllWithWordCount();
+
+        public IValidationDictionary Add(Language entity)
         {
             var validationDictionary = IValidationDictionary.New();
 
@@ -31,13 +37,30 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary TryUpdate(Language entity)
+        public IValidationDictionary Update(Language entity)
         {
             var validationDictionary = IValidationDictionary.New();
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_LANGUAGE_DESC);
 
             return validationDictionary;
+        }
+
+        public IValidationDictionary Delete(String name)
+        {
+            var result = IValidationDictionary.New();
+            var indb = repo.GetByName(name);
+
+            if(indb == null)
+            {
+                result.AddError(Msg.NOTFOUND<Language>(), Msg.DOESNT_EXIST_PK<Language>());
+            }
+            else
+            {
+                repo.Delete(indb);
+            }
+
+            return result;
         }
     }
 }
