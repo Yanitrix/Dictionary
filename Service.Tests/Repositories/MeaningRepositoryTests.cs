@@ -1,9 +1,9 @@
 ﻿using Data.Models;
+using Service.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Service.Repository;
 
 namespace Service.Tests.Repositories
 {
@@ -20,7 +20,7 @@ namespace Service.Tests.Repositories
             exampleRepo = new ExampleRepository(this.context);
         }
 
-        private void reloadRepos()
+        private void Disconnect()
         {
             changeContext();
             repo = new MeaningRepository(this.context);
@@ -28,7 +28,7 @@ namespace Service.Tests.Repositories
             exampleRepo = new ExampleRepository(this.context);
         }
 
-        private Dictionary dummyDic() => new Dictionary
+        private Dictionary DummyDict => new Dictionary
         {
             LanguageIn = new Language
             {
@@ -37,23 +37,23 @@ namespace Service.Tests.Repositories
             LanguageOutName = "dummy language"
         };
 
-        private Word dummyWord() => new Word
+        private Word DummyWord => new Word
         {
             SourceLanguageName = "dummy language",
             Value = "dummy value"
         };
 
-        private Entry dummyEntry() => new Entry
+        private Entry DummyEntry => new Entry
         {
-            Dictionary = dummyDic(),
-            Word = dummyWord()
+            Dictionary = DummyDict,
+            Word = DummyWord
         };
 
-        private Meaning createMeaningWihtExamples()
+        private Meaning CreateMeaningWihtExamples()
         {
             var entity = new Meaning
             {
-                Entry = dummyEntry(),
+                Entry = DummyEntry,
 
                 Value = "stick",
                 Examples = new List<Example>
@@ -75,7 +75,7 @@ namespace Service.Tests.Repositories
             return entity;
         }
 
-        private Meaning createMeaningWithExamplesAndEntry()
+        private Meaning CreateMeaningWithExamplesAndEntry()
         {
             var entity = new Meaning
             {
@@ -95,18 +95,18 @@ namespace Service.Tests.Repositories
                     }
                 },
 
-                Entry = dummyEntry()
+                Entry = DummyEntry
             };
 
             return entity;
         }
 
-        private Entry createEntryWithMeanings()
+        private Entry CreateEntryWithMeanings()
         {
             var entry = new Entry
             {
-                Dictionary = dummyDic(),
-                Word = dummyWord(),
+                Dictionary = DummyDict,
+                Word = DummyWord,
 
                 Meanings = new HashSet<Meaning>
                 {
@@ -175,7 +175,7 @@ namespace Service.Tests.Repositories
         [Fact]
         public void AddWithChildren_ChildrenExist()
         {
-            var entity = createMeaningWihtExamples();
+            var entity = CreateMeaningWihtExamples();
             repo.Create(entity);
 
             var inDB = repo.All().FirstOrDefault();
@@ -187,11 +187,51 @@ namespace Service.Tests.Repositories
         }
 
         [Fact]
+        public void Update_EntryIdCannotBeUpdated()
+        {
+            var entity = CreateMeaningWihtExamples();
+            context.Meanings.Add(entity);
+            context.SaveChanges();
+            Disconnect();
+
+            var entryId = entity.EntryID;
+
+            var @new = new Meaning
+            {
+                ID = entity.ID,
+                EntryID = 123,
+                Value = "newValue",
+                Notes = null,
+                Examples = new List<Example>
+                {
+                    new()
+                    {
+                        Text = "text1",
+                        Translation = "translation1"
+                    },
+                }
+            };
+
+            repo.Update(@new);
+            Disconnect();
+
+            var found = repo.GetByID(entity.ID);
+
+            Assert.Equal(@new.Value, found.Value);
+            Assert.Equal(@new.Notes, found.Notes);
+            Assert.Single(found.Examples);
+            Assert.NotEqual(found.EntryID, @new.EntryID);
+            Assert.Equal(found.EntryID, entryId);
+
+        }
+
+        [Fact]
         public void GetByID_ReturnsEntityWithExamples()
         {
-            var entity = createMeaningWihtExamples();
-            repo.Create(entity);
-            reloadRepos();
+            var entity = CreateMeaningWihtExamples();
+            context.Meanings.Add(entity);
+            context.SaveChanges();
+            Disconnect();
 
             var id = entity.ID;
             var found = repo.GetByID(id);
@@ -203,9 +243,10 @@ namespace Service.Tests.Repositories
         [Fact]
         public void GetByID_ReturnsEntityWithExamplesAndEntry()
         {
-            var entity = createMeaningWithExamplesAndEntry();
-            repo.Create(entity);
-            reloadRepos();
+            var entity = CreateMeaningWithExamplesAndEntry();
+            context.Meanings.Add(entity);
+            context.SaveChanges();
+            Disconnect();
 
             var id = entity.ID;
 
@@ -220,11 +261,12 @@ namespace Service.Tests.Repositories
         [Fact]
         public void GetByValueSubstring_ReturnsWithExamplesAndEntry()
         {
-            var entity = createEntryWithMeanings();
-            entryRepo.Create(entity);
-            reloadRepos();
+            var entry = CreateEntryWithMeanings();
+            context.Entries.Add(entry);
+            context.SaveChanges();
+            Disconnect();
 
-            var entryID = entity.ID;
+            var entryID = entry.ID;
 
             var found = repo.GetByValueSubstring("stringsub");
             var indexed = new List<Meaning>(found);
@@ -250,9 +292,10 @@ namespace Service.Tests.Repositories
         [InlineData("")]
         public void GetByValueSubstring_NullOrEmpty_ReturnsEmptyCollection(String query)
         {
-            var entity = createEntryWithMeanings();
-            entryRepo.Create(entity);
-            reloadRepos();
+            var entry = CreateEntryWithMeanings();
+            context.Entries.Add(entry);
+            context.SaveChanges();
+            Disconnect();
 
             var found = repo.GetByValueSubstring(query);
             Assert.NotNull(found);
@@ -262,11 +305,12 @@ namespace Service.Tests.Repositories
         [Fact]
         public void GetByNotesSubstring_ReturnsWithExamplesAndEntry()
         {
-            var entity = createEntryWithMeanings();
-            entryRepo.Create(entity);
-            reloadRepos();
+            var entry = CreateEntryWithMeanings();
+            context.Entries.Add(entry);
+            context.SaveChanges();
+            Disconnect();
 
-            var entryID = entity.ID;
+            var entryID = entry.ID;
 
             var found = repo.GetByNotesSubstring("substring");
             var indexed = new List<Meaning>(found);
@@ -292,9 +336,10 @@ namespace Service.Tests.Repositories
         [InlineData("")]
         public void GetByNotesSubstring_NullOrEmpty_ReturnsEmptyCollection(String query)
         {
-            var entity = createEntryWithMeanings();
-            entryRepo.Create(entity);
-            reloadRepos();
+            var entry = CreateEntryWithMeanings();
+            context.Entries.Add(entry);
+            context.SaveChanges();
+            Disconnect();
 
             var found = repo.GetByNotesSubstring(query);
             Assert.NotNull(found);
@@ -304,9 +349,9 @@ namespace Service.Tests.Repositories
         [Fact]
         public void Delete_CascadeDeleteWorks()
         {
-            var entity = createMeaningWihtExamples();
+            var entity = CreateMeaningWihtExamples();
             repo.Create(entity);
-            reloadRepos();
+            Disconnect();
 
             var id = entity.ID;
 

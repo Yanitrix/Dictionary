@@ -19,14 +19,44 @@ namespace Service.Tests.Service
             service = new MeaningService(this.uow.Object);
         }
 
+        private void Exists(bool result = true)
+        {
+            _repo.Setup(_ => _.ExistsByID(It.IsAny<int>())).Returns(result);
+        }
+
+        private void EntryExists(bool result = true)
+        {
+            _entryRepo.Setup(_ => _.ExistsByID(It.IsAny<int>())).Returns(result);
+        }
+
+        private void ShouldAdd()
+        {
+            _repo.Verify(_ => _.Create(It.IsAny<Meaning>()), Times.Once);
+        }
+
+        private void ShouldNotAdd()
+        {
+            _repo.Verify(_ => _.Create(It.IsAny<Meaning>()), Times.Never);
+        }
+
+        private void ShouldUpdate()
+        {
+            _repo.Verify(_ => _.Update(It.IsAny<Meaning>()), Times.Once);
+        }
+
+        private void ShouldNotUpdate()
+        {
+            _repo.Verify(_ => _.Update(It.IsAny<Meaning>()), Times.Never);
+        }
+
         [Fact]
         public void TryAdd_EntryExists_AddsProperly()
         {
-            _entryRepo.Setup(_ => _.ExistsByID(It.IsAny<int>())).Returns(true);
+            EntryExists();
 
-            var result = service.TryAdd(new Meaning());
+            var result = service.TryAdd(new());
 
-            _repo.Verify(_ => _.Create(It.IsAny<Meaning>()), Times.Once);
+            ShouldAdd();
             Assert.Empty(result);
             Assert.True(result.IsValid);
 
@@ -35,11 +65,11 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_EntryDoesNotExist_ReturnsError()
         {
-            _entryRepo.Setup(_ => _.ExistsByID(It.IsAny<int>())).Returns(false);
+            EntryExists(false);
 
-            var result = service.TryAdd(new Meaning());
+            var result = service.TryAdd(new());
 
-            _repo.Verify(_ => _.Create(It.IsAny<Meaning>()), Times.Never);
+            ShouldNotAdd();
             Assert.Single(result);
             Assert.Equal("Entry not found", result.First().Key);
 
@@ -48,17 +78,11 @@ namespace Service.Tests.Service
         [Fact]
         public void TryUpdate_MeaningNotFound_ReturnsError()
         {
-            var entity = new Meaning
-            {
-                EntryID = 1,
-                ID = 12
-            };
-            
-            _repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
+            Exists(false);
 
-            var result = service.TryUpdate(new Meaning());
+            var result = service.TryUpdate(new());
 
-            _repo.Verify(_ => _.Update(It.IsAny<Meaning>()), Times.Never);
+            ShouldNotUpdate();
             Assert.Single(result);
             Assert.Equal("Entity does not exist", result.First().Key);
 
@@ -67,18 +91,11 @@ namespace Service.Tests.Service
         [Fact]
         public void TryUpdate_MeaningExists_UpdatesProperly()
         {
-            var entity = new Meaning
-            {
-                EntryID = 1,
-                ID = 12
-            };
+            Exists();
 
-            _repo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
-            _entryRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.EntryID))).Returns(true);
+            var result = service.TryUpdate(new());
 
-            var result = service.TryUpdate(entity);
-
-            _repo.Verify(_ => _.Update(It.IsAny<Meaning>()), Times.Once);
+            ShouldUpdate();
             Assert.Empty(result);
             Assert.True(result.IsValid);
 
