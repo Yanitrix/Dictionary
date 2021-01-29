@@ -18,14 +18,14 @@ namespace Service.Tests.Repositories
             repo = new EntryRepository(this.context);
         }
 
-        private void reloadRepos()
+        private void Disconnect()
         {
             this.changeContext();
             dictionaryRepo = new DictionaryRepository(this.context);
             repo = new EntryRepository(this.context);
         }
 
-        private Dictionary[] createDictWithEverythingNeeded()
+        private Dictionary[] CreateDictionaryWithAllReferences()
         {
             //first has 2 entries
             #region english-german dictionary
@@ -39,8 +39,6 @@ namespace Service.Tests.Repositories
                 {
                     Name = "german"
                 },
-                LanguageInName = "english",
-                LanguageOutName = "german",
                 Entries = new HashSet<Entry>
                 {
                     new Entry
@@ -221,6 +219,15 @@ namespace Service.Tests.Repositories
                             }
                         },
                     },
+
+                    new Entry
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "german",
+                            Value = "stock"
+                        }
+                    }
                 }
             };
 
@@ -229,14 +236,143 @@ namespace Service.Tests.Repositories
             return new Dictionary[] { dict, dict1 };
         }
 
-        //test both dictionaries
+        private Dictionary CaseSensitiveDictionary()
+        {
+            return new Dictionary
+            {
+                LanguageIn = new() { Name = "in" },
+                LanguageOut = new() { Name = "out" },
+                Entries = new HashSet<Entry>()
+                {
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "ąść"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "Ąść"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "ąŚĆ"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "süßigkeiten"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "Süßigkeiten"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "SüßigkeITEN"
+                        }
+                    }
+                }
+            };
+        }
+
+        private Dictionary CaseInsensitiveDictionary()
+        {
+            return new Dictionary
+            {
+                LanguageIn = new() { Name = "in" },
+                LanguageOut = new() { Name = "out" },
+                Entries = new HashSet<Entry>()
+                {
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "value"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "Value"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "Stick"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "stick"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "STIck"
+                        }
+                    },
+
+                    new()
+                    {
+                        Word = new()
+                        {
+                            SourceLanguageName = "in",
+                            Value = "SüßigkeITEN"
+                        }
+                    }
+                }
+            };
+        }
+
         [Fact]
         public void GetByID_ReturnsEntityWithLoadedReferences()
         {
-            var dict = createDictWithEverythingNeeded()[0];
+            var dict = CreateDictionaryWithAllReferences()[0];
 
             dictionaryRepo.Create(dict);
-            reloadRepos();
+            Disconnect();
 
             var id = dict.Entries.First().ID;
 
@@ -254,26 +390,59 @@ namespace Service.Tests.Repositories
         }
 
         [Fact]
-        public void GetByDictionaryAndWord_RetursProperEntityWithLoadedReferences()
+        public void GetByDictionaryAndWord_CaseSensitive_RetursProperEntityWithLoadedReferences()
         {
-            var dict = createDictWithEverythingNeeded()[1];
+            var dict = CreateDictionaryWithAllReferences()[1];
 
             dictionaryRepo.Create(dict);
-            reloadRepos();
+            Disconnect();
 
             var dictIdx = dict.Index;
             var word = "stock";
 
             var expectedId = dict.Entries.First().ID;
 
-            var foundCol = repo.GetByDictionaryAndWord(dictIdx, word);
-            var found = foundCol.First();
+            var foundCollection = repo.GetByDictionaryAndWord(dictIdx, word);
+            var found = foundCollection.First();
 
-            Assert.NotEmpty(foundCol);
+            Assert.Single(foundCollection);
             Assert.NotNull(found);
-            Assert.Equal(expectedId, found.ID);
-            Assert.Equal(word, found.Word.Value, true);
+            Assert.Equal(word, found.Word.Value);
             Assert.Equal(dictIdx, found.DictionaryIndex);
+        }
+
+        [Fact]
+        public void GetByDictionaryAndWord_CaseSensitive_CaseDoesNotMatch_ReturnsEmptyCollection()
+        {
+            var dict = CreateDictionaryWithAllReferences()[1];
+
+            dictionaryRepo.Create(dict);
+            Disconnect();
+
+            var dictIdx = dict.Index;
+            var word = "StocK";
+
+            var found = repo.GetByDictionaryAndWord(dictIdx, word);
+
+            Assert.Empty(found);
+        }
+
+        [Fact]
+        public void GetByDictionaryAndWord_CaseInsensitive_ReturnsProperResults()
+        {
+            var dict = CreateDictionaryWithAllReferences()[1];
+
+            dictionaryRepo.Create(dict);
+            Disconnect();
+
+            var dictIdx = dict.Index;
+            var word = "StocK";
+
+            var found = repo.GetByDictionaryAndWord(dictIdx, word, false);
+
+            Assert.Equal(2, found.Count());
+            foreach (var i in found)
+                Assert.Equal(word, i.Word.Value, ignoreCase: true);
         }
 
         //edge cases: null, empty strings
@@ -286,10 +455,10 @@ namespace Service.Tests.Repositories
         [InlineData("\n\t")]
         public void GetByDictionaryAndWord_ArgsNullOrEmpty_ReturnsEmpty(String query)
         {
-            var dict = createDictWithEverythingNeeded()[1];
+            var dict = CreateDictionaryWithAllReferences()[1];
 
             dictionaryRepo.Create(dict);
-            reloadRepos();
+            Disconnect();
 
             var dictIdx = dict.Index;
 
@@ -297,5 +466,148 @@ namespace Service.Tests.Repositories
 
             Assert.Empty(foundCol);
         }
+
+        [Theory]
+        [InlineData("ąść")]
+        [InlineData("Ąść")]
+        [InlineData("Süßigkeiten")]
+        public void GetByWord_CaseSensitive_ReturnsProperEntries(String word)
+        {
+            var dictionary = CaseSensitiveDictionary();
+
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
+            Disconnect();
+
+            var found = repo.GetByWord(word);
+            var entry = found.First();
+
+            Assert.Single(found);
+            Assert.Equal(word, entry.Word.Value, ignoreCase: false);
+
+        }
+
+        [Theory]
+        [InlineData("ascascasc")]
+        [InlineData("ĄŚĆ")]
+        [InlineData("SÜßigkeiten")]
+        [InlineData("bbbasd")]
+        [InlineData("word")]
+        [InlineData("\t\t")]
+        [InlineData("\t\n")]
+        [InlineData("\r")]
+        [InlineData(" ")]
+        [InlineData("")]
+        public void GetByWord_CaseSensitive_EntryDoesNotExistOrCaseDoesNotMatch_ReturnsEmptyCollection(String word)
+        {
+            var dictionary = CaseSensitiveDictionary();
+
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
+            Disconnect();
+
+            var found = repo.GetByWord(word);
+            Assert.Empty(found);
+        }
+
+        [Theory]
+        [InlineData("stick", 3)]
+        [InlineData("value", 2)]
+        public void GetByWord_CaseInsensitive_ReturnsProperEntries(String word, int amount)
+        {
+            var dictionary = CaseInsensitiveDictionary();
+
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
+            Disconnect();
+
+            var found = repo.GetByWord(word, false);
+
+            Assert.Equal(amount, found.Count());
+            foreach (var i in found)
+                Assert.Equal(word, i.Word.Value, ignoreCase: true);
+        }
+
+        [Fact]
+        public void HasMeanings_EntryHasMeanings_ReturnsTrue()
+        {
+            var dictionary = new Dictionary
+            {
+                LanguageIn = new() { Name = "in" },
+                LanguageOut = new() { Name = "out" },
+            };
+
+            var entry = new Entry
+            {
+                Word = new()
+                {
+                    SourceLanguageName = "in",
+                    Value = "value"
+                },
+                Meanings = new HashSet<Meaning>()
+                {
+                    new()
+                    {
+                        Value = "val1"
+                    },
+
+                    new()
+                    {
+                        Value = "val2"
+                    },
+
+                    new()
+                    {
+                        Value = "val3"
+                    },
+                }
+            };
+
+            dictionary.Entries.Add(entry);
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
+            var id = entry.ID;
+            Disconnect();
+            
+            //act
+            var result = repo.HasMeanings(id);
+
+            //assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void HasMeanings_EntryDoesNot_ReturnsFalse()
+        {
+            var dictionary = new Dictionary
+            {
+                LanguageIn = new() { Name = "in" },
+                LanguageOut = new() { Name = "out" },
+            };
+
+            var entry = new Entry
+            {
+                Word = new()
+                {
+                    SourceLanguageName = "in",
+                    Value = "value"
+                },
+            };
+
+            dictionary.Entries.Add(entry);
+            context.Dictionaries.Add(dictionary);
+            context.SaveChanges();
+            var id = entry.ID;
+            Disconnect();
+
+            //act
+            var result = repo.HasMeanings(id);
+
+            //assert
+            Assert.False(result);
+        }
+
+        //actually tests if has meanings
+        //getbyword CS and CI
     }
 }

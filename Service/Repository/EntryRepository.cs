@@ -22,23 +22,40 @@ namespace Service.Repository
             .Include(e => e.Meanings).ThenInclude(m => m.Examples);
 
         //ignores case
-        public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue)
+        public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue, bool caseSensitive = true)
         {
             if (String.IsNullOrEmpty(wordValue) || String.IsNullOrWhiteSpace(wordValue)) return Enumerable.Empty<Entry>();
-            return Get(e => e.DictionaryIndex == dictionaryIndex && EF.Functions.Like(e.Word.Value, $"{wordValue}"),
-                x => x,
-                orderFunction,
-                includeQuery);
+
+            if(caseSensitive)
+            {
+                return Get(
+                    e => e.DictionaryIndex == dictionaryIndex && e.Word.Value == wordValue,
+                    x => x, orderFunction, includeQuery);
+            }
+
+            return Get(
+                e => e.DictionaryIndex == dictionaryIndex &&
+                    EF.Functions.Collate(e.Word.Value, "SQL_Latin1_General_CP1_CI_AS") == wordValue,
+                x => x, orderFunction, includeQuery
+                );
         }
 
         //ignores case
-        public IEnumerable<Entry> GetByWord(string wordValue)
+        public IEnumerable<Entry> GetByWord(string wordValue, bool caseSensitive = true)
         {
             if (String.IsNullOrEmpty(wordValue) || String.IsNullOrWhiteSpace(wordValue)) return Enumerable.Empty<Entry>();
-            return Get(e => EF.Functions.Like(e.Word.Value, $"{wordValue}"),
-                x => x,
-                orderFunction,
-                includeQuery);
+            if (caseSensitive)
+            {
+                return Get(e => EF.Functions.Like(e.Word.Value, $"{wordValue}"),
+                    x => x,
+                    orderFunction,
+                    includeQuery);
+            }
+
+            return Get(
+                e => EF.Functions.Collate(e.Word.Value, "SQL_Latin1_General_CP1_CI_AS") == wordValue,
+                x => x, orderFunction, includeQuery
+                );
         }
 
         public IEnumerable<Entry> GetByDictionary(int dictionaryIndex)
@@ -46,7 +63,7 @@ namespace Service.Repository
             return Get(e => e.DictionaryIndex == dictionaryIndex,
                 x => x, orderFunction, includeQuery);
         }
-        
+      
         public Entry GetByID(int id)
         {
             return GetOne(e => e.ID == id, null, includeQuery);
@@ -55,11 +72,6 @@ namespace Service.Repository
         public bool ExistsByID(int id)
         {
             return Exists(e => e.ID == id);
-        }
-
-        public bool ExistsByWord(int wordID)
-        {
-            return Exists(e => e.WordID == wordID);
         }
 
         public bool HasMeanings(int id)
