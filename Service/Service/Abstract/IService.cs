@@ -2,9 +2,8 @@
 {
     public interface IService<T>
     {
-        public IValidationDictionary TryAdd(T entity);
-        
-        public IValidationDictionary TryUpdate(T entity);
+        public IValidationDictionary Add(T entity);
 
+        public IValidationDictionary Update(T entity);
     }
 }
