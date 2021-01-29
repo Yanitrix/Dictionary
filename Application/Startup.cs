@@ -6,16 +6,14 @@ using Data.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FluentValidation;
 using Data.Models;
 using Data.Mapper;
-using Service.Validation;
 using Service.Repository;
 using Service;
 using Api.Filters;
 using FluentValidation.AspNetCore;
 
-namespace Dictionary_MVC
+namespace Application
 {
     public class Startup
     {
