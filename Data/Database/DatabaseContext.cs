@@ -27,14 +27,20 @@ namespace Data.Database
 
             #region languages and words and wordproperties
 
-            builder.Entity<Language>().ToTable("Language");
+            builder.Entity<Language>()
+                .ToTable("Language")
+                .Property(language => language.Name)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
             var word = builder.Entity<Word>().ToTable("Word");
 
+            word.Property(word => word.SourceLanguageName)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
             word
-                .HasOne<Entry>()
+                .HasMany<Entry>()
                 .WithOne(entry => entry.Word)
-                .HasForeignKey<Entry>(entry => entry.WordID)
+                .HasForeignKey(entry => entry.WordID)
                 .OnDelete(DeleteBehavior.Cascade); //deleting all entries that contain given word
 
             word
@@ -43,7 +49,7 @@ namespace Data.Database
 
             builder.Entity<WordProperty>().ToTable("WordProperty");
 
-            //storing Set<String>
+            //storing StringSet
             var propertyBuilder = builder.Entity<WordProperty>().Property(wp => wp.Values);
             propertyBuilder.HasConversion(StringSetValueComparerAndConverter.Converter);
             propertyBuilder.Metadata.SetValueConverter(StringSetValueComparerAndConverter.Converter);
@@ -62,12 +68,18 @@ namespace Data.Database
             dictionary.Property(d => d.Index).ValueGeneratedOnAdd();
             dictionary.HasKey(d => new { d.LanguageInName, d.LanguageOutName });
 
+            dictionary.Property(dictionary => dictionary.LanguageInName)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
             dictionary
                 .HasMany(dictionary => dictionary.Entries)
                 .WithOne(entry => entry.Dictionary)
                 .HasForeignKey(entry => entry.DictionaryIndex)
                 .HasPrincipalKey(dictionary => dictionary.Index)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            dictionary.Property(dictionary => dictionary.LanguageOutName)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
             dictionary
                 .HasMany(dictionary => dictionary.FreeExpressions)
