@@ -2,18 +2,27 @@
 
 namespace Data.Migrations
 {
-    public partial class DictionariesAndEverythingBelow : Migration
+    public partial class Everything : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.Name);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Dictionary",
                 columns: table => new
                 {
                     LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS"),
-                    //LanguageInName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS"),
-                    //LanguageOutName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
@@ -33,6 +42,47 @@ namespace Data.Migrations
                         principalTable: "Language",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Word",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SourceLanguageName = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false, collation: "SQL_Latin1_General_CP1_CS_AS")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Word", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Word_Language_SourceLanguageName",
+                        column: x => x.SourceLanguageName,
+                        principalTable: "Language",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FreeExpression",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DictionaryIndex = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FreeExpression", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FreeExpression_Dictionary_DictionaryIndex",
+                        column: x => x.DictionaryIndex,
+                        principalTable: "Dictionary",
+                        principalColumn: "Index",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,23 +112,23 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FreeExpression",
+                name: "WordProperty",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DictionaryIndex = table.Column<int>(type: "int", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    WordID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Values = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FreeExpression", x => x.ID);
+                    table.PrimaryKey("PK_WordProperty", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_FreeExpression_Dictionary_DictionaryIndex",
-                        column: x => x.DictionaryIndex,
-                        principalTable: "Dictionary",
-                        principalColumn: "Index",
+                        name: "FK_WordProperty_Word_WordID",
+                        column: x => x.WordID,
+                        principalTable: "Word",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -135,9 +185,9 @@ namespace Data.Migrations
                 column: "DictionaryIndex");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Entry_WordID",
+                name: "IX_Entry_WordID_DictionaryIndex",
                 table: "Entry",
-                column: "WordID",
+                columns: new[] { "WordID", "DictionaryIndex" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -154,6 +204,16 @@ namespace Data.Migrations
                 name: "IX_Meaning_EntryID",
                 table: "Meaning",
                 column: "EntryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Word_SourceLanguageName",
+                table: "Word",
+                column: "SourceLanguageName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WordProperty_WordID",
+                table: "WordProperty",
+                column: "WordID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -165,6 +225,9 @@ namespace Data.Migrations
                 name: "FreeExpression");
 
             migrationBuilder.DropTable(
+                name: "WordProperty");
+
+            migrationBuilder.DropTable(
                 name: "Meaning");
 
             migrationBuilder.DropTable(
@@ -172,6 +235,12 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Dictionary");
+
+            migrationBuilder.DropTable(
+                name: "Word");
+
+            migrationBuilder.DropTable(
+                name: "Language");
         }
     }
 }

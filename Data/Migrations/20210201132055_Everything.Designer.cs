@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210129104929_EntryHasUniqueWordAndDictionary")]
-    partial class EntryHasUniqueWordAndDictionary
+    [Migration("20210201132055_Everything")]
+    partial class Everything
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,10 +24,12 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Dictionary", b =>
                 {
                     b.Property<string>("LanguageInName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("LanguageOutName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<int>("Index")
                         .ValueGeneratedOnAdd()
@@ -57,9 +59,6 @@ namespace Data.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("DictionaryIndex");
-
-                    b.HasIndex("WordID")
-                        .IsUnique();
 
                     b.HasIndex("WordID", "DictionaryIndex")
                         .IsUnique();
@@ -120,7 +119,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Language", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.HasKey("Name");
 
@@ -160,7 +160,8 @@ namespace Data.Migrations
 
                     b.Property<string>("SourceLanguageName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -424,8 +425,8 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Data.Models.Word", "Word")
-                        .WithOne()
-                        .HasForeignKey("Data.Models.Entry", "WordID")
+                        .WithMany()
+                        .HasForeignKey("WordID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
