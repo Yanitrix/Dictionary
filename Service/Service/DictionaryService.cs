@@ -43,7 +43,7 @@ namespace Service
             //check if langueges exist
             if (!langRepo.ExistsByName(entity.LanguageInName) || !langRepo.ExistsByName(entity.LanguageOutName))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.LANGS_NOTFOUND_DESC(entity.LanguageInName, entity.LanguageOutName));
+                validationDictionary.AddError(Msg.EntityNotFound<Language>(), Msg.LanguagesNotFoundDesc(entity.LanguageInName, entity.LanguageOutName));
                 return validationDictionary;
             }
 
@@ -70,7 +70,7 @@ namespace Service
 
             if (inDB == null)
             {
-                result.AddError(Msg.NOTFOUND<Dictionary>(), Msg.DOESNT_EXIST_PK<Dictionary>());
+                result.AddError(Msg.EntityNotFound<Dictionary>(), Msg.EntityDoesNotExistByPrimaryKey<Dictionary>());
             }
             else
             {

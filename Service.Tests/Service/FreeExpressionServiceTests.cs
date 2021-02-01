@@ -46,7 +46,7 @@ namespace Service.Tests.Service
 
             _repo.Verify(_ => _.Create(It.IsAny<FreeExpression>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Dictionary not found", result.First().Key);
+            Assert.Equal("Dictionary does not exist.", result.First().Key);
         }
 
 
@@ -60,7 +60,7 @@ namespace Service.Tests.Service
 
             _repo.Verify(_ => _.Update(It.IsAny<FreeExpression>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Dictionary not found", result.First().Key);
+            Assert.Equal("Dictionary does not exist.", result.First().Key);
         }
 
         [Fact]

@@ -79,7 +79,7 @@ namespace Service.Tests.Service
             var restult = service.Add(entity);
 
             Assert.Single(restult);
-            Assert.Equal("Language not found", restult.First().Key);
+            Assert.Equal("Language does not exist.", restult.First().Key);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Service.Tests.Service
             var result = service.Add(entity);
 
             Assert.Single(result);
-            Assert.Equal("Language not found", result.First().Key);
+            Assert.Equal("Language does not exist.", result.First().Key);
         }
 
     }

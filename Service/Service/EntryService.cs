@@ -54,7 +54,7 @@ namespace Service
             //check if exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Entry>());
+                validationDictionary.AddError(Msg.EntityNotFound(), Msg.ThereIsNothingToUpdate<Entry>());
                 return validationDictionary;
             }
 
@@ -81,7 +81,7 @@ namespace Service
 
             if (indb == null)
             {
-                result.AddError(Msg.NOTFOUND<Entry>(), Msg.DOESNT_EXIST_PK<Entry>());
+                result.AddError(Msg.EntityNotFound<Entry>(), Msg.EntityDoesNotExistByPrimaryKey<Entry>());
             }
             else
             {
@@ -96,7 +96,7 @@ namespace Service
             //check if word exists
             if (!wordRepo.ExistsByID(entity.WordID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Word>(), Msg.NOTFOUND_DESC<Entry, Word>(w => w.ID, entity.WordID));
+                validationDictionary.AddError(Msg.EntityNotFound<Word>(), Msg.EntityDoesNotExistByForeignKey<Entry, Word>(w => w.ID, entity.WordID));
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace Service
             //check if dictionary exists
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.EntityNotFound<Dictionary>(), Msg.EntityDoesNotExistByForeignKey<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
                 return;
             }
 
