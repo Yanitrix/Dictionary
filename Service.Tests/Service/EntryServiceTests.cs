@@ -145,7 +145,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Word not found", result.First().Key);
+            Assert.Equal("Word does not exist.", result.First().Key);
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Dictionary not found", result.First().Key);
+            Assert.Equal("Dictionary does not exist.", result.First().Key);
         }
 
         [Fact]
@@ -365,7 +365,7 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal("Entity does not exist", result.First().Key);
+            Assert.Equal("Entity does not exist.", result.First().Key);
         }
 
         [Fact]

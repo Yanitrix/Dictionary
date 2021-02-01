@@ -53,7 +53,7 @@ namespace Service
 
             if(indb == null)
             {
-                result.AddError(Msg.NOTFOUND<Language>(), Msg.DOESNT_EXIST_PK<Language>());
+                result.AddError(Msg.EntityNotFound<Language>(), Msg.EntityDoesNotExistByPrimaryKey<Language>());
             }
             else
             {

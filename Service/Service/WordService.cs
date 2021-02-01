@@ -42,7 +42,7 @@ namespace Service
             //check if entity already exists
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Word>());
+                validationDictionary.AddError(Msg.EntityNotFound(), Msg.ThereIsNothingToUpdate<Word>());
                 return validationDictionary;
             }
 
@@ -62,7 +62,7 @@ namespace Service
 
             if(indb == null)
             {
-                result.AddError(Msg.NOTFOUND<Word>(), Msg.DOESNT_EXIST_PK<Word>());
+                result.AddError(Msg.EntityNotFound<Word>(), Msg.EntityDoesNotExistByPrimaryKey<Word>());
             }
             else
             {
@@ -90,7 +90,7 @@ namespace Service
             //check if language exists
             if (!langRepo.ExistsByName(entity.SourceLanguageName))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Language>(), Msg.NOTFOUND_DESC<Word, Language>(l => l.Name, entity.SourceLanguageName));
+                validationDictionary.AddError(Msg.EntityNotFound<Language>(), Msg.EntityDoesNotExistByForeignKey<Word, Language>(l => l.Name, entity.SourceLanguageName));
                 return;
             }
         }

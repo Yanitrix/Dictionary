@@ -35,7 +35,7 @@ namespace Service
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Example>());
+                validationDictionary.AddError(Msg.EntityNotFound(), Msg.ThereIsNothingToUpdate<Example>());
                 return validationDictionary;
             }
 
@@ -53,7 +53,7 @@ namespace Service
 
             if(indb == null)
             {
-                result.AddError(Msg.NOTFOUND<FreeExpression>(), Msg.DOESNT_EXIST_PK<FreeExpression>());
+                result.AddError(Msg.EntityNotFound<FreeExpression>(), Msg.EntityDoesNotExistByPrimaryKey<FreeExpression>());
             }
             else
             {
@@ -67,7 +67,7 @@ namespace Service
         {
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Dictionary>(), Msg.NOTFOUND_DESC<Example, Meaning>(m => m.ID, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.EntityNotFound<Dictionary>(), Msg.EntityDoesNotExistByForeignKey<Example, Meaning>(m => m.ID, entity.DictionaryIndex));
             }
         }
     }

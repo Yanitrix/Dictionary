@@ -36,7 +36,7 @@ namespace Service
 
             if (!repo.ExistsByID(entity.ID))
             {
-                validationDictionary.AddError(Msg.DOESNT_EXIST, Msg.DOESNT_EXIST_UPDATE<Meaning>());
+                validationDictionary.AddError(Msg.EntityNotFound(), Msg.ThereIsNothingToUpdate<Meaning>());
                 return validationDictionary;
             }
 
@@ -53,7 +53,7 @@ namespace Service
 
             if (indb == null)
             {
-                result.AddError(Msg.NOTFOUND<Meaning>(), Msg.DOESNT_EXIST_PK<Meaning>());
+                result.AddError(Msg.EntityNotFound<Meaning>(), Msg.EntityDoesNotExistByPrimaryKey<Meaning>());
             }
             else
             {
@@ -68,7 +68,7 @@ namespace Service
             //only checking if entry exists
             if (!entryRepo.ExistsByID(entity.EntryID))
             {
-                validationDictionary.AddError(Msg.NOTFOUND<Entry>(), Msg.NOTFOUND_DESC<Meaning, Entry>(e => e.ID, entity.EntryID));
+                validationDictionary.AddError(Msg.EntityNotFound<Entry>(), Msg.EntityDoesNotExistByForeignKey<Meaning, Entry>(e => e.ID, entity.EntryID));
             }
         }
     }

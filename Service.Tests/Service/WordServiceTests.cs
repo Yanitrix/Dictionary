@@ -128,7 +128,7 @@ namespace Service.Tests.Service
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Language not found", result.First().Key);
+            Assert.Equal("Language does not exist.", result.First().Key);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace Service.Tests.Service
 
             _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Language not found", result.First().Key);
+            Assert.Equal("Language does not exist.", result.First().Key);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace Service.Tests.Service
 
             _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Entity does not exist", result.First().Key);
+            Assert.Equal("Entity does not exist.", result.First().Key);
         }
 
         [Fact]
