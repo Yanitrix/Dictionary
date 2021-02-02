@@ -2,7 +2,7 @@
 
 namespace Data.Dto
 {
-    public class TranslationResult
+    public class TranslationResponse
     {
         //so a list of Entries for both Dictionaries
 
