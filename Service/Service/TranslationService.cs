@@ -28,7 +28,7 @@ namespace Service.Service
             if (bidirectional)
             {
                 return dictionaries.ExistsByLanguages(languageIn, languageOut)
-                    && dictionaries.ExistsByLanguages(languageOut, languageIn);
+                    || dictionaries.ExistsByLanguages(languageOut, languageIn);
             }
 
             return dictionaries.ExistsByLanguages(languageIn, languageOut);
