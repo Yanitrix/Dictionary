@@ -34,19 +34,9 @@ namespace Service.Service
             return dictionaries.ExistsByLanguages(languageIn, languageOut);
         }
 
-        //combine these results if is bidirectional
         // 1. Two separate lists for Entries (for this and that dictionary)
         // 2. If meanings are found, get their Entries and add to these lists
         // 3. FreeExpressions stay free (two separate lists for them)
-
-        //query entries in search of word
-
-        //then query for examples in meanings
-        //When getting these examples we would have to get their meanings and the meanings' entries.
-        //So now, let's assume we ommit that and that these are gonna be included with similarEntries
-        //var similarExamples = uow.Examples.GetByDictionaryAndTextSubstring(dictionary.Index, query);
-        //TODO another thing - do we want to query by meanings' values in the opposite dictionary?
-        //I don't think that's necessary but I'll play with the API and decide then.
 
         public IEnumerable<Entry> GetMatchingEntries(String languageIn, String languageOut, String query)
         {
@@ -70,21 +60,10 @@ namespace Service.Service
 
         public (IEnumerable<Entry> unidirectional, IEnumerable<Entry> opposite) GetMatchingEntriesBidir(String languageIn, String languageOut, String query)
         {
-            var baseDictionary = dictionaries.GetByLanguageInAndOut(languageIn, languageOut);
-            var oppositeDictionary = dictionaries.GetByLanguageInAndOut(languageOut, languageIn);
+            var unidicrectional = GetMatchingEntries(languageIn, languageOut, query);
+            var opposite = GetMatchingEntries(languageOut, languageIn, query);
 
-            //entries from the first dictionary that contain query
-            var fromWordBase = entries.GetByDictionaryAndWord(baseDictionary.Index, query, false);
-            //entries from the first dictionary whose Meaning's value contains query
-            var ids = meanings.GetByDictionaryAndValueSubstring(baseDictionary.Index, query).Select(m => m.EntryID);
-            var fromMeaningValueBase = entries.Get(e => ids.Contains(e.ID), x => x);
-
-            //entries from the second dictionary that contain query
-            var fromWordOpposite = entries.GetByDictionaryAndWord(oppositeDictionary.Index, query, false);
-            //entries from the second dictionary whose meanings' value contains query
-            ids = meanings.GetByDictionaryAndValueSubstring(oppositeDictionary.Index, query).Select(m => m.EntryID);
-            var fromMeaningValueOpposite = entries.Get(e => ids.Contains(e.ID), x => x);
-
+            return (unidicrectional, opposite);
             //TODO another thing - do we want to query by meanings' values in the opposite dictionary?
             //I don't think that's necessary but I'll play with the API and decide then
         }
@@ -102,23 +81,8 @@ namespace Service.Service
 
         public (IEnumerable<FreeExpression> unidirectional, IEnumerable<FreeExpression> opposite) GetMatchingExpressionsBidir(String languageIn, String languageOut, String query)
         {
-            var baseDictionary = dictionaries.GetByLanguageInAndOut(languageIn, languageOut);
-            var oppositeDictionary = dictionaries.GetByLanguageInAndOut(languageOut, languageIn);
-
-            //expressions from the first dictionary where Text contains query
-            var fromTextBase = expressions.GetByDictionaryAndTextSubstring(baseDictionary.Index, query);
-            //expressions from the first dictionary where Translation contains query
-            var fromTranslationBase = expressions.GetByDictionaryAndTranslationSubstring(baseDictionary.Index, query);
-
-            //expressions from the second dictionary where Text contains query
-            var fromTextOpposite = expressions.GetByDictionaryAndTextSubstring(oppositeDictionary.Index, query);
-            //expressions from the second dictionary where Translation contains query
-            var fromTranslationOpposite = expressions.GetByDictionaryAndTextSubstring(oppositeDictionary.Index, query);
-
-            //so now we should combine expressions from the same dictionary
-            var unidirectional = fromTextBase.Concat(fromTranslationBase);
-
-            var opposite = fromTextOpposite.Concat(fromTranslationOpposite);
+            var unidirectional = GetMatchingExpressions(languageIn, languageOut, query);
+            var opposite = GetMatchingExpressions(languageOut, languageIn, query);
 
             return (unidirectional, opposite);
         }
