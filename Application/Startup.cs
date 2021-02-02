@@ -12,6 +12,7 @@ using Service.Repository;
 using Service;
 using Api.Filters;
 using FluentValidation.AspNetCore;
+using Service.Service;
 
 namespace Application
 {
@@ -50,6 +51,7 @@ namespace Application
             services.AddTransient<IEntryService, EntryService>();
             services.AddTransient<IMeaningService, MeaningService>();
             services.AddTransient<IFreeExpressionService, FreeExpressionService>();
+            services.AddTransient<ITranslationService, TranslationService>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
