@@ -27,7 +27,7 @@ namespace Service
         public IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex)
         {
             if (word == null && dictionaryIndex == null)
-                Array.Empty<Entry>();
+                return Array.Empty<Entry>();
             if (word != null && dictionaryIndex != null)
                 return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word, false);
             if (word != null)
