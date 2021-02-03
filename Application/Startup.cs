@@ -6,13 +6,12 @@ using Data.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Data.Models;
 using Data.Mapper;
-using Service.Repository;
 using Service;
 using Application.Filters;
 using FluentValidation.AspNetCore;
 using Service.Service;
+using Data.Repository;
 
 namespace Application
 {

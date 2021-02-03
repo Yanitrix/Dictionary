@@ -1,9 +1,8 @@
 ﻿using Data.Models;
-using Service.Repository;
+using Data.Repository;
 using System.Collections.Generic;
 using System.Linq;
 using Msg = Commons.ValidationErrorMessages;
-
 
 namespace Service
 {

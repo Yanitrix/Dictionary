@@ -1,6 +1,5 @@
 ﻿using Data.Models;
-using Microsoft.AspNetCore.Mvc.Core.Infrastructure;
-using Service.Repository;
+using Data.Repository;
 using System;
 using System.Collections.Generic;
 using Msg = Commons.ValidationErrorMessages;

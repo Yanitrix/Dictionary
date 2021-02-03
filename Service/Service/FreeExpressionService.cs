@@ -1,5 +1,5 @@
 ﻿using Data.Models;
-using Service.Repository;
+using Data.Repository;
 using Msg = Commons.ValidationErrorMessages;
 
 namespace Service
