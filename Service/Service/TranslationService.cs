@@ -12,7 +12,6 @@ namespace Service.Service
         private readonly IFreeExpressionRepository expressions;
         private readonly IDictionaryRepository dictionaries;
         private readonly IMeaningRepository meanings;
-        private readonly IExampleRepository examples;
 
         public TranslationService(IUnitOfWork uow)
         {
@@ -20,7 +19,6 @@ namespace Service.Service
             this.expressions = uow.FreeExpressions;
             this.dictionaries = uow.Dictionaries;
             this.meanings = uow.Meanings;
-            this.examples = uow.Examples;
         }
 
         public bool EnsureDictionaryExists(String languageIn, String languageOut, bool bidirectional = false)
@@ -65,6 +63,7 @@ namespace Service.Service
 
             return (unidicrectional, opposite);
             //TODO another thing - do we want to query by meanings' values in the opposite dictionary?
+            //i mean, we're doing that right now
             //I don't think that's necessary but I'll play with the API and decide then
         }
 
