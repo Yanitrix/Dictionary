@@ -1,11 +1,11 @@
 ﻿using Data.Models;
-using Service.Repository;
+using Data.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Service.Tests.Repositories
+namespace Data.Tests.Repositories
 {
     public class MeaningRepositoryTests : DbContextTestBase
     {

@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Service.Repository;
+using Data.Repository;
 using System.Linq;
 
-namespace Service.Tests.Repositories
+namespace Data.Tests.Repositories
 {
     public class FreeExpressionRepositoryTests : DbContextTestBase
     {

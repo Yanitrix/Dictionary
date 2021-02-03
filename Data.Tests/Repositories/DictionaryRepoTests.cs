@@ -1,10 +1,10 @@
-﻿using Service.Repository;
+﻿using Data.Repository;
 using Data.Models;
 using System;
 using System.Linq;
 using Xunit;
 
-namespace Service.Tests.Repositories
+namespace Data.Tests.Repositories
 {
     public class DictionaryRepoTests : DbContextTestBase
     {

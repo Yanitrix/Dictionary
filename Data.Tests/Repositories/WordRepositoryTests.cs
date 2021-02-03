@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Service.Repository;
+using Data.Repository;
 using System;
 
-namespace Service.Tests.Repositories
+namespace Data.Tests.Repositories
 {
     public class WordRepositoryTests : DbContextTestBase
     {

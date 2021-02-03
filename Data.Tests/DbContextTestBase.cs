@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Service.Tests
+namespace Data.Tests
 {
     public class DbContextTestBase : IDisposable
     {

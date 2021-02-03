@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Service.Repository;
+using Data.Repository;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace Service.Tests.Repositories
+namespace Data.Tests.Repositories
 {
     public class LanguageRepositoryTests : DbContextTestBase
     {
