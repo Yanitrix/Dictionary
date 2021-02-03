@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Repository;
 
-namespace Api.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/expression")]

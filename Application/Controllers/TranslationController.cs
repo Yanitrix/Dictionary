@@ -7,7 +7,7 @@ using Service.Repository;
 using System;
 using System.Linq;
 
-namespace Api.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/translate")]

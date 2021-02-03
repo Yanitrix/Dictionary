@@ -8,7 +8,7 @@ using Service;
 using System.Linq;
 using Data.Mapper;
 
-namespace Api.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/language")]

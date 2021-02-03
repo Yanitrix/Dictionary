@@ -10,7 +10,7 @@ using Data.Models;
 using Data.Mapper;
 using Service.Repository;
 using Service;
-using Api.Filters;
+using Application.Filters;
 using FluentValidation.AspNetCore;
 using Service.Service;
 

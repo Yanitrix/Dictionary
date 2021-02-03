@@ -4,7 +4,7 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
-namespace Api.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/meaning")]

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Api.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/dictionary")]
