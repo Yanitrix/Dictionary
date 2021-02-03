@@ -1,6 +1,5 @@
-﻿using Service.Repository;
+﻿using Data.Repository;
 using Data.Models;
-using FluentValidation;
 using Moq;
 using System;
 using System.Collections.Generic;

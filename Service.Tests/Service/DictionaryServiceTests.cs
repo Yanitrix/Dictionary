@@ -1,7 +1,6 @@
 ﻿using Data.Models;
 using Moq;
-using Service;
-using Service.Repository;
+using Data.Repository;
 using System;
 using System.Linq;
 using Xunit;
