@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Service.Repository
 {
@@ -21,7 +22,11 @@ namespace Service.Repository
             .Include(e => e.Word).ThenInclude(w => w.Properties)
             .Include(e => e.Meanings).ThenInclude(m => m.Examples);
 
-        //ignores case
+        public override IEnumerable<R> Get<R>(Expression<Func<Entry, bool>> condition, Expression<Func<Entry, R>> mapper)
+        {
+            return base.Get(condition, mapper, orderFunction, includeQuery);
+        }
+
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue, bool caseSensitive = true)
         {
             if (String.IsNullOrEmpty(wordValue) || String.IsNullOrWhiteSpace(wordValue)) return Enumerable.Empty<Entry>();
@@ -40,7 +45,6 @@ namespace Service.Repository
                 );
         }
 
-        //ignores case
         public IEnumerable<Entry> GetByWord(string wordValue, bool caseSensitive = true)
         {
             if (String.IsNullOrEmpty(wordValue) || String.IsNullOrWhiteSpace(wordValue)) return Enumerable.Empty<Entry>();
