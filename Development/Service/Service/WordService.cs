@@ -10,7 +10,7 @@ namespace Service
     {
         private readonly IWordRepository repo;
         private readonly ILanguageRepository langRepo;
-        private IValidationDictionary validationDictionary;
+        private ValidationResult validationDictionary;
 
         public WordService(IUnitOfWork uow)
         {
@@ -22,9 +22,9 @@ namespace Service
 
         public IEnumerable<Word> Get(String value) => repo.GetByValue(value, false);
 
-        public IValidationDictionary Add(Word entity)
+        public ValidationResult Add(Word entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             CheckLanguage(entity);
             CheckValueAndProperties(entity);
@@ -35,9 +35,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(Word entity)
+        public ValidationResult Update(Word entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             //check if entity already exists
             if (!repo.ExistsByID(entity.ID))
@@ -55,9 +55,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(int id)
+        public ValidationResult Delete(int id)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(id);
             var indb = repo.GetByID(id);
 
             if(indb == null)

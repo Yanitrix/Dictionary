@@ -10,6 +10,6 @@ namespace Service
 
         IEnumerable<Word> Get(String wordValue);
 
-        IValidationDictionary Delete(int id);
+        ValidationResult Delete(int id);
     }
 }

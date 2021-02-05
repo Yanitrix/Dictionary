@@ -6,7 +6,7 @@ namespace Service
 {
     public interface IDictionaryService : IService<Dictionary>
     {
-        IValidationDictionary Delete(int index);
+        ValidationResult Delete(int index);
 
         IEnumerable<Dictionary> GetContainingLanguage(String langIn, String langOut, String language);
 

@@ -7,7 +7,7 @@ namespace Service
 {
     public interface ILanguageService : IService<Language>
     {
-        IValidationDictionary Delete(String name);
+        ValidationResult Delete(String name);
 
         IEnumerable<LanguageWordCount> AllWithWordCount();
 
