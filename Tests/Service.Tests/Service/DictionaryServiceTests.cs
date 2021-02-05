@@ -31,7 +31,7 @@ namespace Service.Tests.Service
             var result = service.Update(entity);
 
             Assert.Single(result);
-            Assert.Equal("Entity cannot be updated", result.First().Key);
+            Assert.Equal("Entity cannot be updated", result.First().Name);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Service.Tests.Service
 
             _dictRepo.Verify(_ => _.Create(It.IsAny<Dictionary>()), Times.Never);
             Assert.Single(result);
-            Assert.Equal("Duplicate", result.First().Key);
+            Assert.Equal("Duplicate", result.First().Name);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace Service.Tests.Service
             var restult = service.Add(entity);
 
             Assert.Single(restult);
-            Assert.Equal("Language does not exist.", restult.First().Key);
+            Assert.Equal("Language does not exist.", restult.First().Name);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Service.Tests.Service
             var result = service.Add(entity);
 
             Assert.Single(result);
-            Assert.Equal("Language does not exist.", result.First().Key);
+            Assert.Equal("Language does not exist.", result.First().Name);
         }
 
     }
