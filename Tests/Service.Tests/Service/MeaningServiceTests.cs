@@ -71,7 +71,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Entry does not exist.", result.First().Key);
+            Assert.Equal("Entry does not exist.", result.First().Name);
 
         }
 
@@ -84,7 +84,7 @@ namespace Service.Tests.Service
 
             ShouldNotUpdate();
             Assert.Single(result);
-            Assert.Equal("Entity does not exist.", result.First().Key);
+            Assert.Equal("Entity does not exist.", result.First().Name);
 
         }
 

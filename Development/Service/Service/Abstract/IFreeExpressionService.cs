@@ -6,6 +6,6 @@ namespace Service
     {
         FreeExpression Get(int id);
 
-        IValidationDictionary Delete(int id);
+        ValidationResult Delete(int id);
     }
 }

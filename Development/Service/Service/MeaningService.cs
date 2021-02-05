@@ -8,7 +8,7 @@ namespace Service
     {
         private readonly IMeaningRepository repo;
         private readonly IEntryRepository entryRepo;
-        private IValidationDictionary validationDictionary;
+        private ValidationResult validationDictionary;
 
         public MeaningService(IUnitOfWork uow)
         {
@@ -18,9 +18,9 @@ namespace Service
 
         public Meaning Get(int id) => repo.GetByID(id);
 
-        public IValidationDictionary Add(Meaning entity)
+        public ValidationResult Add(Meaning entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             CheckEntry(entity);
 
@@ -30,9 +30,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(Meaning entity)
+        public ValidationResult Update(Meaning entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             if (!repo.ExistsByID(entity.ID))
             {
@@ -46,9 +46,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(int id)
+        public ValidationResult Delete(int id)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(id);
             var indb = repo.GetByID(id);
 
             if (indb == null)

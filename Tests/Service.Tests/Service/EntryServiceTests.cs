@@ -145,7 +145,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Word does not exist.", result.First().Key);
+            Assert.Equal("Word does not exist.", result.First().Name);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Duplicate", result.First().Key);
+            Assert.Equal("Duplicate", result.First().Name);
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Dictionary does not exist.", result.First().Key);
+            Assert.Equal("Dictionary does not exist.", result.First().Name);
         }
 
         [Fact]
@@ -287,7 +287,7 @@ namespace Service.Tests.Service
 
             ShouldNotAdd();
             Assert.Single(result);
-            Assert.Equal("Language does not match", result.First().Key);
+            Assert.Equal("Language does not match", result.First().Name);
         }
         [Fact]
         public void TryUpdate_EverythingsGood_UpdatesProperly()
@@ -365,7 +365,7 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal("Entity does not exist.", result.First().Key);
+            Assert.Equal("Entity does not exist.", result.First().Name);
         }
 
         [Fact]
@@ -405,7 +405,7 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal("Entity cannot be updated", result.First().Key);
+            Assert.Equal("Entity cannot be updated", result.First().Name);
         }
         [Fact]
         public void TryUpdate_DuplicateExists_ReturnsError()
@@ -454,7 +454,7 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal("Duplicate", result.First().Key);
+            Assert.Equal("Duplicate", result.First().Name);
         }
 
         [Fact]
@@ -536,7 +536,7 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal($"Dictionary with given Index: {entity.DictionaryIndex} was not found in the database. Create it before posting a(n) Entry", result.First().Value);
+            Assert.Equal($"Dictionary with given Index: {entity.DictionaryIndex} was not found in the database. Create it before posting a(n) Entry", result.First().Description);
         }
     }
 }

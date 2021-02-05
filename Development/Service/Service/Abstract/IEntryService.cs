@@ -8,7 +8,7 @@ namespace Service
     {
         Entry Get(int id);
 
-        IValidationDictionary Delete(int id);
+        ValidationResult Delete(int id);
 
         public IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
     }

@@ -20,9 +20,9 @@ namespace Service
 
         public IEnumerable<LanguageWordCount> AllWithWordCount() => repo.AllWithWordCount();
 
-        public IValidationDictionary Add(Language entity)
+        public ValidationResult Add(Language entity)
         {
-            var validationDictionary = IValidationDictionary.New();
+            var validationDictionary = ValidationResult.New(entity);
 
             if (repo.ExistsByName(entity.Name))
             {
@@ -37,18 +37,18 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(Language entity)
+        public ValidationResult Update(Language entity)
         {
-            var validationDictionary = IValidationDictionary.New();
+            var validationDictionary = ValidationResult.New(entity);
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_LANGUAGE_DESC);
 
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(String name)
+        public ValidationResult Delete(String name)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(name);
             var indb = repo.GetByName(name);
 
             if(indb == null)

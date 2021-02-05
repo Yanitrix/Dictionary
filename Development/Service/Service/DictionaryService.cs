@@ -29,9 +29,9 @@ namespace Service
             return new Dictionary[] { repo.GetByLanguageInAndOut(langIn, langOut) };
         }
 
-        public IValidationDictionary Add(Dictionary entity)
+        public ValidationResult Add(Dictionary entity)
         {
-            var validationDictionary = IValidationDictionary.New();
+            var validationDictionary = ValidationResult.New(entity);
 
             //check if dict already exists
             if (repo.ExistsByLanguages(entity.LanguageInName, entity.LanguageOutName))
@@ -52,18 +52,18 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(Dictionary entity)
+        public ValidationResult Update(Dictionary entity)
         {
-            var validationDictionary = IValidationDictionary.New();
+            var validationDictionary = ValidationResult.New(entity);
 
             validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_DICTIONARY_DESC);
 
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(int index)
+        public ValidationResult Delete(int index)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(index);
 
             var inDB = repo.GetByIndex(index);
 

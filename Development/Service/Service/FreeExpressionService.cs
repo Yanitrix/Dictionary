@@ -8,7 +8,7 @@ namespace Service
     {
         private readonly IFreeExpressionRepository repo;
         private readonly IDictionaryRepository dictRepo;
-        private IValidationDictionary validationDictionary;
+        private ValidationResult validationDictionary;
 
         public FreeExpressionService(IUnitOfWork uow)
         {
@@ -18,9 +18,9 @@ namespace Service
 
         public FreeExpression Get(int id) => repo.GetByID(id);
 
-        public IValidationDictionary Add(FreeExpression entity)
+        public ValidationResult Add(FreeExpression entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             CheckDictionary(entity);
 
@@ -29,9 +29,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(FreeExpression entity)
+        public ValidationResult Update(FreeExpression entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))
             {
@@ -46,9 +46,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(int id)
+        public ValidationResult Delete(int id)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(id);
             var indb = repo.GetByID(id);
 
             if(indb == null)

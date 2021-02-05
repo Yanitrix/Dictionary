@@ -11,7 +11,7 @@ namespace Service
         private readonly IWordRepository wordRepo;
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
-        private IValidationDictionary validationDictionary;
+        private ValidationResult validationDictionary;
 
         public EntryService(IUnitOfWork uow)
         {
@@ -34,9 +34,9 @@ namespace Service
             return repo.GetByDictionary(dictionaryIndex.Value);
         }
 
-        public IValidationDictionary Add(Entry entity)
+        public ValidationResult Add(Entry entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             CheckAll(entity);
 
@@ -46,9 +46,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Update(Entry entity)
+        public ValidationResult Update(Entry entity)
         {
-            this.validationDictionary = IValidationDictionary.New();
+            this.validationDictionary = ValidationResult.New(entity);
 
             //check if exists
             if (!repo.ExistsByID(entity.ID))
@@ -72,9 +72,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public IValidationDictionary Delete(int id)
+        public ValidationResult Delete(int id)
         {
-            var result = IValidationDictionary.New();
+            var result = ValidationResult.New(id);
 
             var indb = repo.GetByID(id);
 
@@ -112,7 +112,8 @@ namespace Service
             //check if dictionary exists
             if (!dictRepo.ExistsByIndex(entity.DictionaryIndex))
             {
-                validationDictionary.AddError(Msg.EntityNotFound<Dictionary>(), Msg.EntityDoesNotExistByForeignKey<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
+                validationDictionary.AddError(Msg.EntityNotFound<Dictionary>(),
+                    Msg.EntityDoesNotExistByForeignKey<Entry, Dictionary>(d => d.Index, entity.DictionaryIndex));
                 return;
             }
 
