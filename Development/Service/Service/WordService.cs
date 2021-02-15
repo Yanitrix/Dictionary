@@ -1,5 +1,5 @@
-﻿using Data.Repository;
-using Data.Models;
+﻿using Domain.Repository;
+using Domain.Models;
 using System;
 using Msg = Service.ValidationErrorMessages;
 using System.Collections.Generic;
