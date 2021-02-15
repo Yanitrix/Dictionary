@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistance.Database
+namespace Persistence.Database
 {
     public class DatabaseContext : IdentityDbContext
     {

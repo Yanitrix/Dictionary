@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Repository;
-using Persistance.Repository;
+using Persistence.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

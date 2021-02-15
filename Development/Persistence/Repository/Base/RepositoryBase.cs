@@ -1,4 +1,4 @@
-﻿using Persistance.Database;
+﻿using Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Domain.Repository;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {

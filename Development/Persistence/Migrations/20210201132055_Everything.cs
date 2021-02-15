@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Persistance.Migrations
+namespace Persistence.Migrations
 {
     public partial class Everything : Migration
     {

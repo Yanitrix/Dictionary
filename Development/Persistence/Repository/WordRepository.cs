@@ -1,4 +1,4 @@
-﻿using Persistance.Database;
+﻿using Persistence.Database;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Domain.Repository;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public class WordRepository : RepositoryBase<Word>, IWordRepository
     {

@@ -1,4 +1,4 @@
-﻿using Persistance.Database;
+﻿using Persistence.Database;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Repository;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public class MeaningRepository : RepositoryBase<Meaning>, IMeaningRepository
     {

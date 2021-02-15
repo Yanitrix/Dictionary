@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistance.Database;
-using Persistance.Repository;
+using Persistence.Database;
+using Persistence.Repository;
 
-namespace Persistance
+namespace Persistence
 {
     public static class DependencyInjectionExtensions
     {

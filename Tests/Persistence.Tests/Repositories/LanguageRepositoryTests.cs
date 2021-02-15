@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Domain.Repository;
-using Persistance.Repository;
+using Persistence.Repository;
 
 namespace Persistence.Tests.Repositories
 {

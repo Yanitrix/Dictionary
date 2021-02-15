@@ -1,11 +1,11 @@
 ﻿using Domain.Models;
 using Domain.Repository;
-using Persistance.Database;
+using Persistence.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public abstract class ExpressionRepositoryBase<T> : RepositoryBase<T>, IExpressionRepositoryBase<T> where T : Expression
     {

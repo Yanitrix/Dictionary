@@ -1,8 +1,8 @@
 ﻿using Domain.Repository;
-using Persistance.Database;
+using Persistence.Database;
 using System;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

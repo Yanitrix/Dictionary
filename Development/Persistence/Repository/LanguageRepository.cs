@@ -1,4 +1,4 @@
-﻿using Persistance.Database;
+﻿using Persistence.Database;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Domain.Dto;
 using Domain.Repository;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     
     public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository

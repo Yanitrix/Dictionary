@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Xunit;
 using Domain.Repository;
 using System.Linq;
-using Persistance.Repository;
+using Persistence.Repository;
 
 namespace Persistence.Tests.Repositories
 {

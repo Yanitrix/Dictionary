@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Persistance.Database;
+using Persistence.Database;
 using System;
 
 namespace Persistence.Tests

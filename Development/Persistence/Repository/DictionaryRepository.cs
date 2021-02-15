@@ -1,4 +1,4 @@
-﻿using Persistance.Database;
+﻿using Persistence.Database;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Repository;
 
-namespace Persistance.Repository
+namespace Persistence.Repository
 {
     public class DictionaryRepository : RepositoryBase<Dictionary>, IDictionaryRepository
     {
