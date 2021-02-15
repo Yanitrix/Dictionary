@@ -1,5 +1,5 @@
-﻿using Data.Dto;
-using Data.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 

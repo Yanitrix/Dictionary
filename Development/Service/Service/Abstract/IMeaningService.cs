@@ -1,4 +1,4 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 
 namespace Service
 {

@@ -1,11 +1,9 @@
-﻿using Data.Repository;
-using Data.Models;
+﻿using Domain.Repository;
+using Domain.Models;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Humanizer;
 
 namespace Service.Tests.Service
 {
