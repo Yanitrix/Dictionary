@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Repository
+namespace Domain.Repository
 {
     public interface IUnitOfWork
     {

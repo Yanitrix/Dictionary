@@ -1,9 +1,9 @@
-﻿using Data.Messages;
+﻿using Domain.Messages;
 using FluentValidation;
 using System;
 using System.Text.RegularExpressions;
 
-namespace Data.Validation
+namespace Domain.Validation
 {
     public static class CustomValidationRules
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Data.Repository
+namespace Domain.Repository
 {
     public interface IRepository<T> : IDisposable
     {

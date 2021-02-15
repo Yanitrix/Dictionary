@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data.Models
+namespace Domain.Models
 {
     public class Example : Expression
     {

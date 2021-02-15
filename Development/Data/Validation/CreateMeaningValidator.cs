@@ -1,9 +1,9 @@
-﻿using Data.Dto;
-using Data.Messages;
+﻿using Domain.Dto;
+using Domain.Messages;
 using FluentValidation;
 using System;
 
-namespace Data.Validation
+namespace Domain.Validation
 {
     public class CreateMeaningValidator : AbstractValidator<CreateMeaning>
     {

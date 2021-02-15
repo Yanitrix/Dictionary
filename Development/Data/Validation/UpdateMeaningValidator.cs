@@ -1,8 +1,8 @@
-﻿using Data.Dto;
+﻿using Domain.Dto;
 using FluentValidation;
 using System;
 
-namespace Data.Validation
+namespace Domain.Validation
 {
     public class UpdateMeaningValidator : AbstractValidator<UpdateMeaning>
     {

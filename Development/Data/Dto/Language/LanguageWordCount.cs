@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Dto
+namespace Domain.Dto
 {
     public class LanguageWordCount
     {

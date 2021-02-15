@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data.Dto
+namespace Domain.Dto
 {
     //todo maybe simplify dto so that in only contains Map<Name, Value>?
     public class WordPropertyDto

@@ -1,11 +1,8 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Data.Repository.Abstract
+namespace Domain.Repository
 {
     public interface IExpressionRepositoryBase<T> : IRepository<T> where T : Expression
     {

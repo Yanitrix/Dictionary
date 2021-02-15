@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Data.Dto
+namespace Domain.Dto
 {
     public class TranslationResponse
     {

@@ -1,4 +1,4 @@
-﻿namespace Data.Dto
+﻿namespace Domain.Dto
 {
     public class GetDictionary : CreateDictionary
     {

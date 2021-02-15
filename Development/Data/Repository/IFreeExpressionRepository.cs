@@ -1,7 +1,6 @@
-﻿using Data.Models;
-using Data.Repository.Abstract;
+﻿using Domain.Models;
 
-namespace Data.Repository
+namespace Domain.Repository
 {
     public interface IFreeExpressionRepository : IExpressionRepositoryBase<FreeExpression>
     {}

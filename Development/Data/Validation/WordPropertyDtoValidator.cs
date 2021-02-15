@@ -1,7 +1,7 @@
-﻿using Data.Dto;
+﻿using Domain.Dto;
 using FluentValidation;
 
-namespace Data.Validation
+namespace Domain.Validation
 {
     public class WordPropertyDtoValidator : AbstractValidator<WordPropertyDto>
     {

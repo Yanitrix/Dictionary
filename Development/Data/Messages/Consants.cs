@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Data.Messages
+namespace Domain.Messages
 {
     public static class RegexConstants
     {

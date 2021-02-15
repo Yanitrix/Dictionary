@@ -1,8 +1,8 @@
-﻿using Data.Dto;
-using Data.Messages;
+﻿using Domain.Dto;
+using Domain.Messages;
 using FluentValidation;
 
-namespace Data.Validation
+namespace Domain.Validation
 {
     public class FreeExpressionDtoValidator : AbstractValidator<CreateOrUpdateFreeExpression>
     {
