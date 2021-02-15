@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Data.Tests
+namespace Domain.Tests
 {
     public class HashCodeTests
     {
-
         [Fact]
         public void AreSame()
         {

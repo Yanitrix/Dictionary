@@ -1,11 +1,11 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Data.Tests.Collections
+namespace Domain.Tests.Collections
 {
     public class WordPropertyEqualityComparerTests
     {

@@ -1,15 +1,10 @@
-﻿using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Models;
 using Xunit;
 
-namespace Data.Tests.Collections
+namespace Domain.Tests.Collections
 {
     public class StringSetTests
     {
-
-
         [Fact]
         public void GetHashCodeIsTheSame()
         {

@@ -1,10 +1,11 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Data.Repository;
+using Domain.Repository;
+using Persistance.Repository;
 
-namespace Data.Tests.Repositories
+namespace Persistence.Tests.Repositories
 {
     public class CascadeDeleteTests : DbContextTestBase
     {

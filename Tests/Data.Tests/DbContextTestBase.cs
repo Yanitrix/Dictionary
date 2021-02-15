@@ -1,9 +1,9 @@
-﻿using Data.Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistance.Database;
 using System;
 
-namespace Data.Tests
+namespace Persistence.Tests
 {
     public class DbContextTestBase : IDisposable
     {

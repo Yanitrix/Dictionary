@@ -1,10 +1,11 @@
-﻿using Data.Repository;
-using Data.Models;
+﻿using Domain.Repository;
+using Domain.Models;
 using System;
 using System.Linq;
 using Xunit;
+using Persistance.Repository;
 
-namespace Data.Tests.Repositories
+namespace Persistence.Tests.Repositories
 {
     public class DictionaryRepoTests : DbContextTestBase
     {

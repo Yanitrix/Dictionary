@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Data.Repository;
+using Domain.Repository;
 
 namespace Service.Tests.Service
 {

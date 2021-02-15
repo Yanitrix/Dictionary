@@ -1,13 +1,12 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using System;
 using Xunit;
 
-namespace Data.Tests.Collections
+namespace Domain.Tests.Collections
 {
     public class StringEqualityComparerTests
     {
         StringEqualityComparer comparer = new StringEqualityComparer();
-
 
         [Theory]
         [InlineData("string", "STRing")]

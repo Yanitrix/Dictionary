@@ -1,6 +1,6 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using Moq;
-using Data.Repository;
+using Domain.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

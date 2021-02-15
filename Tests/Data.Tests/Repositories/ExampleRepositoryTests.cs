@@ -1,10 +1,11 @@
-﻿using Data.Models;
-using Data.Repository;
+﻿using Domain.Models;
+using Domain.Repository;
+using Persistance.Repository;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Data.Tests.Repositories
+namespace Persistence.Tests.Repositories
 {
     public class ExampleRepositoryTests : DbContextTestBase
     {

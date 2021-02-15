@@ -1,9 +1,6 @@
-﻿using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Models;
 using Xunit;
-using msg = Commons.ValidationErrorMessages;
+using msg = Service.ValidationErrorMessages;
 
 namespace Service.Tests.Constants
 {

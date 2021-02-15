@@ -1,18 +1,15 @@
-﻿using Data.Dto;
-using Data.Mapper;
-using Data.Models;
+﻿using Domain.Dto;
+using Domain.Models;
+using Service.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Data.Tests.Mapper
+namespace Service.Tests.Mapper
 {
     public class CustomMapperTests
     {
-
         private readonly IMapper sut;
 
         public CustomMapperTests()

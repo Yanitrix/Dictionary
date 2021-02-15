@@ -1,16 +1,15 @@
-﻿using Data.Models;
+﻿using Domain.Models;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Data.Repository;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using Domain.Repository;
+using Persistance.Repository;
 
-namespace Data.Tests.Repositories
+namespace Persistence.Tests.Repositories
 {
     public class LanguageRepositoryTests : DbContextTestBase
     {
-        public LanguageRepository repo;
+        public ILanguageRepository repo;
 
         public LanguageRepositoryTests()
         {

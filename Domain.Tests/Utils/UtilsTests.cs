@@ -1,16 +1,12 @@
-﻿using Data.Models;
-using Data.Util;
-using System;
-using System.Collections.Generic;
+﻿using Domain.Models;
+using Domain.Util;
 using System.Linq;
-using System.Text;
 using Xunit;
 
-namespace Data.Tests
+namespace Domain.Tests
 {
     public class UtilsTests
     {
-
         [Fact]
         public void RemoveRedundantSpacesFromWordProperties_ShouldRemoveThem()
         {
