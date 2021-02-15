@@ -2,7 +2,7 @@
 using Data.Repository;
 using System;
 using System.Collections.Generic;
-using Msg = Commons.ValidationErrorMessages;
+using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {

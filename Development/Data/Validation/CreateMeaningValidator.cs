@@ -1,5 +1,5 @@
-﻿using Commons;
-using Data.Dto;
+﻿using Data.Dto;
+using Data.Messages;
 using FluentValidation;
 using System;
 

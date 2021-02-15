@@ -1,25 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Commons
+namespace Service
 {
-    public static class RegexConstants
-    {
-        public const String ANY_DIGIT = "\\d";
-        public const String ANY_SPACE = "\\s";
-    }
-
-    public static class MessageConstants
-    {
-        public const String EMPTY_ID = "The ID field must be empty";
-        public const String EMPTY_INDEX = "The Index field must be empty";
-        public const String EMPTY = "Must be empty";
-        public const String NOT_EMPTY = "Cannot be empty";
-
-        public const String NO_DIGIT_MESSAGE = "The literal cannot contain any digits";
-        public const String NO_SPACE_MESSAGE = "The literal cannot contain any space characets";
-    }
-
     public static class ValidationErrorMessages
     {
         public const String DUPLICATE = "Duplicate";
@@ -27,7 +10,7 @@ namespace Commons
         public const String DUPLICATE_WORD_DESC = "There's already at least one Word in the database with same Value, same SourceLanguageName and same set of WordProperties";
         public const String DUPLICATE_DICTIONARY_DESC = "Dictionary of same Languages already exist in the database. The case is ignored";
         public const String DUPLICATE_ENTRY_DESC = "An Entry for given Word and Dictionary already exists. If you want to add another Meaning, post it on its respective endpoint";
-        
+
         public const String CANNOT_UPDATE = "Entity cannot be updated";
         public const String CANNOT_UPDATE_LANGUAGE_DESC = "Name property cannot be changed. If you want to add words to a Language, post them on their respective endpoint";
         public const String CANNOT_UPDATE_DICTIONARY_DESC = "LanguageInName and LanguageOutName properties of a Dictionary cannot be updated. If you want to add Entries or FreeExpressions to a Dictionary, post them on their respective endpoints.";

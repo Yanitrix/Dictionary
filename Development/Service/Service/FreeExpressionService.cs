@@ -1,6 +1,6 @@
 ﻿using Data.Models;
 using Data.Repository;
-using Msg = Commons.ValidationErrorMessages;
+using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {
