@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Data.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Data.Mapper;
-using Service;
 using Application.Filters;
 using FluentValidation.AspNetCore;
-using Service.Service;
-using Data.Repository;
+using Persistance;
+using Service;
 
 namespace Application
 {
@@ -29,11 +24,7 @@ namespace Application
         {
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("ConnectionString")));
-
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
+            services.AddPersistance(Configuration);
 
             services.AddMvc(opt =>
             {
@@ -44,17 +35,7 @@ namespace Application
                 opt.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
             });
 
-            services.AddTransient<ILanguageService, LanguageService>();
-            services.AddTransient<IWordService, WordService>();
-            services.AddTransient<IDictionaryService, DictionaryService>();
-            services.AddTransient<IEntryService, EntryService>();
-            services.AddTransient<IMeaningService, MeaningService>();
-            services.AddTransient<IFreeExpressionService, FreeExpressionService>();
-            services.AddTransient<ITranslationService, TranslationService>();
-
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            services.AddSimpleMapper<MappingConfig>();
+            services.AddServiceLayer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
-﻿using Data.Dto;
-using Data.Mapper;
-using Data.Models;
+﻿using Domain.Dto;
+using Service.Mapper;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using System;

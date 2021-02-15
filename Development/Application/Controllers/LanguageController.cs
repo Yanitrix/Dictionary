@@ -1,11 +1,11 @@
-﻿using Data.Dto;
-using Data.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Service;
 using System.Linq;
-using Data.Mapper;
+using Service.Mapper;
 
 namespace Application.Controllers
 {
