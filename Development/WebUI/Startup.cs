@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Application.Filters;
+using WebUI.Filters;
 using FluentValidation.AspNetCore;
-using Persistance;
+using Persistence;
 using Service;
 
-namespace Application
+namespace WebUI
 {
     public class Startup
     {

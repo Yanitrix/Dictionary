@@ -7,7 +7,7 @@ using Service;
 using System.Linq;
 using Service.Mapper;
 
-namespace Application.Controllers
+namespace WebUI.Controllers
 {
     [ApiController]
     [Route("api/language")]

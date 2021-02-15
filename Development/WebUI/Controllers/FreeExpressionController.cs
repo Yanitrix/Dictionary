@@ -4,7 +4,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 
-namespace Application.Controllers
+namespace WebUI.Controllers
 {
     [ApiController]
     [Route("api/expression")]
