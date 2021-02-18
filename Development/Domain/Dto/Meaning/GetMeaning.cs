@@ -14,8 +14,5 @@ namespace Domain.Dto
         public String Notes { get; set; }
 
         public ICollection<ExampleDto> Examples { get; set; } = new List<ExampleDto>();
-        
     }
-
-
 }

@@ -21,9 +21,9 @@ namespace Service
 
         public FreeExpression Get(int id) => repo.GetByID(id);
 
-        public ValidationResult Add(CreateOrUpdateFreeExpression dto)
+        public ValidationResult Add(CreateFreeExpression dto)
         {
-            var entity = mapper.Map<CreateOrUpdateFreeExpression, FreeExpression>(dto);
+            var entity = mapper.Map<CreateFreeExpression, FreeExpression>(dto);
 
             this.validationDictionary = ValidationResult.New(entity);
 
@@ -34,9 +34,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(CreateOrUpdateFreeExpression dto)
+        public ValidationResult Update(UpdateFreeExpression dto)
         {
-            var entity = mapper.Map<CreateOrUpdateFreeExpression, FreeExpression>(dto);
+            var entity = mapper.Map<UpdateFreeExpression, FreeExpression>(dto);
 
             this.validationDictionary = ValidationResult.New(entity);
             //check if there's anything to update

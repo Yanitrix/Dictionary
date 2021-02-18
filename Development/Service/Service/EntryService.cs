@@ -37,9 +37,9 @@ namespace Service
             return repo.GetByDictionary(dictionaryIndex.Value);
         }
 
-        public ValidationResult Add(CreateOrUpdateEntry dto)
+        public ValidationResult Add(CreateEntry dto)
         {
-            var entity = mapper.Map<CreateOrUpdateEntry, Entry>(dto);
+            var entity = mapper.Map<CreateEntry, Entry>(dto);
 
             this.validationDictionary = ValidationResult.New(entity);
 
@@ -51,9 +51,9 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(CreateOrUpdateEntry dto)
+        public ValidationResult Update(UpdateEntry dto)
         {
-            var entity = mapper.Map<CreateOrUpdateEntry, Entry>(dto);
+            var entity = mapper.Map<UpdateEntry, Entry>(dto);
 
             this.validationDictionary = ValidationResult.New(entity);
 

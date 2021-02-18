@@ -1,4 +1,5 @@
 ﻿using Domain.Dto;
+using Domain.Dto.Entry;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Service
 
         IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
 
-        ValidationResult Add(CreateOrUpdateEntry dto);
+        ValidationResult Add(CreateEntry dto);
 
-        ValidationResult Update(CreateOrUpdateEntry dto);
+        ValidationResult Update(UpdateEntry dto);
 
         ValidationResult Delete(int id);
     }

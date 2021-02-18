@@ -7,9 +7,9 @@ namespace Service
     {
         FreeExpression Get(int id);
 
-        ValidationResult Add(CreateOrUpdateFreeExpression dto);
+        ValidationResult Add(CreateFreeExpression dto);
 
-        ValidationResult Update(CreateOrUpdateFreeExpression dto);
+        ValidationResult Update(UpdateFreeExpression dto);
 
         ValidationResult Delete(int id);
     }

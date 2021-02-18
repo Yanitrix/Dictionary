@@ -98,11 +98,22 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<CreateOrUpdateFreeExpression, FreeExpression>(src =>
+            RegisterMapping<CreateFreeExpression, FreeExpression>(src =>
             {
                 return new()
                 {
                     DictionaryIndex = src.DictionaryIndex,
+                    Text = src.Text,
+                    Translation = src.Translation
+                };
+            });
+
+            RegisterMapping<UpdateFreeExpression, FreeExpression>(src =>
+            {
+                return new()
+                {
+                    DictionaryIndex = src.DictionaryIndex,
+                    ID = src.ID,
                     Text = src.Text,
                     Translation = src.Translation
                 };
@@ -119,12 +130,22 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<CreateOrUpdateEntry, Entry>(src =>
+            RegisterMapping<CreateEntry, Entry>(src =>
             {
                 return new()
                 {
                     DictionaryIndex = src.DictionaryIndex,
                     WordID = src.WordID,
+                };
+            });
+
+            RegisterMapping<UpdateEntry, Entry>(src =>
+            {
+                return new()
+                {
+                    DictionaryIndex = src.DictionaryIndex,
+                    ID = src.ID,
+                    WordID = src.WordID
                 };
             });
 

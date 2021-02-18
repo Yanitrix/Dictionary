@@ -1,18 +1,13 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dto
 {
-    public class CreateOrUpdateFreeExpression
+    public class CreateFreeExpression
     {
-        [Required]
         public int DictionaryIndex { get; set; }
 
-        [Required]
         public String Text { get; set; }
 
-        [Required]
         public String Translation { get; set; }
-
     }
 }
