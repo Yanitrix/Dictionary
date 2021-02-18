@@ -3,16 +3,19 @@ using Domain.Models;
 using System;
 using Msg = Service.ValidationErrorMessages;
 using System.Collections.Generic;
+using Service.Service.Abstract;
+using Domain.Dto;
+using Service.Mapper;
 
 namespace Service
 {
-    public class WordService : IWordService
+    public class WordService : ServiceBase, IWordService
     {
         private readonly IWordRepository repo;
         private readonly ILanguageRepository langRepo;
         private ValidationResult validationDictionary;
 
-        public WordService(IUnitOfWork uow)
+        public WordService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             this.repo = uow.Words;
             this.langRepo = uow.Languages;
@@ -22,8 +25,10 @@ namespace Service
 
         public IEnumerable<Word> Get(String value) => repo.GetByValue(value, false);
 
-        public ValidationResult Add(Word entity)
+        public ValidationResult Add(CreateWord dto)
         {
+            var entity = mapper.Map<CreateWord, Word>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             CheckLanguage(entity);
@@ -35,8 +40,10 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(Word entity)
+        public ValidationResult Update(UpdateWord dto)
         {
+            var entity = mapper.Map<UpdateWord, Word>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             //check if entity already exists

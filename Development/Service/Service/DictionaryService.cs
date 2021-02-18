@@ -1,17 +1,20 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Domain.Repository;
+using Service.Mapper;
+using Service.Service.Abstract;
 using System.Collections.Generic;
 using System.Linq;
 using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {
-    public class DictionaryService : IDictionaryService
+    public class DictionaryService : ServiceBase, IDictionaryService
     {
         private readonly ILanguageRepository langRepo;
         private readonly IDictionaryRepository repo;
 
-        public DictionaryService(IUnitOfWork uow)
+        public DictionaryService(IUnitOfWork uow, IMapper mapper):base(uow, mapper)
         {
             this.langRepo = uow.Languages;
             this.repo = uow.Dictionaries;
@@ -29,8 +32,10 @@ namespace Service
             return new Dictionary[] { repo.GetByLanguageInAndOut(langIn, langOut) };
         }
 
-        public ValidationResult Add(Dictionary entity)
+        public ValidationResult Add(CreateDictionary dto)
         {
+            var entity = mapper.Map<CreateDictionary, Dictionary>(dto);
+
             var validationDictionary = ValidationResult.New(entity);
 
             //check if dict already exists
@@ -48,15 +53,6 @@ namespace Service
 
             if (validationDictionary.IsValid)
                 repo.Create(entity);
-
-            return validationDictionary;
-        }
-
-        public ValidationResult Update(Dictionary entity)
-        {
-            var validationDictionary = ValidationResult.New(entity);
-
-            validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_DICTIONARY_DESC);
 
             return validationDictionary;
         }
