@@ -1,15 +1,20 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 
 namespace Service
 {
-    public interface IEntryService : IService<Entry>
+    public interface IEntryService
     {
         Entry Get(int id);
 
-        ValidationResult Delete(int id);
+        IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
 
-        public IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
+        ValidationResult Add(CreateOrUpdateEntry dto);
+
+        ValidationResult Update(CreateOrUpdateEntry dto);
+
+        ValidationResult Delete(int id);
     }
 }

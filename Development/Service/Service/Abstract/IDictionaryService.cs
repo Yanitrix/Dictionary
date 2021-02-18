@@ -1,15 +1,18 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 
 namespace Service
 {
-    public interface IDictionaryService : IService<Dictionary>
+    public interface IDictionaryService
     {
-        ValidationResult Delete(int index);
+        Dictionary Get(int index);
 
         IEnumerable<Dictionary> GetContainingLanguage(String langIn, String langOut, String language);
 
-        Dictionary Get(int index);
+        ValidationResult Add(CreateDictionary dto);
+
+        ValidationResult Delete(int index);
     }
 }
