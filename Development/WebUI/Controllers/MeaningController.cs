@@ -3,6 +3,7 @@ using Service.Mapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
 {
@@ -33,19 +34,19 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CreateMeaning dto)
         {
-            var entity = ToEntity(dto);
-            var result = service.Add(entity);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/meaning" + entity.ID, ToDto(entity));
+            var response = ToDto(result.Entity as Meaning);
+            return Created("api/meaning/" + response.ID, response);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateMeaning dto)
         {
-            var entity = ToEntity(dto);
-            entity.ID = id;
-            var result = service.Update(entity);
+            if (id != dto.ID)
+                return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
+            var result = service.Update(dto);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -61,7 +62,5 @@ namespace WebUI.Controllers
         }
 
         private GetMeaning ToDto(Meaning m) => mapper.Map<Meaning, GetMeaning>(m);
-        private Meaning ToEntity(CreateMeaning dto) => mapper.Map<CreateMeaning, Meaning>(dto);
-        private Meaning ToEntity(UpdateMeaning dto) => mapper.Map<UpdateMeaning, Meaning>(dto);
     }
 }

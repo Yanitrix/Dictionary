@@ -43,12 +43,11 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CreateLanguage dto)
         {
-            var entity = ToEntity(dto);
-
-            var result = service.Add(entity);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/language/" + entity.Name, ToDto(entity));
+            var response = ToDto(result.Entity as Language);
+            return Created("api/language/" + response.Name, response);
         }
 
         [HttpDelete("{name}")]
@@ -60,7 +59,6 @@ namespace WebUI.Controllers
             return NoContent();
         }
 
-        private Language ToEntity(CreateLanguage dto) => mapper.Map<CreateLanguage, Language>(dto);
         private GetLanguage ToDto(Language entity) => mapper.Map<Language, GetLanguage>(entity);
     }
 }

@@ -7,6 +7,7 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
 {
@@ -14,7 +15,6 @@ namespace WebUI.Controllers
     [Route("api/word")]
     public class WordController : Controller
     {
-
         private readonly IWordService service;
         private readonly IMapper mapper;
 
@@ -50,24 +50,24 @@ namespace WebUI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var entity = ToWord(dto);
-            Utils.RemoveRedundantWhitespaces(entity.Properties);
+            //Utils.RemoveRedundantWhitespaces(entity.Properties);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-
-            return Created("api/word/" + entity.ID, ToDto(entity));
+            var response = ToDto(result.Entity as Word);
+            return Created("api/word/" + response.ID, response);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateWord dto)
         {
-            var entity = ToWord(dto);
-            entity.ID = id;
-            Utils.RemoveRedundantWhitespaces(entity.Properties);
+            if (id != dto.ID)
+                return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
 
-            var result = service.Update(entity);
+            //Utils.RemoveRedundantWhitespaces(entity.Properties);
+
+            var result = service.Update(dto);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -82,10 +82,6 @@ namespace WebUI.Controllers
             return NoContent();
         }
 
-        private Word ToWord(CreateWord dto) => mapper.Map<CreateWord, Word>(dto);
-        private Word ToWord(UpdateWord dto) => mapper.Map<UpdateWord, Word>(dto);
-
         private GetWord ToDto(Word word) => mapper.Map<Word, GetWord>(word);
-
     }
 }

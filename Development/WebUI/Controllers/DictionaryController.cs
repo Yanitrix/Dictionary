@@ -13,7 +13,6 @@ namespace WebUI.Controllers
     [Route("api/dictionary")]
     public class DictionaryController : Controller
     {
-
         private readonly IDictionaryService service;
         private readonly IMapper mapper;
 
@@ -42,11 +41,11 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CreateDictionary dto)
         {
-            var entity = ToEntity(dto);
-            var result = service.Add(entity);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/dictionary" + entity.Index, ToDto(entity));
+            var response = ToDto(result.Entity as Dictionary);
+            return Created("api/dictionary/" + response.Index, response);
         }
 
         [HttpDelete("{index}")]
@@ -59,6 +58,5 @@ namespace WebUI.Controllers
         }
 
         private GetDictionary ToDto(Dictionary d) => mapper.Map<Dictionary, GetDictionary>(d);
-        private Dictionary ToEntity(CreateDictionary dto) => mapper.Map<CreateDictionary, Dictionary>(dto);
     }
 }
