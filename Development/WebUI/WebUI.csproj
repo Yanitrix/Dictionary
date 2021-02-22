@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-Dictionary_MVC-E85066DA-E827-4354-8577-B3A1A8446818</UserSecretsId>
-    <RootNamespace>Application</RootNamespace>
+    <RootNamespace>WebUI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
