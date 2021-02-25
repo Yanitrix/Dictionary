@@ -32,6 +32,8 @@ namespace Service
             this.validationDictionary = ValidationResult.New(entity);
 
             CheckLanguage(entity);
+            if (validationDictionary.IsInvalid)
+                return validationDictionary;
             CheckValueAndProperties(entity);
 
             if (validationDictionary.IsValid)
@@ -42,16 +44,17 @@ namespace Service
 
         public ValidationResult Update(UpdateWord dto)
         {
-            var entity = mapper.Map<UpdateWord, Word>(dto);
-
-            this.validationDictionary = ValidationResult.New(entity);
-
             //check if entity already exists
-            if (!repo.ExistsByID(entity.ID))
+            if (!repo.ExistsByID(dto.ID))
             {
+                this.validationDictionary = ValidationResult.New(dto);
                 validationDictionary.AddError(Msg.EntityNotFound(), Msg.ThereIsNothingToUpdate<Word>());
                 return validationDictionary;
             }
+
+            var entity = mapper.Map(dto, repo.GetByID(dto.ID));
+
+            this.validationDictionary = ValidationResult.New(entity);
 
             //We don't check for Language because it cannot be updated.
             CheckValueAndProperties(entity);
