@@ -1,9 +1,9 @@
-﻿using Domain.Repository;
+﻿using Domain.Dto;
 using Domain.Models;
-using Msg = Service.ValidationErrorMessages;
-using Service.Service.Abstract;
+using Domain.Repository;
 using Service.Mapper;
-using Domain.Dto;
+using Service.Service.Abstract;
+using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {

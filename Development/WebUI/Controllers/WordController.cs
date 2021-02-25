@@ -1,7 +1,6 @@
 ﻿using Domain.Dto;
 using Service.Mapper;
 using Domain.Models;
-using Domain.Util;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using System;
@@ -64,7 +63,7 @@ namespace WebUI.Controllers
         {
             if (id != dto.ID)
                 return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
-
+            //TODO move that into service
             //Utils.RemoveRedundantWhitespaces(entity.Properties);
 
             var result = service.Update(dto);
