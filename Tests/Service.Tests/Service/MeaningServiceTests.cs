@@ -8,7 +8,7 @@ namespace Service.Tests.Service
 {
     public class MeaningServiceTests : UowTestBase
     {
-        IService<Meaning> service;
+        IMeaningService service;
         Mock<IMeaningRepository> _repo = new Mock<IMeaningRepository>();
         Mock<IEntryRepository> _entryRepo = new Mock<IEntryRepository>();
 
@@ -16,7 +16,7 @@ namespace Service.Tests.Service
         {
             meaningRepo = _repo;
             entryRepo = _entryRepo;
-            service = new MeaningService(this.uow.Object);
+            service = new MeaningService(this.uow.Object, this.mapper);
         }
 
         private void Exists(bool result = true)
@@ -59,7 +59,6 @@ namespace Service.Tests.Service
             ShouldAdd();
             Assert.Empty(result);
             Assert.True(result.IsValid);
-
         }
 
         [Fact]
@@ -72,7 +71,6 @@ namespace Service.Tests.Service
             ShouldNotAdd();
             Assert.Single(result);
             Assert.Equal("Entry does not exist.", result.First().Name);
-
         }
 
         [Fact]
@@ -85,7 +83,6 @@ namespace Service.Tests.Service
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.Equal("Entity does not exist.", result.First().Name);
-
         }
 
         [Fact]
@@ -98,8 +95,6 @@ namespace Service.Tests.Service
             ShouldUpdate();
             Assert.Empty(result);
             Assert.True(result.IsValid);
-
         }
-
     }
 }

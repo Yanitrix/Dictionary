@@ -5,19 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Domain.Dto;
 
 namespace Service.Tests.Service
 {
     public class LanguageServiceTests : UowTestBase
     {
-        IService<Language> service;
+        ILanguageService service;
         Mock<ILanguageRepository> langRepoMock = new Mock<ILanguageRepository>();
 
 
         public LanguageServiceTests()
         {
             langRepo = langRepoMock;
-            service = new LanguageService(this.uow.Object);
+            service = new LanguageService(this.uow.Object, this.mapper);
         }
 
         [Fact]
@@ -26,12 +27,12 @@ namespace Service.Tests.Service
             const string name = "name";
             langRepoMock.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true);
 
-            var lang = new Language
+            var dto = new CreateLanguage
             {
                 Name = name
             };
 
-            var result = service.Add(lang);
+            var result = service.Add(dto);
 
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Name);
@@ -45,23 +46,11 @@ namespace Service.Tests.Service
             langRepoMock.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false);
             langRepoMock.Setup(_ => _.Create(It.IsAny<Language>())).Callback<Language>(x => repo.Add(x));
 
-            var lang = new Language();
-            var result = service.Add(lang);
+            var dto = new CreateLanguage();
+            var result = service.Add(dto);
 
             Assert.Empty(result);
             Assert.Single(repo);
-        }
-        
-        [Fact]
-        public void TryUpdate_Impossible_AlwaysReturnsError()
-        {
-            langRepoMock.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false);
-
-            var lang = new Language();
-            var result = service.Update(lang);
-
-            Assert.Single(result);
-            Assert.Equal("Entity cannot be updated", result.First().Name);
         }
     }
 }
