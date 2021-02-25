@@ -5,6 +5,8 @@ namespace Domain.Dto
 {
     public class UpdateMeaning
     {
+        public int ID { get; set; }
+
         public String Value { get; set; }
 
         public String Notes { get; set; }

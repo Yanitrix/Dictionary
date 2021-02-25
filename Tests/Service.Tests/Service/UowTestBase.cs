@@ -1,10 +1,13 @@
 ﻿using Moq;
 using Domain.Repository;
+using Service.Mapper;
 
 namespace Service.Tests.Service
 {
     public class UowTestBase
     {
+        protected IMapper mapper = new MappingConfig().CreateMapper();
+
         protected Mock<IUnitOfWork> uow = new Mock<IUnitOfWork>();
 
         protected Mock<ILanguageRepository> langRepo

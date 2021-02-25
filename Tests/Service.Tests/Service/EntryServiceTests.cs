@@ -4,12 +4,13 @@ using Domain.Repository;
 using System;
 using System.Linq;
 using Xunit;
+using Domain.Dto;
 
 namespace Service.Tests.Service
 {
     public class EntryServiceTests : UowTestBase
     {
-        IService<Entry> service;
+        IEntryService service;
         Mock<IWordRepository> _wordRepo = new Mock<IWordRepository>();
         Mock<IEntryRepository> _repo = new Mock<IEntryRepository>();
         Mock<IDictionaryRepository> _dictRepo = new Mock<IDictionaryRepository>();
@@ -19,7 +20,7 @@ namespace Service.Tests.Service
             wordRepo = _wordRepo;
             entryRepo = _repo;
             dictRepo = _dictRepo;
-            service = new EntryService(this.uow.Object);
+            service = new EntryService(this.uow.Object, this.mapper);
         }
 
         //helper methods for the mocks
@@ -97,12 +98,10 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = dict.Index,
-                Dictionary = dict,
                 WordID = word.ID,
-                Word = word
             };
 
             WordExists();
@@ -111,7 +110,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             ShouldAdd();
             Assert.Empty(result);
@@ -129,7 +128,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = dict.Index,
                 WordID = 12,
@@ -141,7 +140,7 @@ namespace Service.Tests.Service
             WordIs(null);
             DictionaryIs(dict);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -164,7 +163,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = dict.Index,
                 WordID = word.ID,
@@ -183,7 +182,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -199,7 +198,7 @@ namespace Service.Tests.Service
                 SourceLanguageName = "polish"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = 34,
                 WordID = word.ID,
@@ -211,7 +210,7 @@ namespace Service.Tests.Service
             DictionaryIs(null);
             WordIs(word);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -234,12 +233,10 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = dict.Index,
-                Dictionary = dict,
                 WordID = word.ID,
-                Word = word
             };
 
             WordExists();
@@ -248,7 +245,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             Assert.NotEmpty(result);
             Assert.False(result.IsValid);
@@ -271,7 +268,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new CreateEntry
             {
                 DictionaryIndex = dict.Index,
                 WordID = word.ID,
@@ -283,7 +280,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
             ShouldNotAdd();
             Assert.Single(result);
@@ -305,7 +302,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 928,
                 DictionaryIndex = dict.Index,
@@ -321,7 +318,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             Assert.Empty(result);
             Assert.True(result.IsValid);
@@ -344,7 +341,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 928,
                 DictionaryIndex = dict.Index,
@@ -360,7 +357,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             ShouldNotUpdate();
             Assert.Single(result);
@@ -384,7 +381,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 928,
                 DictionaryIndex = dict.Index,
@@ -400,7 +397,7 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(dict);
 
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             ShouldNotUpdate();
             Assert.Single(result);
@@ -423,7 +420,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 3,
                 DictionaryIndex = dict.Index,
@@ -448,7 +445,7 @@ namespace Service.Tests.Service
 
 
             //act
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             //assert
             ShouldNotUpdate();
@@ -473,7 +470,7 @@ namespace Service.Tests.Service
                 LanguageOutName = "english"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 3,
                 DictionaryIndex = dict.Index,
@@ -497,7 +494,7 @@ namespace Service.Tests.Service
             DictionaryIs(dict);
 
             //act
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             //assert
             ShouldUpdate();
@@ -514,7 +511,7 @@ namespace Service.Tests.Service
                 SourceLanguageName = "polish"
             };
 
-            var entity = new Entry
+            var dto = new UpdateEntry
             {
                 ID = 928,
                 DictionaryIndex = 16,
@@ -531,12 +528,12 @@ namespace Service.Tests.Service
             WordIs(word);
             DictionaryIs(null);
 
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
             ShouldNotUpdate();
             Assert.Single(result);
             Assert.False(result.IsValid);
-            Assert.Equal($"Dictionary with given Index: {entity.DictionaryIndex} was not found in the database. Create it before posting a(n) Entry", result.First().Description);
+            Assert.Equal($"Dictionary with given Index: {dto.DictionaryIndex} was not found in the database. Create it before posting a(n) Entry", result.First().Description);
         }
     }
 }

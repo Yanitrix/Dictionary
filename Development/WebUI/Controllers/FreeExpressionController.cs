@@ -3,6 +3,7 @@ using Service.Mapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service;
+using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
 {
@@ -29,21 +30,21 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateOrUpdateFreeExpression dto)
+        public IActionResult Post([FromBody] CreateFreeExpression dto)
         {
-            var entity = ToEntity(dto);
-            var result = service.Add(entity);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/expression" + entity.ID, ToDto(entity));
+            var response = ToDto(result.Entity as FreeExpression);
+            return Created("api/expression/" + response.ID, response);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] CreateOrUpdateFreeExpression dto)
+        public IActionResult Put(int id, [FromBody] UpdateFreeExpression dto)
         {
-            var entity = ToEntity(dto);
-            entity.ID = id;
-            var result = service.Update(entity);
+            if (id != dto.ID)
+                return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
+            var result = service.Update(dto);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -58,7 +59,7 @@ namespace WebUI.Controllers
             return NoContent();
         }
 
-        private FreeExpression ToEntity(CreateOrUpdateFreeExpression dto) => mapper.Map<CreateOrUpdateFreeExpression, FreeExpression>(dto);
+        private FreeExpression ToEntity(CreateFreeExpression dto) => mapper.Map<CreateFreeExpression, FreeExpression>(dto);
         private GetFreeExpression ToDto(FreeExpression exp) => mapper.Map<FreeExpression, GetFreeExpression>(exp);
     }
 }

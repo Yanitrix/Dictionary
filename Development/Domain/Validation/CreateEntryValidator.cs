@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Domain.Validation
 {
-    public class EntryDtoValidator : AbstractValidator<CreateOrUpdateEntry>
+    public class CreateEntryValidator : AbstractValidator<CreateEntry>
     {
-        public EntryDtoValidator()
+        public CreateEntryValidator()
         {
             RuleFor(e => e.DictionaryIndex).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);
             RuleFor(e => e.WordID).NotEmpty().WithMessage(MessageConstants.NOT_EMPTY);

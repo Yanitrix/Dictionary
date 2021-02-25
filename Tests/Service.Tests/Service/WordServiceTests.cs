@@ -1,7 +1,9 @@
-﻿using Domain.Repository;
+﻿using Domain.Dto;
 using Domain.Models;
+using Domain.Repository;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -9,7 +11,7 @@ namespace Service.Tests.Service
 {
     public class WordServiceTests : UowTestBase
     {
-        IService<Word> service;
+        IWordService service;
         Mock<IWordRepository> _wordRepo = new Mock<IWordRepository>();
         Mock<ILanguageRepository> _langRepo = new Mock<ILanguageRepository>();
 
@@ -17,49 +19,147 @@ namespace Service.Tests.Service
         {
             wordRepo = _wordRepo;
             langRepo = _langRepo;
-            service = new WordService(this.uow.Object);
+            service = new WordService(this.uow.Object, this.mapper);
         }
 
-        private Word dummy => new Word
+        private CreateWord CreateDto() => new()
+        {
+            Value = "value",
+            SourceLanguageName = "polish",
+            Properties = new HashSet<WordPropertyDto>()
+            {
+                new()
+                {
+                    Name = "gender",
+                    Values = new List<String>{ "masculine", "feminine" },
+                },
+
+                new()
+                {
+                    Name = "plural form",
+                    Values = new List<String>{ "przeręble" }
+                },
+
+                new()
+                {
+                    Name = "genitive form",
+                    Values = new List<String>{ "przerębla", "przerębli" }
+                }
+            }
+        };
+
+        private Word Existing() => new()
         {
             ID = 13,
+            Value = "value",
             SourceLanguageName = "polish",
             Properties = new()
             {
                 new()
                 {
-                    ID = 5,
                     Name = "gender",
-                    Values = new("masculine", "feminine")
+                    Values = new("masculine", "feminine"),
                 },
 
                 new()
                 {
-                    ID = 6,
                     Name = "plural form",
                     Values = new("przeręble")
                 },
 
                 new()
                 {
-                    ID = 7,
                     Name = "genitive form",
                     Values = new("przerębla", "przerębli")
                 }
             }
         };
 
+        private UpdateWord UpdateDto() => new()
+        {
+            ID = 13,
+            Value = "value",
+            Properties = new HashSet<WordPropertyDto>()
+            {
+                new()
+                {
+                    Name = "gender",
+                    Values = new List<String>{ "masculine", "feminine" },
+                },
+
+                new()
+                {
+                    Name = "plural form",
+                    Values = new List<String>{ "przeręble" }
+                },
+
+                new()
+                {
+                    Name = "genitive form",
+                    Values = new List<String>{ "przerębla", "przerębli" }
+                }
+            }
+        };
+
+        private void Exists(bool exists = true)
+        {
+            _wordRepo.Setup(_ => _.ExistsByID(It.IsAny<int>())).Returns(exists);
+        }
+
+        private void LanguageExists(bool exists = true)
+        {
+            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(exists);
+        }
+
+        private void DuplicateIs(Word duplicate = null)
+        {
+            if (duplicate == null)
+            {
+                _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>()))
+                    .Returns(Array.Empty<Word>());
+                return;
+            }
+
+            _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>()))
+                .Returns(new Word[] { duplicate });
+        }
+
+        private void ExistingIs(Word existing)
+        {
+            _wordRepo.Setup(_ => _.GetByID(It.IsAny<int>())).Returns(existing);
+        }
+
+        private void ShouldUpdate()
+        {
+            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+        }
+
+        private void ShouldNotUpdate()
+        {
+            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
+        }
+
+        private void ShouldAdd()
+        {
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Once);
+        }
+
+        private void ShouldNotAdd()
+        {
+            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+        }
+
         [Fact]
         public void TryAdd_LanguageExists_PropertiesGood_ShouldAdd()
         {
-            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
-            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
+            LanguageExists(); //source language exists
+            DuplicateIs(); //no duplicated words
 
-            var entity = new Word();
+            var dto = new CreateWord();
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
-            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Once);
+            ShouldAdd();
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
@@ -67,7 +167,7 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_LanguageExists_AnotherWordWithSamePropertiesExist_ShouldReturnError()
         {
-            var toReturn = new Word
+            var existing = new Word
             {
                 Value = "value", //lowercase
                 Properties = new WordPropertySet
@@ -86,31 +186,31 @@ namespace Service.Tests.Service
                 }
             };
 
-            var entity = new Word
+            var dto = new CreateWord
             {
                 Value = "Value", //uppercase
-                Properties = new WordPropertySet
+                Properties = new HashSet<WordPropertyDto>()
                 {
-                    new WordProperty
+                    new()
                     {
                         Name = "name1",
-                        Values = new StringSet("value1", "value2")
+                        Values = new List<String> { "value1", "value2" }
                     },
 
-                    new WordProperty
+                    new()
                     {
                         Name = "NAme2",
-                        Values = new StringSet("value3", "valuE4")
+                        Values = new List<String> { "value3", "valuE4" }
                     },
                 }
             };
 
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>())).Returns(new Word[] { toReturn });
-            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true); //source language exists
+            LanguageExists(); //source language exists
+            DuplicateIs(existing);
 
-            var result = service.Add(entity);
+            var result = service.Add(dto);
 
-            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            ShouldNotAdd();
             Assert.Single(result);
             Assert.Equal("Duplicate", result.First().Name);
         }
@@ -118,13 +218,13 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_PropertiesGood_LanguageDoesNotExist_ShouldReturnError()
         {
-            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>()); //no duplicated words
-            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
+            DuplicateIs(); //no duplicated words
+            LanguageExists(false); //source language doesnt exist
 
-            var entity = new Word();
-            var result = service.Add(entity);
+            var dto = CreateDto();
+            var result = service.Add(dto);
 
-            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            ShouldNotAdd();
             Assert.Single(result);
             Assert.Equal("Language does not exist.", result.First().Name);
         }
@@ -132,14 +232,15 @@ namespace Service.Tests.Service
         [Fact]
         public void TryAdd_NorLanguageNorPropertiesAreGood_ShouldReturnError()
         {
-            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
-            //actually it doesn't matter since when language is not found the method will be returned
-            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(false); //source language doesnt exist
+            var dto = CreateDto();
+            var duplicate = Existing();
 
-            var entity = new Word();
-            var result = service.Add(entity);
+            DuplicateIs(duplicate);
+            LanguageExists(false); //source language doesnt exist
 
-            _wordRepo.Verify(_ => _.Create(It.IsAny<Word>()), Times.Never);
+            var result = service.Add(dto);
+
+            ShouldNotAdd();
             Assert.Single(result);
             Assert.Equal("Language does not exist.", result.First().Name);
         }
@@ -147,17 +248,16 @@ namespace Service.Tests.Service
         [Fact]
         public void TryUpdate_WordDoesNotExist_ReturnsError()
         {
-            var entity = new Word
+            var dto = new UpdateWord
             {
                 ID = 1,
-                SourceLanguageName = "english"
             };
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(false);
+            Exists(false);
 
-            var result = service.Update(entity);
+            var result = service.Update(dto);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
+            ShouldNotUpdate();
             Assert.Single(result);
             Assert.Equal("Entity does not exist.", result.First().Name);
         }
@@ -165,19 +265,18 @@ namespace Service.Tests.Service
         [Fact]
         public void TryUpdate_WordFound_EverythingGodd_UpdatesProperly()
         {
-            var entity = new Word
-            {
-                ID = 2,
-                SourceLanguageName = "english"
-            };
+            var indb = Existing();
+            var toUpdate = UpdateDto();
+            toUpdate.Value = "changed value";
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == entity.ID))).Returns(true);
-            _wordRepo.Setup(_ => _.GetByValue(It.IsAny<String>(), It.IsAny<bool>())).Returns(Enumerable.Empty<Word>());
-            _langRepo.Setup(_ => _.ExistsByName(It.IsAny<String>())).Returns(true);
+            Exists();
+            ExistingIs(indb);
+            LanguageExists();
+            DuplicateIs();
 
-            var result = service.Update(entity);
+            var result = service.Update(toUpdate);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            ShouldUpdate();
             Assert.Empty(result);
             Assert.True(result.IsValid);
         }
@@ -192,90 +291,77 @@ namespace Service.Tests.Service
         [Fact]
         public void TryUpdate_ChangePropertiesToDifferent_UpdatesProperly()
         {
-            WordPropertySet props = new()
+            Word existing = Existing();
+            UpdateWord dto = UpdateDto();
+            dto.Properties = new HashSet<WordPropertyDto>()
             {
                 new()
                 {
                     Name = "name1",
-                    Values = new("value1", "value2")
+                    Values = new List<String>{"value1", "value2" }
                 },
 
                 new()
                 {
                     Name = "name2",
-                    Values = new("value1")
+                    Values = new List<String>{"value1" }
                 }
             };
 
-            var existing = dummy;
-            Word @new = new()
-            {
-                ID = existing.ID,
-                Value = existing.Value,
-                Properties = props
-            };
-            //test merging languagename on living organism
+            Exists();
+            ExistingIs(existing);
+            DuplicateIs();
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
-            //that should return 'existing', the word that is gonna be updated with '@new'
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(new Word[]{ existing });
+            var result = service.Update(dto);
 
-
-            var result = service.Update(@new);
-
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            ShouldUpdate();
             Assert.True(result.IsValid);
         }
 
         [Fact]
         public void TryUpdate_ChangeValueToDifferent_UpdatesProperly()
         {
-            var existing = dummy;
-            Word @new = new()
-            {
-                ID = existing.ID,
-                Properties = existing.Properties,
-                Value = "a different value",
-            };
+            UpdateWord dto = UpdateDto();
+            Word existing = Existing();
+            dto.Value = "a different value";
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
+            Exists();
             //no other Words match this Word's Value because it was changed.
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(Enumerable.Empty<Word>());
+            ExistingIs(existing);
+            DuplicateIs();
 
-            var result = service.Update(@new);
+            var result = service.Update(dto);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            ShouldUpdate();
             Assert.True(result.IsValid);
         }
 
         [Fact]
         public void TryUpdate_ChangePropertiesAndValue_UpdatesProperly()
         {
-            var existing = dummy;
-            Word @new = new()
+            //no duplicate
+            Word existing = Existing();
+            UpdateWord dto = new()
             {
                 ID = existing.ID,
-                Properties = new()
+                Value = "some other value than the previous one",
+                Properties = new HashSet<WordPropertyDto>()
                 {
                     new()
                     {
                         Name = "name",
-                        Values = new("values")
+                        Values = new List<String>{"value1", "value2"}
                     }
-                },
-                Value = "new value",
+                }
             };
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
-            //no other Words match this Word's Value because it was changed.
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(Enumerable.Empty<Word>());
+            Exists();
+            ExistingIs(existing);
+            DuplicateIs();
 
-            var result = service.Update(@new);
+            var result = service.Update(dto);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            ShouldUpdate();
             Assert.True(result.IsValid);
         }
 
@@ -283,22 +369,24 @@ namespace Service.Tests.Service
         //so it returns the same word as the commited one
         public void TryUpdate_ChangeCaseOfValue_WordWithThatCaseAlreadyExists_ReturnsError()
         {
-            var existing = dummy;
-            existing.Value = "value";
-            Word @new = new()
+            var dto = UpdateDto();
+            dto.Value = "Value";
+            var existing = Existing();
+            var duplicate = new Word
             {
-                ID = existing.ID,
+                ID = 21,
+                Value = dto.Value,
                 Properties = existing.Properties,
-                Value = "Value"
+                SourceLanguageName = existing.SourceLanguageName
             };
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(new Word[]{ @new });
+            Exists(true);
+            ExistingIs(existing);
+            DuplicateIs(duplicate);
 
-            var result = service.Update(@new);
+            var result = service.Update(dto);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
+            ShouldNotUpdate();
             Assert.False(result.IsValid);
         }
 
@@ -306,79 +394,20 @@ namespace Service.Tests.Service
         public void TryUpdate_ChangeCaseOfValue_UpdatesProperly()
         {
             //so basically the same as previously but the duplicate does not exist?
-            var existing = dummy;
-            existing.Value = "value";
-            Word @new = new()
-            {
-                ID = existing.ID,
-                Properties = existing.Properties,
-                Value = "Value"
-            };
+            var dto = UpdateDto();
+            dto.Value = "Value";
+            Word existing = Existing();
 
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(Array.Empty<Word>());
+            Exists();
+            ExistingIs(existing);
+            DuplicateIs();
 
-            var result = service.Update(@new);
+            var result = service.Update(dto);
 
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Once);
+            ShouldUpdate();
             Assert.True(result.IsValid);
         }
 
         //case of properties should be ignored
-        [Fact]
-        public void TryUpdate_ChangePropertiesCase_WordWithSuchPropertiesAlreadyExists_ReturnsError()
-        {
-            var existing = new Word
-            {
-                ID = 11,
-                SourceLanguageName = "polish",
-                Value = "some value",
-                Properties = new()
-                {
-                    new()
-                    {
-                        Name = "name1",
-                        Values = new("value1")
-                    },
-
-                    new()
-                    {
-                        Name = "name2",
-                        Values = new("value1", "value2")
-                    }
-                }
-            };
-
-            var @new = new Word
-            {
-                ID = 11,
-                SourceLanguageName = "polish",
-                Value = "some value",
-                Properties = new()
-                {
-                    new()
-                    {
-                        Name = "Name1",
-                        Values = new("VALue1")
-                    },
-
-                    new()
-                    {
-                        Name = "NAme2",
-                        Values = new("Value1", "value2")
-                    }
-                }
-            };
-
-            _wordRepo.Setup(_ => _.ExistsByID(It.Is<int>(i => i == @new.ID))).Returns(true);
-            _wordRepo.Setup(_ => _.GetByLanguageAndValue(@new.SourceLanguageName, @new.Value, false))
-                .Returns(new Word[] { existing });
-
-            var result = service.Update(@new);
-
-            _wordRepo.Verify(_ => _.Update(It.IsAny<Word>()), Times.Never);
-            Assert.False(result.IsValid);
-        }
     }
 }

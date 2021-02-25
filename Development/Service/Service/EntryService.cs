@@ -1,19 +1,22 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Domain.Repository;
+using Service.Mapper;
+using Service.Service.Abstract;
 using System;
 using System.Collections.Generic;
 using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {
-    public class EntryService : IEntryService
+    public class EntryService : ServiceBase, IEntryService
     {
         private readonly IWordRepository wordRepo;
         private readonly IDictionaryRepository dictRepo;
         private readonly IEntryRepository repo;
         private ValidationResult validationDictionary;
 
-        public EntryService(IUnitOfWork uow)
+        public EntryService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             this.wordRepo = uow.Words;
             this.dictRepo = uow.Dictionaries;
@@ -34,8 +37,10 @@ namespace Service
             return repo.GetByDictionary(dictionaryIndex.Value);
         }
 
-        public ValidationResult Add(Entry entity)
+        public ValidationResult Add(CreateEntry dto)
         {
+            var entity = mapper.Map<CreateEntry, Entry>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             CheckAll(entity);
@@ -46,8 +51,10 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(Entry entity)
+        public ValidationResult Update(UpdateEntry dto)
         {
+            var entity = mapper.Map<UpdateEntry, Entry>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             //check if exists

@@ -14,7 +14,7 @@ namespace Service.Tests.Mapper
 
         public CustomMapperTests()
         {
-            this.sut = IMapper.CreateMapper(new MappingConfig());
+            this.sut = new MappingConfig().CreateMapper();
         }
 
         [Fact]

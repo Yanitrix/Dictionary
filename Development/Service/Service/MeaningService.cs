@@ -1,16 +1,19 @@
 ﻿using Domain.Repository;
 using Domain.Models;
 using Msg = Service.ValidationErrorMessages;
+using Service.Service.Abstract;
+using Service.Mapper;
+using Domain.Dto;
 
 namespace Service
 {
-    public class MeaningService : IMeaningService
+    public class MeaningService : ServiceBase, IMeaningService
     {
         private readonly IMeaningRepository repo;
         private readonly IEntryRepository entryRepo;
         private ValidationResult validationDictionary;
 
-        public MeaningService(IUnitOfWork uow)
+        public MeaningService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             this.repo = uow.Meanings;
             this.entryRepo = uow.Entries;
@@ -18,8 +21,10 @@ namespace Service
 
         public Meaning Get(int id) => repo.GetByID(id);
 
-        public ValidationResult Add(Meaning entity)
+        public ValidationResult Add(CreateMeaning dto)
         {
+            var entity = mapper.Map<CreateMeaning, Meaning>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             CheckEntry(entity);
@@ -30,8 +35,10 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(Meaning entity)
+        public ValidationResult Update(UpdateMeaning dto)
         {
+            var entity = mapper.Map<UpdateMeaning, Meaning>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             if (!repo.ExistsByID(entity.ID))

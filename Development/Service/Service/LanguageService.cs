@@ -4,14 +4,16 @@ using Msg = Service.ValidationErrorMessages;
 using Domain.Dto;
 using System;
 using System.Collections.Generic;
+using Service.Service.Abstract;
+using Service.Mapper;
 
 namespace Service
 {
-    public class LanguageService : ILanguageService
+    public class LanguageService : ServiceBase, ILanguageService
     {
         private readonly ILanguageRepository repo;
 
-        public LanguageService(IUnitOfWork uow)
+        public LanguageService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             this.repo = uow.Languages;
         }
@@ -20,8 +22,10 @@ namespace Service
 
         public IEnumerable<LanguageWordCount> AllWithWordCount() => repo.AllWithWordCount();
 
-        public ValidationResult Add(Language entity)
+        public ValidationResult Add(CreateLanguage dto)
         {
+            var entity = mapper.Map<CreateLanguage, Language>(dto);
+
             var validationDictionary = ValidationResult.New(entity);
 
             if (repo.ExistsByName(entity.Name))
@@ -33,15 +37,6 @@ namespace Service
             {
                 repo.Create(entity);
             }
-
-            return validationDictionary;
-        }
-
-        public ValidationResult Update(Language entity)
-        {
-            var validationDictionary = ValidationResult.New(entity);
-
-            validationDictionary.AddError(Msg.CANNOT_UPDATE, Msg.CANNOT_UPDATE_LANGUAGE_DESC);
 
             return validationDictionary;
         }

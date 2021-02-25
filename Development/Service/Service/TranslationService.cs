@@ -1,19 +1,21 @@
 ﻿using Domain.Models;
 using Domain.Repository;
+using Service.Mapper;
+using Service.Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Service
 {
-    public class TranslationService : ITranslationService
+    public class TranslationService : ServiceBase, ITranslationService
     {
         private readonly IEntryRepository entries;
         private readonly IFreeExpressionRepository expressions;
         private readonly IDictionaryRepository dictionaries;
         private readonly IMeaningRepository meanings;
 
-        public TranslationService(IUnitOfWork uow)
+        public TranslationService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             this.entries = uow.Entries;
             this.expressions = uow.FreeExpressions;

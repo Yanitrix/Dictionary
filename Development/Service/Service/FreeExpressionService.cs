@@ -1,16 +1,19 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Domain.Repository;
+using Service.Mapper;
+using Service.Service.Abstract;
 using Msg = Service.ValidationErrorMessages;
 
 namespace Service
 {
-    public class FreeExpressionService : IFreeExpressionService
+    public class FreeExpressionService : ServiceBase, IFreeExpressionService
     {
         private readonly IFreeExpressionRepository repo;
         private readonly IDictionaryRepository dictRepo;
         private ValidationResult validationDictionary;
 
-        public FreeExpressionService(IUnitOfWork uow)
+        public FreeExpressionService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
             repo = uow.FreeExpressions;
             dictRepo = uow.Dictionaries;
@@ -18,8 +21,10 @@ namespace Service
 
         public FreeExpression Get(int id) => repo.GetByID(id);
 
-        public ValidationResult Add(FreeExpression entity)
+        public ValidationResult Add(CreateFreeExpression dto)
         {
+            var entity = mapper.Map<CreateFreeExpression, FreeExpression>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
 
             CheckDictionary(entity);
@@ -29,8 +34,10 @@ namespace Service
             return validationDictionary;
         }
 
-        public ValidationResult Update(FreeExpression entity)
+        public ValidationResult Update(UpdateFreeExpression dto)
         {
+            var entity = mapper.Map<UpdateFreeExpression, FreeExpression>(dto);
+
             this.validationDictionary = ValidationResult.New(entity);
             //check if there's anything to update
             if (!repo.Exists(e => e.ID == entity.ID))

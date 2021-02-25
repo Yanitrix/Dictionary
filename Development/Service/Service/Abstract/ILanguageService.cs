@@ -5,12 +5,14 @@ using System.Collections.Generic;
 
 namespace Service
 {
-    public interface ILanguageService : IService<Language>
+    public interface ILanguageService
     {
-        ValidationResult Delete(String name);
+        Language Get(String name);
 
         IEnumerable<LanguageWordCount> AllWithWordCount();
 
-        Language Get(String name);
+        ValidationResult Add(CreateLanguage dto);
+
+        ValidationResult Delete(String name);
     }
 }

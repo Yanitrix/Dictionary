@@ -6,6 +6,7 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
 {
@@ -39,21 +40,21 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateOrUpdateEntry dto)
+        public IActionResult Post([FromBody] CreateEntry dto)
         {
-            var entry = ToEntity(dto);
-            var result = service.Add(entry);
+            var result = service.Add(dto);
             if (!result.IsValid)
                 return BadRequest(result);
-            return Created("api/entry/" + entry.ID, ToDto(entry));
+            var response = ToDto(result.Entity as Entry);
+            return Created("api/entry/" + response.ID, response);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] CreateOrUpdateEntry dto)
+        public IActionResult Put(int id, [FromBody] UpdateEntry dto)
         {
-            var entry = ToEntity(dto);
-            entry.ID = id;
-            var result = service.Update(entry);
+            if (id != dto.ID)
+                return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
+            var result = service.Update(dto);
             if (!result.IsValid)
                 return BadRequest(result);
             return Ok();
@@ -68,7 +69,6 @@ namespace WebUI.Controllers
             return NoContent();
         }
 
-        private Entry ToEntity(CreateOrUpdateEntry dto) => mapper.Map<CreateOrUpdateEntry, Entry>(dto);
         private GetEntry ToDto(Entry e) => mapper.Map<Entry, GetEntry>(e);
     }
 }
