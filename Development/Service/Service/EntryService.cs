@@ -5,6 +5,7 @@ using Service.Mapper;
 using Service.Service.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Msg = Service.ValidationErrorMessages;
 
 namespace Service
@@ -23,18 +24,18 @@ namespace Service
             this.repo = uow.Entries;
         }
 
-        public Entry Get(int id) => repo.GetByID(id);
+        public GetEntry Get(int id) => Map(repo.GetByID(id));
         
         //todo test it
-        public IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex)
+        public IEnumerable<GetEntry> GetByDictionaryAndWord(String word, int? dictionaryIndex)
         {
             if (word == null && dictionaryIndex == null)
-                return Array.Empty<Entry>();
+                return Array.Empty<GetEntry>();
             if (word != null && dictionaryIndex != null)
-                return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word, false);
+                return repo.GetByDictionaryAndWord(dictionaryIndex.Value, word, false).Select(Map);
             if (word != null)
-                return repo.GetByWord(word, false);
-            return repo.GetByDictionary(dictionaryIndex.Value);
+                return repo.GetByWord(word, false).Select(Map);
+            return repo.GetByDictionary(dictionaryIndex.Value).Select(Map);
         }
 
         public ValidationResult Add(CreateEntry dto)
@@ -132,5 +133,7 @@ namespace Service
                 validationDictionary.AddError(Msg.LANGUAGES_NOT_MATCH, Msg.LANGUAGES_NOT_MATCH_DESC);
             }
         }
+
+        private GetEntry Map(Entry obj) => mapper.Map<Entry, GetEntry>(obj);
     }
 }

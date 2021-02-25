@@ -32,16 +32,16 @@ namespace WebUI.Controllers
                 return Array.Empty<GetWord>();
             //It queries by the exact value, not substring
             var words = service.Get(value);
-            return words.Select(ToDto).ToList();
+            return words.ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetWord> Get(int id)
         {
-            var word = service.Get(id);
-            if (word == null) return NotFound();
-
-            return ToDto(word);
+            var found = service.Get(id);
+            if (found == null)
+                return NotFound();
+            return found;
         }
 
         [HttpPost]

@@ -1,5 +1,4 @@
 ﻿using Domain.Dto;
-using Domain.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,9 +6,9 @@ namespace Service
 {
     public interface IWordService
     {
-        Word Get(int id);
+        GetWord Get(int id);
 
-        IEnumerable<Word> Get(String wordValue);
+        IEnumerable<GetWord> Get(String wordValue);
 
         ValidationResult Add(CreateWord dto);
 

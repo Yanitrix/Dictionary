@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Service.Service.Abstract;
 using Domain.Dto;
 using Service.Mapper;
+using System.Linq;
 
 namespace Service
 {
@@ -21,9 +22,9 @@ namespace Service
             this.langRepo = uow.Languages;
         }
 
-        public Word Get(int id) => repo.GetByID(id);
+        public GetWord Get(int id) => Map(repo.GetByID(id));
 
-        public IEnumerable<Word> Get(String value) => repo.GetByValue(value, false);
+        public IEnumerable<GetWord> Get(String value) => repo.GetByValue(value, false).Select(Map);
 
         public ValidationResult Add(CreateWord dto)
         {
@@ -104,5 +105,7 @@ namespace Service
                 return;
             }
         }
+
+        private GetWord Map(Word obj) => mapper.Map<Word, GetWord>(obj);
     }
 }

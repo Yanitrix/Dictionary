@@ -32,12 +32,11 @@ namespace WebUI.Controllers
         [HttpGet("{name}")]
         public ActionResult<GetLanguage> Get(String name)
         {
-            Language entity = service.Get(name);
+            var found = service.Get(name);
 
-            if (entity == null)
+            if (found == null)
                 return NotFound($"Language with Name: \"{name}\" doesn't exist");
-
-            return ToDto(entity);
+            return found;
         }
 
         [HttpPost]

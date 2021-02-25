@@ -18,7 +18,7 @@ namespace Service
             this.repo = uow.Languages;
         }
 
-        public Language Get(String name) => repo.GetByNameWithWords(name);
+        public GetLanguage Get(String name) => Map(repo.GetByNameWithWords(name));
 
         public IEnumerable<LanguageWordCount> AllWithWordCount() => repo.AllWithWordCount();
 
@@ -57,5 +57,7 @@ namespace Service
 
             return result;
         }
+
+        private GetLanguage Map(Language obj) => mapper.Map<Language, GetLanguage>(obj);
     }
 }

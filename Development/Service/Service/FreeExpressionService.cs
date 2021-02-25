@@ -19,7 +19,7 @@ namespace Service
             dictRepo = uow.Dictionaries;
         }
 
-        public FreeExpression Get(int id) => repo.GetByID(id);
+        public GetFreeExpression Get(int id) => Map(repo.GetByID(id));
 
         public ValidationResult Add(CreateFreeExpression dto)
         {
@@ -77,5 +77,7 @@ namespace Service
                 validationDictionary.AddError(Msg.EntityNotFound<Dictionary>(), Msg.EntityDoesNotExistByForeignKey<Example, Meaning>(m => m.ID, entity.DictionaryIndex));
             }
         }
+
+        private GetFreeExpression Map(FreeExpression obj) => mapper.Map<FreeExpression, GetFreeExpression>(obj);
     }
 }

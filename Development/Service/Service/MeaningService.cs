@@ -19,7 +19,7 @@ namespace Service
             this.entryRepo = uow.Entries;
         }
 
-        public Meaning Get(int id) => repo.GetByID(id);
+        public GetMeaning Get(int id) => Map(repo.GetByID(id));
 
         public ValidationResult Add(CreateMeaning dto)
         {
@@ -78,5 +78,7 @@ namespace Service
                 validationDictionary.AddError(Msg.EntityNotFound<Entry>(), Msg.EntityDoesNotExistByForeignKey<Meaning, Entry>(e => e.ID, entity.EntryID));
             }
         }
+
+        private GetMeaning Map(Meaning obj) => mapper.Map<Meaning, GetMeaning>(obj);
     }
 }

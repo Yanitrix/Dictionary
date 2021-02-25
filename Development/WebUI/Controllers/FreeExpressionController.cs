@@ -23,10 +23,10 @@ namespace WebUI.Controllers
         [HttpGet("{id}")]
         public ActionResult<GetFreeExpression> Get(int id)
         {
-            var entity = service.Get(id);
-            if (entity == null)
+            var found = service.Get(id);
+            if (found == null)
                 return NotFound();
-            return ToDto(entity);
+            return found;
         }
 
         [HttpPost]
@@ -59,7 +59,6 @@ namespace WebUI.Controllers
             return NoContent();
         }
 
-        private FreeExpression ToEntity(CreateFreeExpression dto) => mapper.Map<CreateFreeExpression, FreeExpression>(dto);
         private GetFreeExpression ToDto(FreeExpression exp) => mapper.Map<FreeExpression, GetFreeExpression>(exp);
     }
 }

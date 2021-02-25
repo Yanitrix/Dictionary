@@ -7,9 +7,9 @@ namespace Service
 {
     public interface IEntryService
     {
-        Entry Get(int id);
+        GetEntry Get(int id);
 
-        IEnumerable<Entry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
+        IEnumerable<GetEntry> GetByDictionaryAndWord(String word, int? dictionaryIndex);
 
         ValidationResult Add(CreateEntry dto);
 
