@@ -1,11 +1,10 @@
 ﻿using Domain.Dto;
-using Domain.Models;
 
 namespace Service
 {
     public interface IFreeExpressionService
     {
-        FreeExpression Get(int id);
+        GetFreeExpression Get(int id);
 
         ValidationResult Add(CreateFreeExpression dto);
 

@@ -23,11 +23,10 @@ namespace WebUI.Controllers
         [HttpGet("{id}")]
         public ActionResult<GetMeaning> Get(int id)
         {
-            var entity = service.Get(id);
-            if (entity == null)
+            var found = service.Get(id);
+            if (found == null)
                 return NotFound();
-
-            return ToDto(entity);
+            return found;
         }
 
         //TODO check if returned http codes are good and also take care of magic strings like "api/meaning"

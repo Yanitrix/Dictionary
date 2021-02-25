@@ -20,16 +20,16 @@ namespace Service
             this.repo = uow.Dictionaries;
         }
 
-        public Dictionary Get(int id) => repo.GetByIndex(id);
+        public GetDictionary Get(int id) => mapper.Map<Dictionary, GetDictionary>(repo.GetByIndex(id));
         //TODO test it
-        public IEnumerable<Dictionary> GetContainingLanguage(string langIn, string langOut, string lang)
+        public IEnumerable<GetDictionary> GetContainingLanguage(string langIn, string langOut, string lang)
         {
-            if ((langIn != null || langOut != null) && lang != null) return Enumerable.Empty<Dictionary>();
-            if (langIn == null && langOut == null && lang == null) return repo.All();
-            if (lang != null) return repo.GetAllByLanguage(lang);
-            if (langIn != null && langOut == null) return repo.GetAllByLanguageIn(langIn);
-            if (langIn == null && langOut != null) return repo.GetAllByLanguageOut(langOut);
-            return new Dictionary[] { repo.GetByLanguageInAndOut(langIn, langOut) };
+            if ((langIn != null || langOut != null) && lang != null) return Enumerable.Empty<GetDictionary>();
+            if (langIn == null && langOut == null && lang == null) return repo.All().Select(Map);
+            if (lang != null) return repo.GetAllByLanguage(lang).Select(Map);
+            if (langIn != null && langOut == null) return repo.GetAllByLanguageIn(langIn).Select(Map);
+            if (langIn == null && langOut != null) return repo.GetAllByLanguageOut(langOut).Select(Map);
+            return new GetDictionary[] { Map(repo.GetByLanguageInAndOut(langIn, langOut)) };
         }
 
         public ValidationResult Add(CreateDictionary dto)
@@ -74,5 +74,7 @@ namespace Service
 
             return result;
         }
+
+        private GetDictionary Map(Dictionary entity) => mapper.Map<Dictionary, GetDictionary>(entity);
     }
 }

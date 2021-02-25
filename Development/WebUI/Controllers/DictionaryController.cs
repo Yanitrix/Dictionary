@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WebUI.Controllers
 {
@@ -26,16 +25,16 @@ namespace WebUI.Controllers
         [HttpGet]
         public IEnumerable<GetDictionary> Index(String langIn = null, String langOut = null, String lang = null)
         {
-            return service.GetContainingLanguage(langIn, langOut, lang).Select(ToDto);
+            return service.GetContainingLanguage(langIn, langOut, lang);
         }
 
         [HttpGet("{index}")]
         public ActionResult<GetDictionary> Get(int index)
         {
-            var entity = service.Get(index);
-            if (entity == null)
+            var found = service.Get(index);
+            if (found == null)
                 return NotFound();
-            return ToDto(entity);
+            return found;
         }
 
         [HttpPost]

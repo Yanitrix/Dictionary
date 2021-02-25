@@ -27,16 +27,16 @@ namespace WebUI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<GetEntry>> Get(String word, int? dictionaryIndex)
         {
-            return service.GetByDictionaryAndWord(word, dictionaryIndex).Select(ToDto).ToArray();
+            return service.GetByDictionaryAndWord(word, dictionaryIndex).ToArray();
         }
 
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
-            var entry = service.Get(id);
-            if (entry == null)
+            var found = service.Get(id);
+            if (found == null)
                 return NotFound();
-            return ToDto(entry);
+            return found;
         }
 
         [HttpPost]
