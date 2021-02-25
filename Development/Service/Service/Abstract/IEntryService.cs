@@ -1,5 +1,4 @@
 ﻿using Domain.Dto;
-using Domain.Dto.Entry;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
