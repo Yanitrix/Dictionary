@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Domain.Repository;
 using Service.Mapper;
 using Service.Service.Abstract;
@@ -21,6 +22,41 @@ namespace Service
             this.expressions = uow.FreeExpressions;
             this.dictionaries = uow.Dictionaries;
             this.meanings = uow.Meanings;
+        }
+
+        //unidirectional
+        public TranslationResponse Translate(String dictionary, String query)
+        {
+            var (langIn, langOut) = GetLanguages(dictionary);
+            if (EnsureDictionaryExists(langIn, langOut))
+                throw new KeyNotFoundException("Dictionary does not exist");
+
+            return new()
+            {
+                ResultEntries = GetMatchingEntries(langIn, langOut, query).Select(Map),
+                ResultExpressions = GetMatchingExpressions(langIn, langOut, query).Select(Map),
+            };
+        }
+
+        public BidirectionalTranslationResponse TranslateBidir(String dictionaries, String query)
+        {
+            var (langIn, langOut) = GetLanguages(dictionaries);
+            if (EnsureDictionaryExists(langIn, langOut, true))
+                throw new KeyNotFoundException("Dictionary does not exist");
+
+            return new()
+            {
+                BaseResultEntries = GetMatchingEntries(langIn, langOut, query).Select(Map),
+                OppositeResultEntries = GetMatchingEntries(langOut, langIn, query).Select(Map),
+                BaseResultExpressions = GetMatchingExpressions(langIn, langOut, query).Select(Map),
+                OppositeResultExpressions = GetMatchingExpressions(langOut, langIn, query).Select(Map)
+            };
+        }
+
+        private (String langIn, String langOut) GetLanguages(String dictionaries)
+        {
+            var arr = dictionaries.Split('-');
+            return (arr[0], arr[1]);
         }
 
         public bool EnsureDictionaryExists(String languageIn, String languageOut, bool bidirectional = false)
@@ -58,17 +94,6 @@ namespace Service
             return byWord;
         }
 
-        public (IEnumerable<Entry> unidirectional, IEnumerable<Entry> opposite) GetMatchingEntriesBidir(String languageIn, String languageOut, String query)
-        {
-            var unidicrectional = GetMatchingEntries(languageIn, languageOut, query);
-            var opposite = GetMatchingEntries(languageOut, languageIn, query);
-
-            return (unidicrectional, opposite);
-            //TODO another thing - do we want to query by meanings' values in the opposite dictionary?
-            //i mean, we're doing that right now
-            //I don't think that's necessary but I'll play with the API and decide then
-        }
-
         //then query free expressions
         public IEnumerable<FreeExpression> GetMatchingExpressions(String languageIn, String languageOut, String query)
         {
@@ -80,12 +105,7 @@ namespace Service
             return byText.Concat(byTranslation);
         }
 
-        public (IEnumerable<FreeExpression> unidirectional, IEnumerable<FreeExpression> opposite) GetMatchingExpressionsBidir(String languageIn, String languageOut, String query)
-        {
-            var unidirectional = GetMatchingExpressions(languageIn, languageOut, query);
-            var opposite = GetMatchingExpressions(languageOut, languageIn, query);
-
-            return (unidirectional, opposite);
-        }
+        private GetEntry Map(Entry e) => mapper.Map<Entry, GetEntry>(e);
+        private GetFreeExpression Map(FreeExpression f) => mapper.Map<FreeExpression, GetFreeExpression>(f);
     }
 }
