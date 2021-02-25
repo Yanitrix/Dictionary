@@ -8,107 +8,88 @@ namespace Service.Mapper
     {
         public MappingConfig()
         {
-            RegisterMapping<WordPropertyDto, WordProperty>(src =>
+            RegisterMapping<WordPropertyDto, WordProperty>((src, dest) =>
             {
-                WordProperty dest = new();
                 dest.Name = src.Name;
                 dest.Values = new(src.Values.ToArray());
                 return dest;
             });
 
-            RegisterMapping<WordProperty, WordPropertyDto>(src =>
+            RegisterMapping<WordProperty, WordPropertyDto>((src, dest) =>
             {
-                return new()
-                {
-                    Name = src.Name,
-                    Values = src.Values,
-                };
-            });
-
-            RegisterMapping<CreateWord, Word>(src =>
-            {
-                Word result = new();
-                result.SourceLanguageName = src.SourceLanguageName;
-                result.Value = src.Value;
-                var func = ResolveMappingFunction<WordPropertyDto, WordProperty>();
-                foreach (var i in src.Properties)
-                    result.Properties.Add(func(i));
-
-                return result;
-            });
-
-            RegisterMapping<UpdateWord, Word>(src =>
-            {
-                Word result = new();
-                result.Value = src.Value;
-                var func = ResolveMappingFunction<WordPropertyDto, WordProperty>();
-                foreach (var i in src.Properties)
-                    result.Properties.Add(func(i));
-
-                return result;
-            });
-
-            RegisterMapping<Word, GetWord>(src =>
-            {
-                var func = ResolveMappingFunction<WordProperty, WordPropertyDto>();
-                GetWord result = new();
-                result.Value = src.Value;
-                result.ID = src.ID;
-                result.SourceLanguageName = src.SourceLanguageName;
-                foreach (var i in src.Properties)
-                    result.Properties.Add(func(i));
-                return result;
-            });
-
-            RegisterMapping<CreateLanguage, Language>(src =>
-            {
-                return new()
-                {
-                    Name = src.Name
-                };
-            });
-
-            RegisterMapping<Language, GetLanguage>(src =>
-            {
-                var func = ResolveMappingFunction<Word, GetWord>();
-                var dest = new GetLanguage();
                 dest.Name = src.Name;
-                foreach (var i in src.Words)
-                    dest.Words.Add(func(i));
+                dest.Values = src.Values;
+                return dest;
+            });
+
+            RegisterMapping<CreateWord, Word>((src, dest) =>
+            {
+                dest.SourceLanguageName = src.SourceLanguageName;
+                dest.Value = src.Value;
+                foreach (var i in src.Properties)
+                    dest.Properties.Add(Map<WordPropertyDto, WordProperty>(i));
 
                 return dest;
             });
 
-            RegisterMapping<CreateDictionary, Dictionary>(src =>
+            RegisterMapping<UpdateWord, Word>((src, dest) =>
             {
-                return new()
-                {
-                    LanguageInName = src.LanguageIn,
-                    LanguageOutName = src.LanguageOut
-                };
+                dest.Value = src.Value;
+                foreach (var i in src.Properties)
+                    dest.Properties.Add(Map<WordPropertyDto, WordProperty>(i));
+
+                return dest;
             });
 
-            RegisterMapping<Dictionary, GetDictionary>(src =>
+            RegisterMapping<Word, GetWord>((src, dest) =>
             {
-                return new()
-                {
-                    Index = src.Index,
-                    LanguageIn = src.LanguageInName,
-                    LanguageOut = src.LanguageOutName
-                };
+                dest.Value = src.Value;
+                dest.ID = src.ID;
+                dest.SourceLanguageName = src.SourceLanguageName;
+                foreach (var i in src.Properties)
+                    dest.Properties.Add(Map<WordProperty, WordPropertyDto>(i));
+                return dest;
             });
 
-            RegisterMapping<CreateFreeExpression, FreeExpression>(src =>
+            RegisterMapping<CreateLanguage, Language>((src, dest) =>
             {
-                return new()
-                {
-                    DictionaryIndex = src.DictionaryIndex,
-                    Text = src.Text,
-                    Translation = src.Translation
-                };
+                dest.Name = src.Name;
+                return dest;
             });
 
-            RegisterMapping<UpdateFreeExpression, FreeExpression>(src =>
+            RegisterMapping<Language, GetLanguage>((src, dest) =>
+            {
+                dest.Name = src.Name;
+                foreach (var i in src.Words)
+                    dest.Words.Add(Map<Word, GetWord>(i));
+
+                return dest;
+            });
+
+            RegisterMapping<CreateDictionary, Dictionary>((src, dest) =>
+            {
+                dest.LanguageInName = src.LanguageIn;
+                dest.LanguageOutName = src.LanguageOut;
+                return dest;
+            });
+
+            RegisterMapping<Dictionary, GetDictionary>((src, dest) =>
+            {
+                dest.Index = src.Index;
+                dest.LanguageIn = src.LanguageInName;
+                dest.LanguageOut = src.LanguageOutName;
+                return dest;
+            });
+
+            RegisterMapping<CreateFreeExpression, FreeExpression>((src, dest) =>
+            {
+                dest.DictionaryIndex = src.DictionaryIndex;
+                dest.Text = src.Text;
+                dest.Translation = src.Translation;
+                return dest;
+            });
+
+            RegisterMapping<UpdateFreeExpression, FreeExpression>((src, dest) =>
             {
                 return new()
                 {
@@ -119,7 +100,7 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<FreeExpression, GetFreeExpression>(src =>
+            RegisterMapping<FreeExpression, GetFreeExpression>((src, dest) =>
             {
                 return new()
                 {
@@ -130,7 +111,7 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<CreateEntry, Entry>(src =>
+            RegisterMapping<CreateEntry, Entry>((src, dest) =>
             {
                 return new()
                 {
@@ -139,7 +120,7 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<UpdateEntry, Entry>(src =>
+            RegisterMapping<UpdateEntry, Entry>((src, dest) =>
             {
                 return new()
                 {
@@ -149,82 +130,62 @@ namespace Service.Mapper
                 };
             });
 
-            RegisterMapping<Entry, GetEntry>(src =>
+            RegisterMapping<Entry, GetEntry>((src, dest) =>
             {
-                var meaningMap = ResolveMappingFunction<Meaning, GetMeaning>();
-                var wordMap = ResolveMappingFunction<Word, GetWord>();
-                var dicMap = ResolveMappingFunction<Dictionary, GetDictionary>();
-
-                var dest = new GetEntry
-                {
-                    Dictionary = dicMap(src.Dictionary),
-                    ID = src.ID,
-                    Word = wordMap(src.Word)
-                };
+                dest.Dictionary = Map<Dictionary, GetDictionary>(src.Dictionary);
+                dest.ID = src.ID;
+                dest.Word = Map<Word, GetWord>(src.Word);
                 foreach (var i in src.Meanings)
-                    dest.Meanings.Add(meaningMap(i));
+                    dest.Meanings.Add(Map<Meaning, GetMeaning>(i));
 
                 return dest;
             });
 
-            RegisterMapping<CreateMeaning, Meaning>(src =>
+            RegisterMapping<CreateMeaning, Meaning>((src, dest) =>
             {
-                var func = ResolveMappingFunction<ExampleDto, Example>();
-                var dest = new Meaning();
                 dest.EntryID = src.EntryID;
                 dest.Notes = src.Notes;
                 dest.Value = src.Value;
                 foreach (var i in src.Examples)
-                    dest.Examples.Add(func(i));
+                    dest.Examples.Add(Map<ExampleDto, Example>(i));
 
                 return dest;
             });
 
-            RegisterMapping<UpdateMeaning, Meaning>(src =>
+            RegisterMapping<UpdateMeaning, Meaning>((src, dest) =>
             {
-                var func = ResolveMappingFunction<ExampleDto, Example>();
-                var dest = new Meaning
-                {
-                    Notes = src.Notes,
-                    Value = src.Value
-                };
+                dest.Notes = src.Notes;
+                dest.Value = src.Value;
                 foreach (var i in src.Examples)
-                    dest.Examples.Add(func(i));
+                    dest.Examples.Add(Map<ExampleDto, Example>(i));
 
                 return dest;
             });
 
-            RegisterMapping<Meaning, GetMeaning>(src =>
+            RegisterMapping<Meaning, GetMeaning>((src, dest) =>
             {
-                var dest = new GetMeaning
-                {
-                    EntryID = src.EntryID,
-                    ID = src.ID,
-                    Notes = src.Notes,
-                    Value = src.Value,
-                };
+                dest.EntryID = src.EntryID;
+                dest.ID = src.ID;
+                dest.Notes = src.Notes;
+                dest.Value = src.Value;
                 foreach (var i in src.Examples)
-                    dest.Examples.Add(ResolveMappingFunction<Example, ExampleDto>()(i));
+                    dest.Examples.Add(Map<Example, ExampleDto>(i));
 
                 return dest;
             });
 
-            RegisterMapping<Example, ExampleDto>(src =>
+            RegisterMapping<Example, ExampleDto>((src, dest) =>
             {
-                return new()
-                {
-                    Text = src.Text,
-                    Translation = src.Translation
-                };
+                dest.Text = src.Text;
+                dest.Translation = src.Translation;
+                return dest;
             });
 
-            RegisterMapping<ExampleDto, Example>(src =>
+            RegisterMapping<ExampleDto, Example>((src, dest) =>
             {
-                return new()
-                {
-                    Text = src.Text,
-                    Translation = src.Translation
-                };
+                dest.Text = src.Text;
+                dest.Translation = src.Translation;
+                return dest;
             });
         }
     }

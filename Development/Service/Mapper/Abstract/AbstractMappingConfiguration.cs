@@ -1,17 +1,47 @@
-﻿using System;
+﻿using Service.Mapper.Abstract;
+using System;
+using System.Collections.Generic;
 
 namespace Service.Mapper
 {
     public abstract class AbstractMappingConfiguration
     {
-        public AbstractMappingConfiguration()
+        private Dictionary<(Type, Type), object> builders = new();
+        private readonly IMapper mapper;
+
+        protected AbstractMappingConfiguration()
         {
-            Context = new MappingContext();
+            mapper = new Mapper(this);
         }
 
-        public IMappingContext Context { get; }
+        public IMapper CreateMapper() => this.mapper;
 
-        protected void RegisterMapping<T, R>(Func<T, R> mappingFunction) => Context.RegisterMapping(mappingFunction);
-        protected Func<T, R> ResolveMappingFunction<T, R>() => Context.ResolveMappingFunction<T, R>();
+        protected IMappingBuilder<T, R> RegisterMapping<T, R>(Func<T, R, R> mappingFunction)
+        {
+            IMappingBuilder<T, R> builder = new MappingBuilder<T, R>();
+            var typeIn = typeof(T);
+            var typeOut = typeof(R);
+            builders.Add((typeIn, typeOut), builder);
+            builder.RegisterMapping(mappingFunction);
+            return builder;
+        }
+
+        internal IMappingBuilder<T, R> Builder<T, R>()
+        {
+            var found = builders[(typeof(T), typeof(R))];
+            if (found == null)
+                throw new Exception();//message
+            return (IMappingBuilder<T, R>)found;
+        }
+
+        protected R Map<T, R>(T source)
+        {
+            return mapper.Map<T, R>(source);
+        }
+
+        protected R Map<T, R>(T source, R destination)
+        {
+            return mapper.Map(source, destination);
+        }
     }
 }
