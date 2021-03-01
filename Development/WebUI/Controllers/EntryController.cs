@@ -24,12 +24,19 @@ namespace WebUI.Controllers
         }
 
         //TODO some pagination maybe?
+        /// <summary>
+        /// Retrieves all entriex containg <paramref name="word"/> or belonging to a dictionary with given <paramref name="index"/> 
+        /// </summary>
         [HttpGet]
         public ActionResult<IEnumerable<GetEntry>> Get(String word, int? dictionaryIndex)
         {
             return service.GetByDictionaryAndWord(word, dictionaryIndex).ToArray();
         }
 
+        /// <summary>
+        /// Retrieves an entry with given id
+        /// </summary>
+        /// <response code="404">If entry with given id does not exist</response>
         [HttpGet("{id}")]
         public ActionResult<GetEntry> Get(int id)
         {
@@ -39,6 +46,11 @@ namespace WebUI.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Creates an entry with given values. After creation of the entity, not all values can be updated.
+        /// </summary>
+        /// <response code="201">Entry created successfully</response>
+        /// <response code="404">Model is invalid or related entities not found</response>
         [HttpPost]
         public IActionResult Post([FromBody] CreateEntry dto)
         {
@@ -49,6 +61,11 @@ namespace WebUI.Controllers
             return Created("api/entry/" + response.ID, response);
         }
 
+        /// <summary>
+        /// Updates entry with new values. Not all values can be updated.
+        /// </summary>
+        /// <response code="200">Update sussesful</response>
+        /// <response code="400">Model is invalid or related entities not found</response>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateEntry dto)
         {
@@ -60,6 +77,11 @@ namespace WebUI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes entry with given id
+        /// </summary>
+        /// <response code="204">Deletion succesful</response>
+        /// <response code="404">Entry with given id not found</response>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -30,6 +30,11 @@ namespace WebUI.Controllers
         }
 
         //TODO check if returned http codes are good and also take care of magic strings like "api/meaning"
+        /// <summary>
+        /// Created a meaning
+        /// </summary>
+        /// <response code="201">Meaning created successfully</response>
+        /// <response code="400">Model invalid or related entities not found</response>
         [HttpPost]
         public IActionResult Post([FromBody] CreateMeaning dto)
         {
@@ -39,7 +44,13 @@ namespace WebUI.Controllers
             var response = ToDto(result.Entity as Meaning);
             return Created("api/meaning/" + response.ID, response);
         }
-
+        
+        
+        /// <summary>
+        /// Updates a meaning. Not all values can be updated.
+        /// </summary>
+        /// <response code="200">Update successful</response>
+        /// <response code="400">Model invalid or related entities not found</response>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateMeaning dto)
         {
@@ -51,6 +62,11 @@ namespace WebUI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes a meaning
+        /// </summary>
+        /// <response code="204">Deletion successful</response>
+        /// <response code="404">Entity not found</response>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

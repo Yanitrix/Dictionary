@@ -22,12 +22,26 @@ namespace WebUI.Controllers
         }
 
         //TODO maybe return all with counted entries and expressions?
+        /// <summary>
+        /// Retrieves dictionary list that contain specified languages.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="langIn"/> and <paramref name="langOut"/> are present, returns a dictionary that includes those languages. <br />
+        /// If either <paramref name="langIn"/> or <paramref name="langOut"/> is present, returns a list of dictionaries with specified language. <br />
+        /// if <paramref name="lang"/> is present, returns a list of dictionaries that contain this language, whether it's language in or language out. <br />
+        /// </remarks>
+        /// <param name="langIn"></param>
+        /// <param name="langOut"></param>
+        /// <param name="lang"></param>
         [HttpGet]
         public IEnumerable<GetDictionary> Index(String langIn = null, String langOut = null, String lang = null)
         {
             return service.GetContainingLanguage(langIn, langOut, lang);
         }
 
+        /// <summary>
+        /// Retrieves a dictionary with specified index.
+        /// </summary>
         [HttpGet("{index}")]
         public ActionResult<GetDictionary> Get(int index)
         {
@@ -37,6 +51,11 @@ namespace WebUI.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Created a new dictionary.
+        /// </summary>
+        /// <response code="201">Dictionary created succesfully</response>
+        /// <response code="400">Languages are not found / dictionary already exists</response>
         [HttpPost]
         public IActionResult Post([FromBody] CreateDictionary dto)
         {
@@ -47,6 +66,11 @@ namespace WebUI.Controllers
             return Created("api/dictionary/" + response.Index, response);
         }
 
+        /// <summary>
+        /// Deletes an existing dictionary.
+        /// </summary>
+        /// <response code="204">Dictionary deleted succesfully</response>
+        /// <response code="404">Dictionary with given index is not found</response>
         [HttpDelete("{index}")]
         public IActionResult Delete(int index)
         {
