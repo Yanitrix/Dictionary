@@ -23,6 +23,10 @@ namespace WebUI.Controllers
         }
 
         //TODO should test it with bulk data
+        /// <summary>
+        /// Retrieves all languages with their word count
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<IEnumerable<LanguageWordCount>> Index()
         {
@@ -39,6 +43,11 @@ namespace WebUI.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Creates a language
+        /// </summary>
+        /// <response code="201">Language created successfully</response>
+        /// <response code="400">Model invalid or related entities not found</response>
         [HttpPost]
         public IActionResult Create([FromBody] CreateLanguage dto)
         {
@@ -49,6 +58,11 @@ namespace WebUI.Controllers
             return Created("api/language/" + response.Name, response);
         }
 
+        /// <summary>
+        /// Deletes a language
+        /// </summary>
+        /// <response code="204">Deletion successful</response>
+        /// <response code="404">Entity not found</response>
         [HttpDelete("{name}")]
         public IActionResult Delete(String name)
         {

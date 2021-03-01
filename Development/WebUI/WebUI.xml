@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebUI</name>
+    </assembly>
+    <members>
+        <member name="M:WebUI.Controllers.DictionaryController.Index(System.String,System.String,System.String)">
+            <summary>
+            Retrieves dictionary list that contain specified languages.
+            </summary>
+            <remarks>
+            If <paramref name="langIn"/> and <paramref name="langOut"/> are present, returns a dictionary that includes those languages. <br />
+            If either <paramref name="langIn"/> or <paramref name="langOut"/> is present, returns a list of dictionaries with specified language. <br />
+            if <paramref name="lang"/> is present, returns a list of dictionaries that contain this language, whether it's language in or language out. <br />
+            </remarks>
+            <param name="langIn"></param>
+            <param name="langOut"></param>
+            <param name="lang"></param>
+        </member>
+        <member name="M:WebUI.Controllers.DictionaryController.Get(System.Int32)">
+            <summary>
+            Retrieves a dictionary with specified index.
+            </summary>
+        </member>
+        <member name="M:WebUI.Controllers.DictionaryController.Post(Domain.Dto.CreateDictionary)">
+            <summary>
+            Created a new dictionary.
+            </summary>
+            <response code="201">Dictionary created succesfully</response>
+            <response code="400">Languages are not found / dictionary already exists</response>
+        </member>
+        <member name="M:WebUI.Controllers.DictionaryController.Delete(System.Int32)">
+            <summary>
+            Deletes an existing dictionary.
+            </summary>
+            <response code="204">Dictionary deleted succesfully</response>
+            <response code="404">Dictionary with given index is not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.EntryController.Get(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Retrieves all entriex containg <paramref name="word"/> or belonging to a dictionary with given <paramref name="index"/> 
+            </summary>
+        </member>
+        <member name="M:WebUI.Controllers.EntryController.Get(System.Int32)">
+            <summary>
+            Retrieves an entry with given id
+            </summary>
+            <response code="404">If entry with given id does not exist</response>
+        </member>
+        <member name="M:WebUI.Controllers.EntryController.Post(Domain.Dto.CreateEntry)">
+            <summary>
+            Creates an entry with given values. After creation of the entity, not all values can be updated.
+            </summary>
+            <response code="201">Entry created successfully</response>
+            <response code="404">Model is invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.EntryController.Put(System.Int32,Domain.Dto.UpdateEntry)">
+            <summary>
+            Updates entry with new values. Not all values can be updated.
+            </summary>
+            <response code="200">Update sussesful</response>
+            <response code="400">Model is invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.EntryController.Delete(System.Int32)">
+            <summary>
+            Deletes entry with given id
+            </summary>
+            <response code="204">Deletion succesful</response>
+            <response code="404">Entry with given id not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.FreeExpressionController.Post(Domain.Dto.CreateFreeExpression)">
+            <summary>
+            Creates a free expression
+            </summary>
+            <response code="201">Entity created succesfully</response>
+            <response code="400">Model invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.FreeExpressionController.Put(System.Int32,Domain.Dto.UpdateFreeExpression)">
+            <summary>
+            Updates a free expression
+            </summary>
+            <response code="200">Entity updated succesfully</response>
+            <response code="400">Model invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.FreeExpressionController.Delete(System.Int32)">
+            <summary>
+            Deletes a free expression with given id
+            </summary>
+            <response code="204">Deletion successful</response>
+            <response code="404">Entity not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.LanguageController.Index">
+            <summary>
+            Retrieves all languages with their word count
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebUI.Controllers.LanguageController.Create(Domain.Dto.CreateLanguage)">
+            <summary>
+            Creates a language
+            </summary>
+            <response code="201">Language created successfully</response>
+            <response code="400">Model invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.LanguageController.Delete(System.String)">
+            <summary>
+            Deletes a language
+            </summary>
+            <response code="204">Deletion successful</response>
+            <response code="404">Entity not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.MeaningController.Post(Domain.Dto.CreateMeaning)">
+            <summary>
+            Created a meaning
+            </summary>
+            <response code="201">Meaning created successfully</response>
+            <response code="400">Model invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.MeaningController.Put(System.Int32,Domain.Dto.UpdateMeaning)">
+            <summary>
+            Updates a meaning. Not all values can be updated.
+            </summary>
+            <response code="200">Update successful</response>
+            <response code="400">Model invalid or related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.MeaningController.Delete(System.Int32)">
+            <summary>
+            Deletes a meaning
+            </summary>
+            <response code="204">Deletion successful</response>
+            <response code="404">Entity not found</response>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:WebUI.Controllers.TranslationController.Get(System.String,System.String,System.Boolean)" -->
+        <member name="M:WebUI.Controllers.WordController.Get(System.String)">
+            <summary>
+            Retrieves all words with given value. Case insenstitive 
+            </summary>
+        </member>
+        <member name="M:WebUI.Controllers.WordController.Post(Domain.Dto.CreateWord)">
+            <summary>
+            Creates a new word.
+            </summary>
+            <response code="201">Word created successfully</response>
+            <response code="400">Model invalid/related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.WordController.Put(System.Int32,Domain.Dto.UpdateWord)">
+            <summary>
+            Updates a word. Not all values can be updated.
+            </summary>
+            <response code="200">Update successful</response>
+            <response code="400">Model invalid/related entities not found</response>
+        </member>
+        <member name="M:WebUI.Controllers.WordController.Delete(System.Int32)">
+            <summary>
+            Deletes a word
+            </summary>
+            <response code="204">Deletion successful</response>
+            <response code="404">Entity not found</response>
+        </member>
+    </members>
+</doc>

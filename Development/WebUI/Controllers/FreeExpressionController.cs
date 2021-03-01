@@ -29,6 +29,11 @@ namespace WebUI.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Creates a free expression
+        /// </summary>
+        /// <response code="201">Entity created succesfully</response>
+        /// <response code="400">Model invalid or related entities not found</response>
         [HttpPost]
         public IActionResult Post([FromBody] CreateFreeExpression dto)
         {
@@ -39,6 +44,11 @@ namespace WebUI.Controllers
             return Created("api/expression/" + response.ID, response);
         }
 
+        /// <summary>
+        /// Updates a free expression
+        /// </summary>
+        /// <response code="200">Entity updated succesfully</response>
+        /// <response code="400">Model invalid or related entities not found</response>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateFreeExpression dto)
         {
@@ -50,6 +60,11 @@ namespace WebUI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes a free expression with given id
+        /// </summary>
+        /// <response code="204">Deletion successful</response>
+        /// <response code="404">Entity not found</response>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

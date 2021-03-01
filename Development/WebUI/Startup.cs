@@ -7,6 +7,7 @@ using WebUI.Filters;
 using FluentValidation.AspNetCore;
 using Persistence;
 using Service;
+using System.IO;
 
 namespace WebUI
 {
@@ -36,11 +37,33 @@ namespace WebUI
             });
 
             services.AddServiceLayer();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new()
+                        {
+                            Title = "Dictionary V1",
+                            Version = "v1"
+                        }
+                    );
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "WebUI.xml");
+                c.IncludeXmlComments(filePath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "Dictionary V1");
+                c.RoutePrefix = string.Empty;
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

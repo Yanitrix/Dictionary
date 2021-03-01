@@ -24,6 +24,9 @@ namespace WebUI.Controllers
         }
 
         //some algorithm to find similar words when non exact are found?
+        /// <summary>
+        /// Retrieves all words with given value. Case insenstitive 
+        /// </summary>
         [HttpGet]
         public ActionResult<IEnumerable<GetWord>> Get(String value)
         {
@@ -43,6 +46,11 @@ namespace WebUI.Controllers
             return found;
         }
 
+        /// <summary>
+        /// Creates a new word.
+        /// </summary>
+        /// <response code="201">Word created successfully</response>
+        /// <response code="400">Model invalid/related entities not found</response>
         [HttpPost]
         public IActionResult Post([FromBody] CreateWord dto)
         {
@@ -58,6 +66,11 @@ namespace WebUI.Controllers
             return Created("api/word/" + response.ID, response);
         }
 
+        /// <summary>
+        /// Updates a word. Not all values can be updated.
+        /// </summary>
+        /// <response code="200">Update successful</response>
+        /// <response code="400">Model invalid/related entities not found</response>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateWord dto)
         {
@@ -71,7 +84,11 @@ namespace WebUI.Controllers
                 return BadRequest(result);
             return Ok();
         }
-
+        /// <summary>
+        /// Deletes a word
+        /// </summary>
+        /// <response code="204">Deletion successful</response>
+        /// <response code="404">Entity not found</response>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
