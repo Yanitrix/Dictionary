@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebUI.Filters;
-using FluentValidation.AspNetCore;
 using Persistence;
-using Service;
 using System.IO;
 
 namespace WebUI
@@ -25,19 +22,12 @@ namespace WebUI
         {
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddPersistance(Configuration);
-
-            services.AddMvc(opt =>
-            {
-                opt.Filters.Add<ValidationActionFilter>();
-            }).AddFluentValidation(opt =>
-            {
-                opt.RegisterValidatorsFromAssemblyContaining<Startup>();
-                opt.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-            });
-
-            services.AddServiceLayer();
-
+            services
+                .AddPersistance(Configuration)
+                .AddValidators()
+                .AddCommandHandlers()
+                .AddQueryHandlers();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
