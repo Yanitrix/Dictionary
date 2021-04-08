@@ -1,11 +1,11 @@
 ﻿using Domain.Dto;
-using Service.Mapper;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Commands;
+using Domain.Queries;
 using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
@@ -14,36 +14,23 @@ namespace WebUI.Controllers
     [Route("api/word")]
     public class WordController : Controller
     {
-        private readonly IWordService service;
-        private readonly IMapper mapper;
-
-        public WordController(IWordService service, IMapper mapper)
-        {
-            this.service = service;
-            this.mapper = mapper;
-        }
-
         //some algorithm to find similar words when non exact are found?
         /// <summary>
-        /// Retrieves all words with given value. Case insenstitive 
+        /// Retrieves all words with given value. Case insensitive 
         /// </summary>
         [HttpGet]
-        public ActionResult<IEnumerable<GetWord>> Get(String value)
+        public ActionResult<IEnumerable<GetWord>> Get(String value, [FromServices] IQueryHandler<WordByValueQuery, IEnumerable<GetWord>> handler)
         {
-            if (value == null)
-                return Array.Empty<GetWord>();
+            var query = new WordByValueQuery(value);
             //It queries by the exact value, not substring
-            var words = service.Get(value);
-            return words.ToList();
+            return handler.Handle(query).ToList();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GetWord> Get(int id)
+        public ActionResult<GetWord> Get(int id, [FromServices] IQueryHandler<WordByIdQuery, GetWord> handler)
         {
-            var found = service.Get(id);
-            if (found == null)
-                return NotFound();
-            return found;
+            var query = new WordByIdQuery(id);
+            return handler.Handle(query) ?? (ActionResult<GetWord>) NotFound();
         }
 
         /// <summary>
@@ -52,18 +39,12 @@ namespace WebUI.Controllers
         /// <response code="201">Word created successfully</response>
         /// <response code="400">Model invalid/related entities not found</response>
         [HttpPost]
-        public IActionResult Post([FromBody] CreateWord dto)
+        public IActionResult Post([FromBody] CreateWordCommand dto, [FromServices] ICommandHandler<CreateWordCommand, GetWord> handler)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            //Utils.RemoveRedundantWhitespaces(entity.Properties);
-
-            var result = service.Add(dto);
-            if (!result.IsValid)
-                return BadRequest(result);
-            var response = ToDto(result.Entity as Word);
-            return Created("api/word/" + response.ID, response);
+            var response = handler.Handle(dto);
+            if (response.IsSuccessful)
+                return Created("api/word/" + response.Entity.ID, response.Entity);
+            return BadRequest(dto);
         }
 
         /// <summary>
@@ -72,17 +53,15 @@ namespace WebUI.Controllers
         /// <response code="200">Update successful</response>
         /// <response code="400">Model invalid/related entities not found</response>
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateWord dto)
+        public IActionResult Put(int id, [FromBody] UpdateWordCommand dto, [FromServices] ICommandHandler<UpdateWordCommand, GetWord> handler)
         {
             if (id != dto.ID)
                 return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
-            //TODO move that into service
-            //Utils.RemoveRedundantWhitespaces(entity.Properties);
 
-            var result = service.Update(dto);
-            if (!result.IsValid)
-                return BadRequest(result);
-            return Ok();
+            var response = handler.Handle(dto);
+            if (response.IsSuccessful)
+                return Ok();
+            return BadRequest(response.Errors);
         }
         /// <summary>
         /// Deletes a word
@@ -90,14 +69,17 @@ namespace WebUI.Controllers
         /// <response code="204">Deletion successful</response>
         /// <response code="404">Entity not found</response>
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, [FromServices] ICommandHandler<DeleteWordCommand, Word> handler)
         {
-            var result = service.Delete(id);
-            if (!result.IsValid)
-                return NotFound(result);
-            return NoContent();
-        }
+            var command = new DeleteWordCommand
+            {
+                PrimaryKey = id
+            };
 
-        private GetWord ToDto(Word word) => mapper.Map<Word, GetWord>(word);
+            var response = handler.Handle(command);
+            if (response.IsSuccessful)
+                return NoContent();
+            return NotFound(response.Errors);
+        }
     }
 }

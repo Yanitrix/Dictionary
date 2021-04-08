@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace Domain.Repository
 {
-    public interface IEntryRepository : IRepository<Entry>
+    public interface IEntryRepository : IRepository<Entry, int>
     {
-        public Entry GetByID(int id);
-
         /// <summary>
         /// Including Word and its Properties, Meanings and their Examples, Dictionary.
         /// <i>wordValue</i> is case insensitive
@@ -32,8 +30,6 @@ namespace Domain.Repository
         /// <param name="dictionaryIndex"></param>
         /// <returns></returns>
         public IEnumerable<Entry> GetByDictionary(int dictionaryIndex);
-
-        public bool ExistsByID(int id);
 
         public bool HasMeanings(int id);
     }

@@ -12,7 +12,7 @@ using Domain.Repository;
 namespace Persistence.Repository
 {
     
-    public class LanguageRepository : RepositoryBase<Language>, ILanguageRepository
+    public class LanguageRepository : RepositoryBase<Language, String>, ILanguageRepository
     {
         private readonly Func<IQueryable<Language>, IIncludableQueryable<Language, object>> includeQuery =
             (languages => languages.Include(l => l.Words).ThenInclude(w => w.Properties));
@@ -26,9 +26,14 @@ namespace Persistence.Repository
             base.Delete(entity);
         }
 
-        public Language GetByName(String name)
+        public override Language GetByPrimaryKey(string name)
         {
-            return repo.FirstOrDefault(l => l.Name == name);
+            return GetOne(l => l.Name == name, null, includeQuery);
+        }
+
+        public override bool ExistsByPrimaryKey(string name)
+        {
+            return Exists(l => l.Name == name);
         }
 
         public Language GetByNameWithWords(String name)
@@ -46,12 +51,6 @@ namespace Persistence.Repository
         {
             entity.Name = entity.Name.ToLower();
             base.Create(entity);
-        }
-
-        //case sensitive
-        public bool ExistsByName(String name)
-        {
-            return Exists(l => l.Name == name);
         }
 
         public IEnumerable<LanguageWordCount> AllWithWordCount()

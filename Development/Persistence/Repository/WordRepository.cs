@@ -10,7 +10,7 @@ using Domain.Repository;
 
 namespace Persistence.Repository
 {
-    public class WordRepository : RepositoryBase<Word>, IWordRepository
+    public class WordRepository : RepositoryBase<Word, int>, IWordRepository
     {
         private readonly Func<IQueryable<Word>, IIncludableQueryable<Word, object>> includeQuery = (words => words.Include(w => w.Properties));
         private readonly Func<IQueryable<Word>, IOrderedQueryable<Word>> byLanguageThenByValue = (words => words.OrderBy(w => w.SourceLanguageName).ThenBy(w => w.Value));
@@ -22,15 +22,19 @@ namespace Persistence.Repository
             return Get(condition, mapper, byLanguageThenByValue, includeQuery);
         }
 
+        public override Word GetByPrimaryKey(int id)
+        {
+            return GetOne(w => w.ID == id, null, includeQuery);
+        }
+
+        public override bool ExistsByPrimaryKey(int id)
+        {
+            return repo.Any(w => w.ID == id);
+        }
+
         public override Word GetOne(Expression<Func<Word, bool>> condition)
         {
             return GetOne(condition, byLanguageThenByValue, includeQuery);
-        }
-
-        public Word GetByID(int id)
-        {
-            //so we cannot use Find because it is not possible to include children.
-            return GetOne(w => w.ID == id, null, includeQuery);
         }
 
         //ignores case
@@ -63,11 +67,6 @@ namespace Persistence.Repository
                 x => x,
                 words => words.OrderBy(w => w.SourceLanguageName),
                 includeQuery);
-        }
-
-        public bool ExistsByID(int id)
-        {
-            return Exists(w => w.ID == id);
         }
 
         public override void Update(Word entity)

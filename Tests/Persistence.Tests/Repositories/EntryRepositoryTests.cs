@@ -377,7 +377,7 @@ namespace Persistence.Tests.Repositories
 
             var id = dict.Entries.First().ID;
 
-            var found = repo.GetByID(id);
+            var found = repo.GetByPrimaryKey(id);
 
             Assert.NotNull(found);
             Assert.NotNull(found.Word);

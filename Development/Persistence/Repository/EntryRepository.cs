@@ -10,7 +10,7 @@ using Domain.Repository;
 
 namespace Persistence.Repository
 {
-    public class EntryRepository : RepositoryBase<Entry>, IEntryRepository
+    public class EntryRepository : RepositoryBase<Entry, int>, IEntryRepository
     {
         public EntryRepository(DatabaseContext context):base(context) { }
 
@@ -26,6 +26,16 @@ namespace Persistence.Repository
         public override IEnumerable<R> Get<R>(Expression<Func<Entry, bool>> condition, Expression<Func<Entry, R>> mapper)
         {
             return base.Get(condition, mapper, orderFunction, includeQuery);
+        }
+
+        public override bool ExistsByPrimaryKey(int id)
+        {
+            return Exists(e => e.ID == id);
+        }
+
+        public override Entry GetByPrimaryKey(int id)
+        {
+            return GetOne(e => e.ID == id, null, includeQuery);
         }
 
         public IEnumerable<Entry> GetByDictionaryAndWord(int dictionaryIndex, string wordValue, bool caseSensitive = true)
@@ -67,16 +77,6 @@ namespace Persistence.Repository
         {
             return Get(e => e.DictionaryIndex == dictionaryIndex,
                 x => x, orderFunction, includeQuery);
-        }
-      
-        public Entry GetByID(int id)
-        {
-            return GetOne(e => e.ID == id, null, includeQuery);
-        }
-
-        public bool ExistsByID(int id)
-        {
-            return Exists(e => e.ID == id);
         }
 
         public bool HasMeanings(int id)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Domain.Repository
 {
-    public interface IExpressionRepositoryBase<T> : IRepository<T> where T : Expression
+    public interface IExpressionRepositoryBase<T> : IRepository<T, int> where T : Expression
     {
         public T GetByID(int id);
 

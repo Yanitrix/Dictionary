@@ -24,5 +24,10 @@ namespace Persistence.Repository
             return Get(e => e.Translation.Contains(translationSubstring) && e.DictionaryIndex == dictionaryIndex,
                 x => x, orderFunction);
         }
+
+        public override bool ExistsByPrimaryKey(int id)
+        {
+            return repo.Any(f => f.ID == id);
+        }
     }
 }

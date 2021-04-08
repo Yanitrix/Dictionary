@@ -18,8 +18,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Development\Service\Service.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Domain.Repository;
 using Persistence.Database;
 using System;
+using Domain.Models;
 
 namespace Persistence.Repository
 {
@@ -76,6 +77,33 @@ namespace Persistence.Repository
             {
                 return freeExpressionRepo ??= new FreeExpressionRepository(context);
             }
+        }
+
+        public IRepository<T, K> Generic<T, K>()
+        {
+            if (typeof(T) == typeof(Language) && typeof(K) == typeof(String))
+                return (IRepository<T, K>)Languages;
+            
+            if (typeof(T) == typeof(Word) && typeof(K) == typeof(int))
+                return (IRepository<T, K>)Words;
+            
+            if (typeof(T) == typeof(Dictionary) && typeof(K) == typeof(int))
+                return (IRepository<T, K>)Dictionaries;
+            
+            if (typeof(T) == typeof(FreeExpression) && typeof(K) == typeof(int))
+                return (IRepository<T, K>)FreeExpressions;
+            
+            if (typeof(T) == typeof(Entry) && typeof(K) == typeof(int))
+                return (IRepository<T, K>)Entries;
+            
+            if (typeof(T) == typeof(Meaning) && typeof(K) == typeof(int))
+                return (IRepository<T, K>)Meanings;
+
+            if (typeof(T) == typeof(Example) && typeof(K) == typeof(int))
+                return (IRepository<T, K>) Examples;
+
+            throw new ArgumentException(
+                $"There is not repository for the type {nameof(T)} whose primary key is {nameof(K)}");
         }
 
         private bool disposed = false;

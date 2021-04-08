@@ -9,7 +9,7 @@ using Domain.Repository;
 
 namespace Persistence.Repository
 {
-    public class MeaningRepository : RepositoryBase<Meaning>, IMeaningRepository
+    public class MeaningRepository : RepositoryBase<Meaning, int>, IMeaningRepository
     {
         //All queries loaded with Examples
         public MeaningRepository(DatabaseContext context):base(context) { }
@@ -18,16 +18,6 @@ namespace Persistence.Repository
             (meanings => meanings.Include(m => m.Examples));
         private readonly Func<IQueryable<Meaning>, IIncludableQueryable<Meaning, object>> includeExamplesAndEntry =
             (meanings => meanings.Include(m => m.Examples).Include(m => m.Entry));
-
-        public Meaning GetByID(int id)
-        {
-            return GetOne(m => m.ID == id, null, includeExamples);
-        }
-
-        public Meaning GetByIDWithEntry(int id)
-        {
-            return GetOne(m => m.ID == id, null, includeExamplesAndEntry);
-        }
 
         //includes Entry
         public IEnumerable<Meaning> GetByValueSubstring(string value)
@@ -41,11 +31,6 @@ namespace Persistence.Repository
         {
             if (String.IsNullOrEmpty(notes) || String.IsNullOrWhiteSpace(notes)) return Enumerable.Empty<Meaning>();
             return Get(m => m.Notes.Contains(notes), x => x, null, includeExamplesAndEntry);
-        }
-
-        public bool ExistsByID(int id)
-        {
-            return Exists(m => m.ID == id);
         }
 
         public IEnumerable<Meaning> GetByDictionaryAndValueSubstring(int dictionaryIndex, string valueSubstring)
@@ -64,6 +49,16 @@ namespace Persistence.Repository
             inDB.Notes = entity.Notes;
             inDB.Examples = entity.Examples;
             context.SaveChanges();
+        }
+
+        public override Meaning GetByPrimaryKey(int id)
+        {
+            return GetOne(m => m.ID == id, null, includeExamples);
+        }
+
+        public override bool ExistsByPrimaryKey(int id)
+        {
+            return repo.Any(m => m.ID == id);
         }
     }
 }
