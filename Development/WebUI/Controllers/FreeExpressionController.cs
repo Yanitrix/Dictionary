@@ -1,8 +1,8 @@
-﻿using Domain.Dto;
-using Service.Mapper;
+﻿using Domain.Commands;
+using Domain.Dto;
 using Domain.Models;
+using Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 using static WebUI.Utils.ErrorMessages;
 
 namespace WebUI.Controllers
@@ -11,53 +11,43 @@ namespace WebUI.Controllers
     [Route("api/expression")]
     public class FreeExpressionController : Controller
     {
-        private readonly IFreeExpressionService service;
-        private readonly IMapper mapper;
-
-        public FreeExpressionController(IFreeExpressionService service, IMapper mapper)
-        {
-            this.service = service;
-            this.mapper = mapper;
-        }
-
         [HttpGet("{id}")]
-        public ActionResult<GetFreeExpression> Get(int id)
+        public ActionResult<GetFreeExpression> Get(int id, [FromServices] IQueryHandler<FreeExpressionByIdQuery, GetFreeExpression> handler)
         {
-            var found = service.Get(id);
-            if (found == null)
-                return NotFound();
-            return found;
+            var query = new FreeExpressionByIdQuery(id);
+            return handler.Handle(query) ?? (ActionResult<GetFreeExpression>) NotFound();
         }
 
         /// <summary>
         /// Creates a free expression
         /// </summary>
-        /// <response code="201">Entity created succesfully</response>
+        /// <response code="201">Entity created successfully</response>
         /// <response code="400">Model invalid or related entities not found</response>
         [HttpPost]
-        public IActionResult Post([FromBody] CreateFreeExpression dto)
+        public IActionResult Post([FromBody] CreateFreeExpressionCommand dto,
+            [FromServices] ICommandHandler<CreateFreeExpressionCommand, GetFreeExpression> handler)
         {
-            var result = service.Add(dto);
-            if (!result.IsValid)
-                return BadRequest(result);
-            var response = ToDto(result.Entity as FreeExpression);
-            return Created("api/expression/" + response.ID, response);
+            var response = handler.Handle(dto);
+            if (response.IsSuccessful)
+                return Created("api/expression/" + response.Entity.ID, response.Entity);
+            return BadRequest(dto);
         }
 
         /// <summary>
         /// Updates a free expression
         /// </summary>
-        /// <response code="200">Entity updated succesfully</response>
+        /// <response code="200">Entity updated successfully</response>
         /// <response code="400">Model invalid or related entities not found</response>
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateFreeExpression dto)
+        public IActionResult Put(int id, [FromBody] UpdateFreeExpressionCommand dto,
+            [FromServices] ICommandHandler<UpdateFreeExpressionCommand, GetFreeExpression> handler)
         {
             if (id != dto.ID)
                 return BadRequest(ROUTE_PARAMETER_NOT_MATCH);
-            var result = service.Update(dto);
-            if (!result.IsValid)
-                return BadRequest(result);
-            return Ok();
+            var response = handler.Handle(dto);
+            if (response.IsSuccessful)
+                return Ok();
+            return BadRequest(response.Errors);
         }
 
         /// <summary>
@@ -66,14 +56,17 @@ namespace WebUI.Controllers
         /// <response code="204">Deletion successful</response>
         /// <response code="404">Entity not found</response>
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, [FromServices] ICommandHandler<DeleteFreeExpressionCommand, FreeExpression> handler)
         {
-            var result = service.Delete(id);
-            if (!result.IsValid)
-                return NotFound(result);
-            return NoContent();
-        }
+            var command = new DeleteFreeExpressionCommand
+            {
+                PrimaryKey = id
+            };
 
-        private GetFreeExpression ToDto(FreeExpression exp) => mapper.Map<FreeExpression, GetFreeExpression>(exp);
+            var response = handler.Handle(command);
+            if (response.IsSuccessful)
+                return NoContent();
+            return NotFound(response.Errors);
+        }
     }
 }

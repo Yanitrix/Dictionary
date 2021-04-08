@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Service;
+﻿using Domain.Translation;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace WebUI.Controllers
