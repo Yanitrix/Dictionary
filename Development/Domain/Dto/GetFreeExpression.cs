@@ -1,6 +1,6 @@
 ﻿namespace Domain.Dto
 {
-    public class UpdateFreeExpression : CreateFreeExpression
+    public class GetFreeExpression : CreateFreeExpressionCommand
     {
         public int ID { get; set; }
     }
