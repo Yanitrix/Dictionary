@@ -3,5 +3,6 @@
 namespace Domain.Repository
 {
     public interface IFreeExpressionRepository : IExpressionRepositoryBase<FreeExpression>
-    {}
+    {
+    }
 }

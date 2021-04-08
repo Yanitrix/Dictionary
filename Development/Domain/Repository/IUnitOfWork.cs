@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Domain.Repository
@@ -14,5 +15,7 @@ namespace Domain.Repository
         public IMeaningRepository Meanings { get; }
         public IExampleRepository Examples { get; }
         public IFreeExpressionRepository FreeExpressions { get; }
+
+        public IRepository<T, K> Generic<T, K>();
     }
 }

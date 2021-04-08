@@ -7,10 +7,8 @@ namespace Domain.Repository
     /// <summary>
     /// Every query includes Properties
     /// </summary>
-    public interface IWordRepository : IRepository<Word>
+    public interface IWordRepository : IRepository<Word, int>
     {
-        public Word GetByID(int id);
-
         /// <summary>
         /// Ignores case by default.
         /// </summary>
@@ -22,7 +20,5 @@ namespace Domain.Repository
         /// </summary>
         /// <returns>Matching collection</returns>
         public IEnumerable<Word> GetByLanguageAndValue(String languageName, String Value, bool ignoreCase = true);
-
-        public bool ExistsByID(int id);
     }
 }

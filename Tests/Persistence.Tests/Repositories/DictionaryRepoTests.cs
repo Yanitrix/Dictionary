@@ -133,7 +133,7 @@ namespace Persistence.Tests.Repositories
             var idx = entities[1].Index;
             reloadRepo();
 
-            var found = repo.GetByIndex(idx);
+            var found = repo.GetByPrimaryKey(idx);
 
             Assert.NotNull(found);
             Assert.Equal("german", found.LanguageInName);

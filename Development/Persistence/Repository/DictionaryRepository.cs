@@ -8,7 +8,7 @@ using Domain.Repository;
 
 namespace Persistence.Repository
 {
-    public class DictionaryRepository : RepositoryBase<Dictionary>, IDictionaryRepository
+    public class DictionaryRepository : RepositoryBase<Dictionary, int>, IDictionaryRepository
     {
         public DictionaryRepository(DatabaseContext context) : base(context) { }
 
@@ -17,19 +17,9 @@ namespace Persistence.Repository
             return repo.Where(d => d.LanguageInName == languageName || d.LanguageOutName == languageName).ToList();
         }
 
-        public Dictionary GetByIndex(int index)
-        {
-            return repo.FirstOrDefault(d => d.Index == index);
-        }
-
         public Dictionary GetByLanguageInAndOut(string languageIn, string languageOut)
         {
             return repo.Find(languageIn, languageOut);
-        }
-
-        public bool ExistsByIndex(int index)
-        {
-            return Exists(d => d.Index == index);
         }
 
         public bool ExistsByLanguages(string langIn, string langOut)
@@ -52,6 +42,11 @@ namespace Persistence.Repository
             if (String.IsNullOrEmpty(langOut) || String.IsNullOrWhiteSpace(langOut))
                 return Enumerable.Empty<Dictionary>();
             return Get(d => EF.Functions.Like(d.LanguageOutName, langOut), x => x);
+        }
+
+        public override bool ExistsByPrimaryKey(int index)
+        {
+            return Exists(d => d.Index == index);
         }
     }
 }

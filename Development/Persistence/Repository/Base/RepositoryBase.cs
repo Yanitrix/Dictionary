@@ -9,7 +9,7 @@ using Domain.Repository;
 
 namespace Persistence.Repository
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
+    public abstract class RepositoryBase<T, K> : IRepository<T, K> where T : class
     {
         private bool disposed;
 
@@ -111,6 +111,11 @@ namespace Persistence.Repository
             return repo.ToList();
         }
 
+        public virtual T GetByPrimaryKey(K pkey)
+        {
+            return repo.Find(pkey);
+        }
+
         public virtual T GetOne(Expression<Func<T, bool>> condition)
         {
             return repo.FirstOrDefault(condition);
@@ -137,5 +142,7 @@ namespace Persistence.Repository
         {
             return repo.Any(condition);
         }
+
+        public abstract bool ExistsByPrimaryKey(K pkey);
     }
 }

@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Persistence.Repository
 {
-    public abstract class ExpressionRepositoryBase<T> : RepositoryBase<T>, IExpressionRepositoryBase<T> where T : Expression
+    public abstract class ExpressionRepositoryBase<T> : RepositoryBase<T, int>, IExpressionRepositoryBase<T> where T : Expression
     {
-        protected Func<IQueryable<T>, IOrderedQueryable<T>> orderFunction = (src) => src.OrderBy(e => e.Text).ThenBy(e => e.Translation);
+        protected readonly Func<IQueryable<T>, IOrderedQueryable<T>> orderFunction = (src) => src.OrderBy(e => e.Text).ThenBy(e => e.Translation);
 
         protected ExpressionRepositoryBase(DatabaseContext context) : base(context) { }
 

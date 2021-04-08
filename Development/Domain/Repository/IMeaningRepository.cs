@@ -7,12 +7,8 @@ namespace Domain.Repository
     /// <summary>
     /// Every query includes Examples.
     /// </summary>
-    public interface IMeaningRepository : IRepository<Meaning>
+    public interface IMeaningRepository : IRepository<Meaning, int>
     {
-        public Meaning GetByID(int id);
-
-        public Meaning GetByIDWithEntry(int id);
-
         /// <summary>
         /// Including Entry
         /// </summary>
@@ -32,7 +28,5 @@ namespace Domain.Repository
         /// <param name="dictionaryIndex"></param>
         /// <param name="valueSubstring"></param>
         public IEnumerable<Meaning> GetByDictionaryAndValueSubstring(int dictionaryIndex, String valueSubstring);
-        
-        public bool ExistsByID(int id);
     }
 }

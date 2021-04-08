@@ -125,7 +125,7 @@ namespace Persistence.Tests.Repositories
             word.SourceLanguageName = "german";
 
             repository.Update(word);
-            var inDB = repository.GetByID(word.ID);
+            var inDB = repository.GetByPrimaryKey(word.ID);
 
             //assert
             Assert.Equal("some other value", inDB.Value);
@@ -183,8 +183,8 @@ namespace Persistence.Tests.Repositories
             int firstId = entity1.ID, secondId = entity2.ID;
             Disconnect();
 
-            var first = repository.GetByID(firstId);
-            var second = repository.GetByID(secondId);
+            var first = repository.GetByPrimaryKey(firstId);
+            var second = repository.GetByPrimaryKey(secondId);
 
             Assert.NotNull(first);
             Assert.Equal(1, first.ID);

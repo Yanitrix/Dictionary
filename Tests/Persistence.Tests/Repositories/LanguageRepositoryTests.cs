@@ -122,7 +122,7 @@ namespace Persistence.Tests.Repositories
         [InlineData("\n")]
         public void GetByName_StringEmpty_ReturnsNull(String name)
         {
-            var found = repo.GetByName(name);
+            var found = repo.GetByPrimaryKey(name);
 
             Assert.Null(found);
         }
@@ -137,7 +137,7 @@ namespace Persistence.Tests.Repositories
         public void GetByName_NameDoesNotExist_ReturnsNull(String name)
         {
             putData();
-            var found = repo.GetByName(name);
+            var found = repo.GetByPrimaryKey(name);
             Assert.Null(found);
         }
 
@@ -166,7 +166,7 @@ namespace Persistence.Tests.Repositories
         {
             putData1();
 
-            var found = repo.GetByName("japanese");
+            var found = repo.GetByPrimaryKey("japanese");
 
             Assert.NotNull(found);
             Assert.Equal("japanese", found.Name);
@@ -181,7 +181,7 @@ namespace Persistence.Tests.Repositories
         {
             putData();
 
-            var exists = repo.ExistsByName(name);
+            var exists = repo.ExistsByPrimaryKey(name);
 
             Assert.True(exists);
         }
@@ -201,7 +201,7 @@ namespace Persistence.Tests.Repositories
         {
             putData();
 
-            var exists = repo.ExistsByName(name);
+            var exists = repo.ExistsByPrimaryKey(name);
 
             Assert.False(exists);
         }

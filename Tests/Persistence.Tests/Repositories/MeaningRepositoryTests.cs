@@ -216,7 +216,7 @@ namespace Persistence.Tests.Repositories
             repo.Update(@new);
             Disconnect();
 
-            var found = repo.GetByID(entity.ID);
+            var found = repo.GetByPrimaryKey(entity.ID);
 
             Assert.Equal(@new.Value, found.Value);
             Assert.Equal(@new.Notes, found.Notes);
@@ -235,7 +235,7 @@ namespace Persistence.Tests.Repositories
             Disconnect();
 
             var id = entity.ID;
-            var found = repo.GetByID(id);
+            var found = repo.GetByPrimaryKey(id);
 
             Assert.NotNull(found);
             Assert.Equal(2, found.Examples.Count);
@@ -251,7 +251,7 @@ namespace Persistence.Tests.Repositories
 
             var id = entity.ID;
 
-            var found = repo.GetByIDWithEntry(id);
+            var found = repo.GetByPrimaryKey(id);
 
             Assert.NotNull(found);
             Assert.NotEmpty(found.Examples);
@@ -356,7 +356,7 @@ namespace Persistence.Tests.Repositories
 
             var id = entity.ID;
 
-            var inDB = repo.GetByID(id);
+            var inDB = repo.GetByPrimaryKey(id);
             repo.Delete(inDB);
 
             Assert.Empty(repo.All());
