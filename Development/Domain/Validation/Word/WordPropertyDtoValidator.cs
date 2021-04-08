@@ -8,7 +8,6 @@ namespace Domain.Validation
         public WordPropertyDtoValidator()
         {
             RuleFor(wp => wp.Name).Cascade(CascadeMode.Stop).NotEmpty().NoDigits();
-            RuleFor(wp => wp.Values).NotEmpty();
             RuleForEach(wp => wp.Values).Cascade(CascadeMode.Stop).NotEmpty().NoDigits();
         }
     }
