@@ -19,6 +19,12 @@ namespace Persistence
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IDictionaryRepository, DictionaryRepository>();
+            services.AddTransient<IEntryRepository, EntryRepository>();
+            services.AddTransient<IFreeExpressionRepository, FreeExpressionRepository>();
+            services.AddTransient<IMeaningRepository, MeaningRepository>();
+            services.AddTransient<ILanguageRepository, LanguageRepository>();
+            services.AddTransient<IWordRepository, WordRepository>();
 
             return services;
         }
